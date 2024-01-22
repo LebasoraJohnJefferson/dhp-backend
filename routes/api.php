@@ -19,22 +19,24 @@ use App\Http\Middleware\PersonnelMiddleware;
 |
 */
 
+
+
+Route::post('/login',[AuthController::class,'login']);
+// Route::post('/register',[AuthController::class,'register']);
+
 //check credentials middleware
 Route::middleware('auth:sanctum')->group(function () {
     
-
     // Admin routes and middleware where roles is being check if admin
     Route::prefix('/admin')->middleware(AdminMiddleware::class)->group(function () {
-        Route::resource('/', AdminController::class);
+        Route::resource('/profile', AdminController::class);
+        Route::resource('/personnel',PersonnelController::class);
     });
 
     // Personnel routes and middleware where roles is being check if personnel
     Route::prefix('/personnel')->middleware(PersonnelMiddleware::class)->group(function () {
-        Route::resource('/', PersonnelController::class);
+        Route::resource('/', PersonnelController::class)->only(['index']);
     });
 });
 
-
-Route::post('/login',[AuthController::class,'login']);
-Route::post('/register',[AuthController::class,'register']);
 
