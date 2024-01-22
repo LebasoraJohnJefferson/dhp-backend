@@ -1,18 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Personnel;
 
-use App\Http\Requests\Core\StoreUserRequest;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
-use App\Models\User;
-use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
-class PersonnelController extends Controller
+class UserController extends Controller
 {
-    use HttpResponses;
     /**
      * Display a listing of the resource.
      */
@@ -25,31 +21,17 @@ class PersonnelController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function create()
     {
-        
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUserRequest $request)
+    public function store(Request $request)
     {
-        $request->validated($request->all());
-
-        $user = User::create([
-            'first_name'=>$request->first_name,
-            'middle_name'=>$request->middle_name,
-            'last_name'=>$request->last_name,
-            'email'=>$request->email,
-            'password'=>Hash::make($request->password),
-            'is_active'=>$request->is_active
-        ]);
-        
-        return $this->success([
-            'user'=>$user,
-            'token'=> $user->createToken('API token of' . $user->name)->plainTextToken
-        ]);
+        //
     }
 
     /**

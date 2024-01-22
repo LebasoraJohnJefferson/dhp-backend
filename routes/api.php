@@ -1,9 +1,14 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\PersonnelController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\PersonnelController;
+
+
+use App\Http\Controllers\Personnel\UserController;
+
+
 use Illuminate\Http\Request;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\PersonnelMiddleware;
@@ -35,7 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Personnel routes and middleware where roles is being check if personnel
     Route::prefix('/personnel')->middleware(PersonnelMiddleware::class)->group(function () {
-        Route::resource('/', PersonnelController::class)->only(['index']);
+        Route::resource('/', UserController::class)->only(['index']);
     });
 });
 
