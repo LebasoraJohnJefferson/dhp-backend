@@ -3,10 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Core\StoreUserRequest;
+use App\Models\User;
+use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ImportPersonnelContoller extends Controller
 {
+    use HttpResponses;
     /**
      * Display a listing of the resource.
      */
@@ -22,7 +27,45 @@ class ImportPersonnelContoller extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $personnelData = $request->input('personnel');
+
+        if (!empty($personnelData) && is_array($personnelData)) {
+            foreach ($personnelData as $person) {
+                $first_name = $person['first_name'];
+                $middle_name = $person['middle_name'];
+                $last_name = $person['last_name'];
+                $email = $person['email'];
+                $is_active = $person['is_active'];
+                if(
+                    !empty($first_name) &&
+                    !empty($middle_name) &&
+                    !empty($last_name) &&
+                    !empty($email) &&
+                    !empty($is_active)
+                ){
+                    $existingUser = User::where('email', $email)->first();
+
+                    if (!$existingUser) {
+                        $user = User::create([
+                            'first_name' => $first_name,
+                            'middle_name' => $middle_name,
+                            'last_name' => $last_name,
+                            'email' => $email,
+                            'password' => Hash::make('password123'),
+                            'is_active' => $is_active
+                        ]);
+                    }
+                }
+            }
+            return $this->success("","Successfully Imported",204);
+        }
+
+        return $this->error('','File is Empty',400);
+
+        
+        
+
+
     }
 
     /**
