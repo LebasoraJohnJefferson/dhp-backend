@@ -18,17 +18,11 @@ class PersonnelController extends Controller
      */
     public function index()
     {
-        $user = User::all();
+        $user = User::all()->where('roles','personnel');
         return UserResource::collection($user);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(StoreUserRequest $request)
-    {
-        
-    }
+ 
 
     /**
      * Store a newly created resource in storage.

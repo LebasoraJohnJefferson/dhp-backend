@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ImportPersonnelContoller;
 use App\Http\Controllers\Admin\PersonnelController;
 
 
@@ -36,6 +37,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('/admin')->middleware(AdminMiddleware::class)->group(function () {
         Route::resource('/profile', AdminController::class);
         Route::resource('/personnel',PersonnelController::class);
+        Route::resource('/personnel/importExcel',ImportPersonnelContoller::class)
+            ->only(['store']);
     });
 
     // Personnel routes and middleware where roles is being check if personnel
