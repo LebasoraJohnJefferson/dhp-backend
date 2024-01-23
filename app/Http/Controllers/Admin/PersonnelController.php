@@ -18,8 +18,11 @@ class PersonnelController extends Controller
      */
     public function index()
     {
-        $user = User::all()->where('roles','personnel');
-        return UserResource::collection($user);
+        $users = User::where('roles', 'personnel')
+                ->where('is_deleted', false)
+                ->get();
+
+        return UserResource::collection($users);
     }
 
  
@@ -53,6 +56,7 @@ class PersonnelController extends Controller
     {
         $user = User::where('roles','personnel')
             ->where('id',$id)
+            ->where('is_deleted',false)
             ->first();
             
         if(!$user){
@@ -99,7 +103,16 @@ class PersonnelController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::find($id);
+
+        if (!$user) {
+            return $this->error('', 'Personnel not found', 404);
+        }
+
+        $user->update(['is_deleted' => true]);
+
+
+        return $this->success('', 'Personnel successfully deleted', 204);
     }
 
 
@@ -107,7 +120,7 @@ class PersonnelController extends Controller
         error_log($request->id);
         $user = User::where('id',$request->id)->first();
         if(!$user){
-            return $this->error('','Personnel Not Found',404);
+            return $this->error('','Personnel not found',404);
         }
         $user->update(['is_active'=>!$user->is_active]);
         $status = $user->is_active ? 'active!' : 'inactive!';
