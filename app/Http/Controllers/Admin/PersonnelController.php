@@ -49,9 +49,16 @@ class PersonnelController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $user = User::where('roles','personnel')
+            ->where('id',$id)
+            ->first();
+            
+        if(!$user){
+            return $this->error('','Personnel Not Found',404);
+        }
+        return new UserResource($user);
     }
 
     /**
@@ -59,7 +66,6 @@ class PersonnelController extends Controller
      */
     public function edit(string $id)
     {
-        //
     }
 
     /**
