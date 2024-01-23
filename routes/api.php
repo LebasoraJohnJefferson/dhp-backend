@@ -36,6 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Admin routes and middleware where roles is being check if admin
     Route::prefix('/admin')->middleware(AdminMiddleware::class)->group(function () {
         Route::resource('/profile', AdminController::class);
+        Route::patch('/personnel/status',[PersonnelController::class,'change_personnel_status']);
         Route::resource('/personnel',PersonnelController::class);
         Route::resource('/personnel/importExcel',ImportPersonnelContoller::class)
             ->only(['store']);

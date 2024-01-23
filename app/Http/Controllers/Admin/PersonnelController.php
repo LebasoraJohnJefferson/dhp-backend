@@ -71,9 +71,27 @@ class PersonnelController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
+    public function update(string $id,Request $request)
+    {   
+
+        
+        $user = User::find($id);
+
+        if (!$user) {
+            return $this->error('', 'User not found', 404);
+        }
+
+        $isEmailAlreadyExist = User::where('email', $request->email)
+                ->where('id', '!=', $user->id)
+                ->exists();
+
+        if($isEmailAlreadyExist){
+            return $this->error('','Email already taken!',409);
+        }
+
+        
+        $user->update($request->all());
+        return $this->success('','Successfully updated',201);
     }
 
     /**
@@ -83,4 +101,18 @@ class PersonnelController extends Controller
     {
         //
     }
+
+
+    public function change_personnel_status(Request $request){
+        error_log($request->id);
+        $user = User::where('id',$request->id)->first();
+        if(!$user){
+            return $this->error('','Personnel Not Found',404);
+        }
+        $user->update(['is_active'=>!$user->is_active]);
+        $status = $user->is_active ? 'active!' : 'inactive!';
+        return $this->success('','Successfully set to ' . $status ,200);
+    }
+
+
 }
