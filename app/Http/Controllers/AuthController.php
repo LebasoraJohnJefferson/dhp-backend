@@ -17,16 +17,20 @@ class AuthController extends Controller
     public function login(LoginUserRequest $request){
         $credentails = $request->validated();
 
-        if(!Auth::attempt($credentails)){
-            return $this->error('','Account does not exist!', 404); 
-        }
+        
+        
         $user = User::where('email',$request->email)
-            ->where('is_active',true)
             ->first();
 
-        if(!$user){
+        if(!Auth::attempt($credentails) || $user && $user->is_deleted){
+            return $this->error('','Account does not exist!', 404); 
+        }
+
+        if($user && !$user->is_active){
             return $this->error('','Account Restriced!', 401);
         }
+
+
         
         return $this->success([
             'user'=>$user,

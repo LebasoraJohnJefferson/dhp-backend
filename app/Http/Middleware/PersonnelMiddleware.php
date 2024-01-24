@@ -22,7 +22,7 @@ class PersonnelMiddleware
 
         $user = Auth::user();
 
-        if (!$user || !$user->is_active || $user->roles !== 'personnel') {
+        if (!$user || !$user->is_active || $user->is_deleted || $user->roles !== 'personnel') {
             return $this->error('', 'User Unauthorized', 404);
         }
 
