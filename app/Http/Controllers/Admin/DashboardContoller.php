@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\EventModel;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
@@ -22,11 +23,14 @@ class DashboardContoller extends Controller
         $inactive_count = User::where('is_active', false)
             ->where('roles','personnel')
             ->count();
+
+        $event_count = EventModel::count();
         
 
         return $this->success([
             'active_count'=>$active_count,
             'inactive_count'=>$inactive_count,
+            'event_count'=>$event_count
         ],'',200);
     }
 

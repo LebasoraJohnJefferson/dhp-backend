@@ -60,7 +60,13 @@ class EventController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $event = EventModel::find($id);
+
+        if (!$event) {
+            return $this->error('', 'Event not found', 404);
+        }
+    
+        return new EventResource($event);
     }
 
     /**
@@ -68,7 +74,7 @@ class EventController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        
     }
 
     /**
@@ -82,8 +88,9 @@ class EventController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(EventModel $event)
     {
-        //
+        $event->delete();
+        return $this->success('','Event successfully deleted!',204);
     }
 }
