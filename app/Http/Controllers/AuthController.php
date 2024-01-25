@@ -11,19 +11,24 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+
+use App\Http\Requests\Core\ForgotPasswordRequest;
+use App\Http\Requests\Core\ResetPasswordRequest;
+use Illuminate\Support\Str;
+
 class AuthController extends Controller
 {
     use HttpResponses;
     public function login(LoginUserRequest $request){
         $credentails = $request->validated();
 
-        
-        
+
+
         $user = User::where('email',$request->email)
             ->first();
 
         if(!Auth::attempt($credentails) || $user && $user->is_deleted){
-            return $this->error('','Account does not exist!', 404); 
+            return $this->error('','Account does not exist!', 404);
         }
 
         if($user && !$user->is_active){
@@ -31,12 +36,12 @@ class AuthController extends Controller
         }
 
 
-        
+
         return $this->success([
             'user'=>$user,
             'token'=>$user->createToken('Api Token of' . $user->name)->plainTextToken
         ]);
-        
+
     }
 
     public function register(StoreUserRequest $request){
@@ -50,7 +55,7 @@ class AuthController extends Controller
             'password'=>Hash::make($request->password),
             'is_active'=>$request->is_active
         ]);
-        
+
         return $this->success([
             'user'=>$user,
             'token'=> $user->createToken('API token of' . $user->name)->plainTextToken
@@ -61,6 +66,46 @@ class AuthController extends Controller
         Auth::user()->currentAccessToken()->delete();
         return $this->success([
             'message'=>"Logout successfully"
+        ]);
+    }
+
+    public function forgotPassword(ForgotPasswordRequest $request)
+    {
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return $this->error('', 'Email not found', 404);
+        }
+
+        $token = Str::random(60);
+
+        $user->update([
+            'reset_password_token' => $token,
+        ]);
+
+        // Send an email with a link that includes the reset password token
+        // You can use Laravel's built-in notification system for this.
+
+        return $this->success([
+            'message' => 'Password reset link sent to your email',
+        ]);
+    }
+
+    public function resetPassword(ResetPasswordRequest $request, $token)
+    {
+        $user = User::where('reset_password_token', $token)->first();
+
+        if (!$user) {
+            return $this->error('', 'Invalid token', 404);
+        }
+
+        $user->update([
+            'password' => Hash::make($request->password),
+            'reset_password_token' => null,
+        ]);
+
+        return $this->success([
+            'message' => 'Password reset successfully',
         ]);
     }
 

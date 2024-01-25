@@ -31,11 +31,13 @@ use App\Http\Middleware\PersonnelMiddleware;
 
 
 Route::post('/login',[AuthController::class,'login']);
+Route::post('/forgotpassword',[AuthController::class,'forgotpassword']);
+Route::post('/resetpassword',[AuthController::class,'resetpassword']);
 // Route::post('/register',[AuthController::class,'register']);
 
 //check credentials middleware
 Route::middleware('auth:sanctum')->group(function () {
-    
+
     // Admin routes and middleware where roles is being check if admin
     Route::prefix('/admin')->middleware(AdminMiddleware::class)->group(function () {
         Route::resource('/profile', AdminController::class);
