@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardContoller;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\ImportPersonnelContoller;
 use App\Http\Controllers\Admin\PersonnelController;
+use App\Http\Controllers\Admin\ProvinceController;
 use App\Http\Controllers\Admin\RecoverPersonnelContoller;
 use App\Http\Controllers\Personnel\UserController;
 
@@ -48,6 +49,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Personnel routes and middleware where roles is being check if personnel
     Route::prefix('/personnel')->middleware(PersonnelMiddleware::class)->group(function () {
+        Route::resource('/province',ProvinceController::class);
         Route::resource('/', UserController::class)->only(['index']);
     });
 });
