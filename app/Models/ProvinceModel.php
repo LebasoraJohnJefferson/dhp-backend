@@ -4,23 +4,27 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-class EventModel extends Model
+
+class ProvinceModel extends Model
 {
     use HasFactory;
 
+    protected $table = 'province';
 
     protected $fillable=[
-        'image',
-        'title',
-        'description',
-        'date',
-        'venue',
+        'id',
+        'user_id',
+        'province',
     ];
 
-    protected $table = 'event';
 
     protected $hidden = [
 
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
 
 }

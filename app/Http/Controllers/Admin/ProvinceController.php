@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\EventModel;
-use App\Models\User;
+use App\Http\Requests\Personnel\ProvinceRequest;
+use App\Http\Resources\ProvinceResource;
+use App\Models\ProvinceModel;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class DashboardContoller extends Controller
+class ProvinceController extends Controller
 {
     use HttpResponses;
     /**
@@ -16,22 +18,7 @@ class DashboardContoller extends Controller
      */
     public function index()
     {
-        $active_count = User::where('is_active', true)
-            ->where('roles','personnel')
-            ->count();
-
-        $inactive_count = User::where('is_active', false)
-            ->where('roles','personnel')
-            ->count();
-
-        $event_count = EventModel::count();
-        
-
-        return $this->success([
-            'active_count'=>$active_count,
-            'inactive_count'=>$inactive_count,
-            'event_count'=>$event_count
-        ],'',200);
+        return ProvinceResource::collection(ProvinceModel::all());
     }
 
     /**
@@ -45,9 +32,15 @@ class DashboardContoller extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProvinceRequest $province)
     {
-        //
+        $province->validated($province->all());
+        ProvinceModel::create([
+            'user_id'=>Auth::user()->id,
+            'province'=>$province->province
+        ]);
+
+        return $this->success('','Successfully added!',201);
     }
 
     /**
@@ -77,8 +70,9 @@ class DashboardContoller extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(ProvinceModel $province)
     {
-        //
+        $province->delete();
+        return $this->success('', 'Personnel successfully deleted', 204);
     }
 }
