@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Personnel;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Personnel\ProvinceRequest;
@@ -46,17 +46,17 @@ class ProvinceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(ProvinceModel $province)
     {
-        //
+        return new ProvinceResource($province);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(ProvinceModel $province)
     {
-        //
+        return new ProvinceResource($province);
     }
 
     /**
