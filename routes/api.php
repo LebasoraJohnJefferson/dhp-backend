@@ -12,6 +12,7 @@ use App\Http\Controllers\Personnel\UserController;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Personnel\FamiltyProfileController;
 use App\Http\Controllers\Personnel\BaranggayController;
 use App\Http\Controllers\Personnel\CityController;
 use Illuminate\Support\Facades\Route;
@@ -56,6 +57,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::resource('/province',ProvinceController::class)->only(['destroy','store','index','show']);
         Route::resource('/city',CityController::class)->only(['destroy','store','index','show']);
         Route::resource('/baranggay',BaranggayController::class)->only(['destroy','store','index','show']);
+        Route::resource('/famityProfile',FamiltyProfileController::class)->only(['destroy','store','index','show']);
         Route::resource('/', UserController::class)->only(['index'])->only(['index']);
     });
 });

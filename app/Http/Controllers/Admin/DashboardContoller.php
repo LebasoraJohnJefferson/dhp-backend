@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\BaranggayModel;
 use App\Models\EventModel;
 use App\Models\User;
 use App\Traits\HttpResponses;
@@ -25,12 +26,15 @@ class DashboardContoller extends Controller
             ->count();
 
         $event_count = EventModel::count();
+
+        $baranggay_count = BaranggayModel::count();
         
 
         return $this->success([
             'active_count'=>$active_count,
             'inactive_count'=>$inactive_count,
-            'event_count'=>$event_count
+            'event_count'=>$event_count,
+            'baranggay_count'=>$baranggay_count
         ],'',200);
     }
 

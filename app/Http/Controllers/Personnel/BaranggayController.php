@@ -92,6 +92,6 @@ class BaranggayController extends Controller
             return $this->error('','Baranggay not found',404);
         }
         $brgy->delete();
-        return $this->success('', 'Personnel successfully deleted', 204);
+        return $this->success('', 'Successfully deleted', 204);
     }
 }

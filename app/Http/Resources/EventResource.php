@@ -17,7 +17,7 @@ class EventResource extends JsonResource
         return [
           'id'=>$this->id,  
           'title'=>$this->title,
-          'image'=>asset('storage/' . $this->image),
+          'image'=>$this->image ? asset('storage/' . $this->image) : null ,
           'description'=>$this->description,
           'date'=>$this->date,
           'venue'=>$this->venue,
