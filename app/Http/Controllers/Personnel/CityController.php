@@ -18,8 +18,7 @@ class CityController extends Controller
      */
     public function index()
     {
-        return CityResource::collection(CityModel::all());
-        
+        return CityResource::collection(CityModel::all()); 
     }
 
     /**
@@ -47,9 +46,12 @@ class CityController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CityModel $city)
+    public function show(string $request)
     {
-        return new CityResource($city);
+       
+        $cities = CityModel::where('province_id', $request)->get();
+
+        return CityResource::collection($cities);
     }
 
     /**

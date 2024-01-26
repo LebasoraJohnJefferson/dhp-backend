@@ -12,6 +12,7 @@ use App\Http\Controllers\Personnel\UserController;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Personnel\BaranggayController;
 use App\Http\Controllers\Personnel\CityController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AdminMiddleware;
@@ -53,7 +54,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Personnel routes and middleware where roles is being check if personnel
     Route::prefix('/personnel')->middleware(PersonnelMiddleware::class)->group(function () {
         Route::resource('/province',ProvinceController::class)->only(['destroy','store','index','show']);
-        Route::resource('/city',CityController::class)->only(['destroy','store','index']);
+        Route::resource('/city',CityController::class)->only(['destroy','store','index','show']);
+        Route::resource('/baranggay',BaranggayController::class)->only(['destroy','store','index','show']);
         Route::resource('/', UserController::class)->only(['index'])->only(['index']);
     });
 });
