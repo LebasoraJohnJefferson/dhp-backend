@@ -42,6 +42,7 @@ class FamiltyProfileController extends Controller
         }
 
         $FP = FamilyProfileModel::create([
+            'contact_number'=>$familty_profile->contact_number,
             'household_no'=>$familty_profile->household_no,
             'no_household_member'=>$familty_profile->no_household_member,
             'housthould_head'=>$familty_profile->housthould_head,

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('household_no');
             $table->integer('no_household_member');
+            $table->string('contact_number');
             $table->string('housthould_head');
             $table->string('occupation');
             $table->string('educ_attain');

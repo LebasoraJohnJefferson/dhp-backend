@@ -17,6 +17,7 @@ class FamilyProfileResource extends JsonResource
         return [
         'id'=>$this->id,
         'attributes'=>[
+            'contact_number'=>$this->contact_number,
             'household_no'=>$this->household_no,
             'no_household_member'=>$this->no_household_member,
             'housthould_head'=>$this->housthould_head,

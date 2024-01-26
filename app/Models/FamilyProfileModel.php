@@ -12,6 +12,7 @@ class FamilyProfileModel extends Model
     protected $table = 'family_profile';
 
     protected $fillable=[
+        'contact_number',
         'household_no',
         'no_household_member',
         'housthould_head',
