@@ -35,11 +35,6 @@ class FamiltyProfileController extends Controller
     public function store(FamiltyProfileRequest $familty_profile)
     {
         $familty_profile->validated($familty_profile->all());
-        $address_already_exist = FamilyProfileAdressModel::where('bray_id',$familty_profile->brgy_id)
-            ->first();
-        if($address_already_exist){
-            $address_already_exist->delete();
-        }
 
         $FP = FamilyProfileModel::create([
             'contact_number'=>$familty_profile->contact_number,
@@ -68,9 +63,18 @@ class FamiltyProfileController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $FPid)
     {
-        //
+        $FP_details = FamilyProfileAdressModel::where('FP_id',$FPid)->first();
+        if(!$FP_details){
+            return $this->error('', 'Event not found', 404);
+        }
+        return $this->success([
+            'profile_familty'=>$FP_details->profile_families,
+            'address'=>$FP_details->brgys->city->province->province .", " . 
+                        $FP_details->brgys->city->city . " ".
+                        $FP_details->brgys->baranggay
+        ],'Request granted',200);
     }
 
     /**

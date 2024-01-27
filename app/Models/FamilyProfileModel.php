@@ -10,6 +10,7 @@ class FamilyProfileModel extends Model
     use HasFactory;
 
     protected $table = 'family_profile';
+    protected $primaryKey = 'id';
 
     protected $fillable=[
         'contact_number',
@@ -31,6 +32,11 @@ class FamilyProfileModel extends Model
     protected $hidden = [
 
     ];
+
+    public function fam_pro_address(){
+        return $this->hasOne(FamilyProfileAdressModel::class,'FP_id');
+    }
+
 
 
 

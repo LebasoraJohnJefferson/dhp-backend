@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\PersonnelController;
 use App\Http\Controllers\Admin\RecoverPersonnelContoller;
 use App\Http\Controllers\Personnel\ProvinceController;
 use App\Http\Controllers\Personnel\UserController;
+use App\Http\Controllers\Personnel\FamilyProfileChildController;
 
 
 use Illuminate\Http\Request;
@@ -58,6 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::resource('/city',CityController::class)->only(['destroy','store','index','show']);
         Route::resource('/baranggay',BaranggayController::class)->only(['destroy','store','index','show']);
         Route::resource('/famityProfile',FamiltyProfileController::class)->only(['destroy','store','index','show']);
+        Route::resource('/famityProfileChild',FamilyProfileChildController::class)->only(['destroy','store','index','show']);
         Route::resource('/', UserController::class)->only(['index'])->only(['index']);
     });
 });
