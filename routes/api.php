@@ -38,8 +38,8 @@ use App\Http\Middleware\PersonnelMiddleware;
 
 
 Route::post('/login',[AuthController::class,'login']);
-Route::post('/forgotpassword',[AuthController::class,'forgotpassword']);
-Route::post('/resetpassword',[AuthController::class,'resetpassword']);
+Route::post('/forgotpassword',[AuthController::class, 'forgotpassword']);
+Route::post('/resetpassword',[AuthController::class, 'resetpassword']);
 // Route::post('/register',[AuthController::class,'register']);
 
 //check credentials middleware
@@ -56,7 +56,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::resource('/dashboard',DashboardContoller::class);
         Route::resource('/personnel/importExcel',ImportPersonnelContoller::class)
             ->only(['store']);
-        
+
     });
 
     // Personnel routes and middleware where roles is being check if personnel

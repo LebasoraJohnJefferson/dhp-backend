@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Core\ForgotPasswordRequest;
 use App\Http\Requests\Core\ResetPasswordRequest;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Password;
 
 class AuthController extends Controller
 {
@@ -69,27 +70,21 @@ class AuthController extends Controller
         ]);
     }
 
-    public function forgotPassword(ForgotPasswordRequest $request)
+    public function forgotpassword(Request $request)
     {
-        $user = User::where('email', $request->email)->first();
+        $request->validate(['email' => 'required|email']);
 
-        if (!$user) {
-            return $this->error('', 'Email not found', 404);
-        }
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
 
-        $token = Str::random(60);
-
-        $user->update([
-            'reset_password_token' => $token,
-        ]);
-
-        // Send an email with a link that includes the reset password token
-        // You can use Laravel's built-in notification system for this.
-
-        return $this->success([
-            'message' => 'Password reset link sent to your email',
-        ]);
+        return $status === Password::RESET_LINK_SENT
+            ? $status
+            : $status;
     }
+
+
+
 
     public function resetPassword(ResetPasswordRequest $request, $token)
     {
