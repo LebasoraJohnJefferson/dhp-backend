@@ -23,12 +23,7 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         ResetPassword::createUrlUsing(function ($notifiable, $token) {
-            $link = match (request()->path()) {
-                'foo/forgot-password' => config('foo.reset_password_url') . $token,
-                'bar/forgot-password' => config('bar.reset_password_url') . $token,
-                default => null
-            };
-            return $link;
+            return 'http://localhost:4200/resetpassword?token='.$token;
         });
     }
 }
