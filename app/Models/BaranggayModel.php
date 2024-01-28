@@ -20,7 +20,7 @@ class BaranggayModel extends Model
 
 
     protected $hidden = [
-        
+
     ];
 
     public function user()
