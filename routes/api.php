@@ -15,6 +15,7 @@ use App\Http\Controllers\Personnel\FamilyProfileChildController;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LogsController;
 use App\Http\Controllers\Personnel\FamiltyProfileController;
 use App\Http\Controllers\Personnel\BaranggayController;
 use App\Http\Controllers\Personnel\CityController;
@@ -49,6 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/profileFamiltyAnalytics',[AnalyticsFamiltyProfileController::class,'FPAnalyic'],);
         Route::get('get_all_invited_province/{event_id}',[EventInvatationController::class,'invited_province']);
 
+        Route::resource('/logs',LogsController::class)->only(['index','show']); 
         Route::resource('/profile', AdminController::class);
         Route::resource('/event',EventController::class);
         Route::resource('/recover_personnel',RecoverPersonnelContoller::class);
@@ -56,7 +58,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::resource('/dashboard',DashboardContoller::class);
         Route::resource('/event_invitation',EventInvatationController::class);
         Route::resource('/personnel/importExcel',ImportPersonnelContoller::class)
-            ->only(['store']);    
+            ->only(['store']);   
     });
 
     // Personnel routes and middleware where roles is being check if personnel
@@ -67,6 +69,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::resource('/famityProfile',FamiltyProfileController::class)->only(['destroy','store','index','show']);
         Route::resource('/famityProfileChild',FamilyProfileChildController::class)->only(['destroy','store','index','show']);
         Route::resource('/', UserController::class)->only(['index'])->only(['index']);
+        Route::resource('/dashboard',DashboardContoller::class)->only(['index']);
+        Route::resource('/event',EventController::class)->only(['index']);
     });
 
 

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 
 use App\Http\Requests\Core\ForgotPasswordRequest;
 use App\Http\Requests\Core\ResetPasswordRequest;
+use App\Models\LogModel;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Password;
 
@@ -36,6 +37,11 @@ class AuthController extends Controller
             return $this->error('','Account Restriced!', 401);
         }
 
+        LogModel::create([
+            'user_id'=>Auth::user()->id,
+            'title'=>'Authentication',
+            'description'=>'Login'
+        ]);
 
 
         return $this->success([
