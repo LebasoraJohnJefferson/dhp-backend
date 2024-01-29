@@ -32,4 +32,9 @@ class BaranggayModel extends Model
     {
         return $this->belongsTo(CityModel::class, 'city_id');
     }
+
+    public function family_address()
+    {
+        return $this->belongsTo(FamilyProfileAdressModel::class, 'FP_id');
+    }
 }

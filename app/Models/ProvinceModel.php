@@ -32,4 +32,10 @@ class ProvinceModel extends Model
     }
 
 
+    public function events()
+{
+    return $this->hasMany(EventModel::class);
+}
+
+
 }

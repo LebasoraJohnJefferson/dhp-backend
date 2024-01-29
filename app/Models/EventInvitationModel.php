@@ -4,28 +4,33 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-class EventModel extends Model
+
+class EventInvitationModel extends Model
 {
     use HasFactory;
+    protected $table = 'event_invitation';
     protected $primaryKey = 'id';
 
+    
     protected $fillable=[
-        'image',
-        'title',
-        'description',
-        'date',
-        'venue',
+        'event_id',
+        'province_id',
     ];
 
-    protected $table = 'event';
 
     protected $hidden = [
 
     ];
 
+    public function event()
+    {
+        return $this->belongsTo(EventModel::class, 'event_id');
+    }
+
     public function province()
     {
         return $this->belongsTo(ProvinceModel::class, 'province_id');
     }
+
 
 }

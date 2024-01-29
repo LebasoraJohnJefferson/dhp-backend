@@ -7,9 +7,7 @@ use App\Http\Controllers\Admin\ImportPersonnelContoller;
 use App\Http\Controllers\Admin\PersonnelController;
 use App\Http\Controllers\Admin\RecoverPersonnelContoller;
 use App\Http\Controllers\Admin\AnalyticsFamiltyProfileController;
-
-
-
+use App\Http\Controllers\Admin\EventInvatationController;
 use App\Http\Controllers\Personnel\ProvinceController;
 use App\Http\Controllers\Personnel\UserController;
 use App\Http\Controllers\Personnel\FamilyProfileChildController;
@@ -47,16 +45,18 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Admin routes and middleware where roles is being check if admin
     Route::prefix('/admin')->middleware(AdminMiddleware::class)->group(function () {
-        Route::resource('/profile', AdminController::class);
         Route::patch('/personnel/status',[PersonnelController::class,'change_personnel_status']);
         Route::get('/profileFamiltyAnalytics',[AnalyticsFamiltyProfileController::class,'FPAnalyic'],);
+        Route::get('get_all_invited_province/{event_id}',[EventInvatationController::class,'invited_province']);
+
+        Route::resource('/profile', AdminController::class);
         Route::resource('/event',EventController::class);
         Route::resource('/recover_personnel',RecoverPersonnelContoller::class);
         Route::resource('/personnel',PersonnelController::class);
         Route::resource('/dashboard',DashboardContoller::class);
+        Route::resource('/event_invitation',EventInvatationController::class);
         Route::resource('/personnel/importExcel',ImportPersonnelContoller::class)
-            ->only(['store']);
-
+            ->only(['store']);    
     });
 
     // Personnel routes and middleware where roles is being check if personnel
