@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\FileRequest;
 use App\Http\Resources\FileResource;
 use App\Models\fileModel;
+use App\Models\User;
 use App\Traits\HttpResponses;
 use App\Traits\UploadFile;
 use Illuminate\Http\Request;
@@ -55,9 +56,15 @@ class FileController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $user_id)
     {
-       
+       $files = fileModel::where(
+        'user_id',$user_id
+       )
+       ->where('is_deleted',false)
+       ->get();
+
+       return FileResource::collection($files);
     }
 
     /**

@@ -20,6 +20,7 @@ use App\Http\Controllers\LogsController;
 use App\Http\Controllers\Personnel\FamiltyProfileController;
 use App\Http\Controllers\Personnel\BaranggayController;
 use App\Http\Controllers\Personnel\CityController;
+use App\Http\Controllers\RecoverFilesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\PersonnelMiddleware;
@@ -46,12 +47,14 @@ Route::get('/file/download/{fileName}',[FileController::class,'download']);
 
 //check credentials middleware
 Route::middleware('auth:sanctum')->group(function () {
+    Route::resource('/recover_files',RecoverFilesController::class);
 
     // Admin routes and middleware where roles is being check if admin
     Route::prefix('/admin')->middleware(AdminMiddleware::class)->group(function () {
         Route::patch('/personnel/status',[PersonnelController::class,'change_personnel_status']);
         Route::get('/profileFamiltyAnalytics',[AnalyticsFamiltyProfileController::class,'FPAnalyic'],);
         Route::get('get_all_invited_province/{event_id}',[EventInvatationController::class,'invited_province']);
+        Route::resource('/file',FileController::class);
 
         Route::resource('/logs',LogsController::class)->only(['index','show']); 
         Route::resource('/profile', AdminController::class);
@@ -76,6 +79,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::resource('/event',EventController::class)->only(['index']);
         Route::resource('/file',FileController::class)->only(['index','destroy','store']);
     });
+
 
 
 });
