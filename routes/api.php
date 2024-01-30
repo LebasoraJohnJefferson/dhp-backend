@@ -15,6 +15,7 @@ use App\Http\Controllers\Personnel\FamilyProfileChildController;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\LogsController;
 use App\Http\Controllers\Personnel\FamiltyProfileController;
 use App\Http\Controllers\Personnel\BaranggayController;
@@ -39,6 +40,8 @@ use App\Http\Middleware\PersonnelMiddleware;
 Route::post('/login',[AuthController::class,'login']);
 Route::post('/forgotpassword',[AuthController::class, 'forgotpassword']);
 Route::post('/resetpassword',[AuthController::class, 'resetpassword']);
+Route::get('/file/download/{fileName}',[FileController::class,'download']);
+
 // Route::post('/register',[AuthController::class,'register']);
 
 //check credentials middleware
@@ -71,6 +74,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::resource('/', UserController::class)->only(['index'])->only(['index']);
         Route::resource('/dashboard',DashboardContoller::class)->only(['index']);
         Route::resource('/event',EventController::class)->only(['index']);
+        Route::resource('/file',FileController::class)->only(['index','destroy','store']);
     });
 
 
