@@ -72,6 +72,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Personnel routes and middleware where roles is being check if personnel
     Route::prefix('/personnel')->middleware(PersonnelMiddleware::class)->group(function () {
+        Route::resource('/province',ProvinceController::class)->only(['destroy','store','index','show']);
+        Route::resource('/city',CityController::class)->only(['destroy','store','index','show']);
+        Route::resource('/baranggay',BaranggayController::class)->only(['destroy','store','index','show']);
         Route::resource('/famityProfile',FamiltyProfileController::class)->only(['destroy','store','index','show']);
         Route::resource('/famityProfileChild',FamilyProfileChildController::class)->only(['destroy','store','index','show']);
         Route::resource('/', UserController::class)->only(['index'])->only(['index']);
