@@ -35,6 +35,12 @@ class BaranggayController extends Controller
     public function store(BaranggayRequest $brgy)
     {
         $brgy->validated($brgy->all());
+        $is_exist = BaranggayModel::where('city_id',$brgy->city_id)
+        ->where('purok',$brgy->purok)
+        ->where('baranggay',$brgy->baranggay)->first();
+        if($is_exist){
+            return $this->error('','Already exist',404);
+        }
         BaranggayModel::create([
             'user_id'=>Auth::user()->id,
             'city_id'=>$brgy->city_id,
@@ -88,6 +94,8 @@ class BaranggayController extends Controller
     public function destroy(string $brgy)
     {   
         $brgy = BaranggayModel::find($brgy);
+        
+        
         if(!$brgy){
             return $this->error('','Baranggay not found',404);
         }

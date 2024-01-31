@@ -34,6 +34,12 @@ class CityController extends Controller
     public function store(CityRequest $city)
     {
         $city->validated($city->all());
+        $is_exist = CityModel::where('province_id',$city->province_id)
+            ->where('city',$city->city)
+            ->first();
+        if($is_exist){
+            return $this->error('','Already exist',404);
+        }
         CityModel::create([
             'user_id'=>Auth::user()->id,
             'city'=>$city->city,

@@ -35,6 +35,10 @@ class ProvinceController extends Controller
     public function store(ProvinceRequest $province)
     {
         $province->validated($province->all());
+        $is_exist = ProvinceModel::where('province',$province->province)->first();
+        if($is_exist){
+            return $this->error('','Already exist',404);
+        }
         ProvinceModel::create([
             'user_id'=>Auth::user()->id,
             'province'=>$province->province
