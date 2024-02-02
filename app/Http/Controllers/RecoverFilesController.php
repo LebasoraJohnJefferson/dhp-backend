@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\FileResource;
 use App\Models\fileModel;
+use App\Models\LogModel;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -83,6 +84,11 @@ class RecoverFilesController extends Controller
         if($file->is_deleted === false){
             return $this->error('','File cant be deleted',409);
         }
+        LogModel::create([
+            'user_id'=>Auth::user()->id,
+            'title'=>'Removal of file',
+            'description'=>'File named "'.$file->name.'" was deleted by '. Auth::user()->last_name . ',' . Auth::user()->first_name. ' ' . Auth::user()->middle_name[0]
+        ]);
         $file->delete();
         return $this->success('',"Successfully deleted",204);
     }

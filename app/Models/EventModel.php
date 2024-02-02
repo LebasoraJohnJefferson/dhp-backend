@@ -23,9 +23,4 @@ class EventModel extends Model
 
     ];
 
-    public function province()
-    {
-        return $this->belongsTo(ProvinceModel::class, 'province_id');
-    }
-
 }

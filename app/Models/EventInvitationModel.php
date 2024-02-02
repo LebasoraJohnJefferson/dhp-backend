@@ -27,10 +27,5 @@ class EventInvitationModel extends Model
         return $this->belongsTo(EventModel::class, 'event_id');
     }
 
-    public function province()
-    {
-        return $this->belongsTo(ProvinceModel::class, 'province_id');
-    }
-
 
 }

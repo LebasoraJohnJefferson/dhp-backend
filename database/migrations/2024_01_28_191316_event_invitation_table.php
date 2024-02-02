@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('event_invitation', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('province_id');
+            $table->unsignedBigInteger('brgy_id');
             $table->unsignedBigInteger('event_id');
-            $table->foreign('province_id')
+            $table->foreign('brgy_id')
                 ->references('id')
-                ->on('province')
+                ->on('baranggay')
                 ->onDelete('cascade');
             $table->foreign('event_id')
             ->references('id')

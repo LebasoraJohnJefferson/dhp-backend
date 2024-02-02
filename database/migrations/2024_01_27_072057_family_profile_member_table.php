@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('family_profile_address', function (Blueprint $table) {
+        Schema::create('family_profile_members', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('bray_id');
             $table->unsignedBigInteger('FP_id');
-            $table->foreign('bray_id')
-                ->references('id')
-                ->on('baranggay')
-                ->onDelete('cascade');
+            $table->string('name');
+            $table->date('birthDay');
+            $table->string('gender');
+            $table->string('relationship');
+            $table->string('occupation')->nullable();
+            $table->string('nursing_type')->nullable();
             $table->foreign('FP_id')
                 ->references('id')
                 ->on('family_profile')
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('family_profile_address');
+        Schema::dropIfExists('family_profile_members');
     }
 };

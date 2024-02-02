@@ -12,8 +12,6 @@ class BaranggayModel extends Model
     protected $table = 'baranggay';
     protected $primaryKey = 'id';
     protected $fillable=[
-        'city_id',
-        'user_id',
         'purok',
         'baranggay'
     ];
@@ -23,18 +21,9 @@ class BaranggayModel extends Model
 
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
+    public function fam_profile(){
+        return $this->hasOne(FamilyProfileModel::class);
     }
 
-    public function city()
-    {
-        return $this->belongsTo(CityModel::class, 'city_id');
-    }
 
-    public function family_address()
-    {
-        return $this->belongsTo(FamilyProfileAdressModel::class, 'FP_id');
-    }
 }

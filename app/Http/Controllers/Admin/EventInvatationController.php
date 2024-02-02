@@ -83,17 +83,17 @@ class EventInvatationController extends Controller
      */
     public function show(string $eventId)
     {   
-        $eventId = (int)$eventId;
-        $provinces = ProvinceModel::whereNotIn('id', function ($query) use ($eventId) {
-            $query->select('province_id')
-                  ->from('event_invitation')
-                  ->where('event_id', $eventId);
-        })->get();
+        // $eventId = (int)$eventId;
+        // $provinces = ProvinceModel::whereNotIn('id', function ($query) use ($eventId) {
+        //     $query->select('province_id')
+        //           ->from('event_invitation')
+        //           ->where('event_id', $eventId);
+        // })->get();
 
 
-        return $this->success([
-            'provinces'=>$provinces
-        ]);
+        // return $this->success([
+        //     'provinces'=>$provinces
+        // ]);
     }
 
     /**

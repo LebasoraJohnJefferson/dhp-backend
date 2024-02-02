@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\FamilyProfileChildResource;
-use App\Models\FamilyProfileAdressModel;
-use App\Models\FamilyProfileChildModel;
+use App\Models\BaranggayModel;
+use App\Models\FamilyProfileMemberModel;
 use App\Models\FamilyProfileModel;
 use App\Models\ProvinceModel;
 use App\Traits\HttpResponses;
@@ -20,15 +19,17 @@ class AnalyticsFamiltyProfileController extends Controller
     public function FPAnalyic(){
         $count_pregnant = FamilyProfileModel::where('mother_pregnant',true)->count();
         $count_prac_fam_plan = FamilyProfileModel::where('familty_planning',true)->count();
-        $provinces = ProvinceModel::pluck('province')->toArray(); 
+        $brgys = BaranggayModel::all(); 
+        $baranggays=[];
         $population = [];
-        foreach($provinces as $province){
-            $householdMemberCount = FamilyProfileModel::with('fam_pro_address.brgys.city.province')
-            ->whereHas('fam_pro_address.brgys.city.province', function ($query) use ($province) {
-                $query->where('province', $province);
+        foreach($brgys as $baranggay){
+            $householdMemberCount = FamilyProfileMemberModel::with('fam_profile.FP_members')
+            ->whereHas('fam_profile.FP_members', function ($query) use ($baranggay) {
+                $query->where('brgy_id', $baranggay->id);
             })
             ->get()
-            ->sum('no_household_member');
+            ->count();
+            $baranggays[] = $baranggay->baranggay;
             $population[]=$householdMemberCount;
         }
 
@@ -37,7 +38,7 @@ class AnalyticsFamiltyProfileController extends Controller
         $using_IFR = FamilyProfileModel::where('using_IFR',true)->count();
         $not_using_IFR = FamilyProfileModel::where('using_IFR',false)->count();
 
-        $no_children = FamilyProfileChildModel::all();
+        $no_children = FamilyProfileMemberModel::all();
         $category_age = [0,0,0,0];
         $data_nursing_type = [
             'EBF'=>0,
@@ -108,7 +109,7 @@ class AnalyticsFamiltyProfileController extends Controller
         return $this->success([
             'count_pregnant'=>$count_pregnant,
             'count_prac_fam_plan'=>$count_prac_fam_plan,
-            'provinces'=>$provinces,
+            'baranggays'=>$baranggays,
             'population'=>$population,
             'iodized_salt_data'=>[$using_iodized_salt,$not_using_iodized_salt],
             'using_IFR_data'=>[$using_IFR,$not_using_IFR],

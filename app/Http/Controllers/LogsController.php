@@ -14,7 +14,9 @@ class LogsController extends Controller
      */
     public function index()
     {
-        $logs = LogModel::where('user_id','!=',Auth::user()->id)->get();
+        $logs = LogModel::where('user_id','!=',Auth::user()->id)
+        ->latest()
+        ->get();
 
         return LogResource::collection($logs);
     }
@@ -40,7 +42,9 @@ class LogsController extends Controller
      */
     public function show(string $id)
     {
-        $logs = LogModel::where('user_id',Auth::user()->id)->get();
+        $logs = LogModel::where('user_id',Auth::user()->id)
+        ->latest()
+        ->get();
         return LogResource::collection($logs);
     }
 

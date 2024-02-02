@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Personnel;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Personnel\BaranggayRequest;
 use App\Models\BaranggayModel;
-use App\Models\CityModel;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +17,11 @@ class BaranggayController extends Controller
      */
     public function index()
     {
-        //
+        
+        $baranggay =  BaranggayModel::get();
+        return $this->success([
+            'baranggay' => $baranggay,
+        ],'',200);
     }
 
     /**
@@ -35,15 +38,9 @@ class BaranggayController extends Controller
     public function store(BaranggayRequest $brgy)
     {
         $brgy->validated($brgy->all());
-        $is_exist = BaranggayModel::where('city_id',$brgy->city_id)
-        ->where('purok',$brgy->purok)
-        ->where('baranggay',$brgy->baranggay)->first();
-        if($is_exist){
-            return $this->error('','Already exist',404);
-        }
+        
         BaranggayModel::create([
-            'user_id'=>Auth::user()->id,
-            'city_id'=>$brgy->city_id,
+            'brgy_id'=>$brgy->id,
             'purok'=>$brgy->purok,
             'baranggay'=>$brgy->baranggay,
         ]);
@@ -54,22 +51,9 @@ class BaranggayController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $city_id)
+    public function show(string $id)
     {
-        $cityDetails = CityModel::where('id', $city_id)->with('baranggay','baranggay.user', 'province')->first();
-
-        if (!$cityDetails) {
-            return $this->error('', 'City Not Found', 404, [
-                'city_id' => $city_id,
-            ]);
-        }
-        $baranggay = $cityDetails->baranggay;
-        $province = $cityDetails->province;
-        return $this->success([
-            'province' => $province,
-            'city' => $cityDetails,
-            'baranggay' => $baranggay,
-        ],'',200);
+      
     }
 
     /**

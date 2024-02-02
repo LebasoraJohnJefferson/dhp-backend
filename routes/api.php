@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\LogsController;
+
+
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\DashboardContoller;
 use App\Http\Controllers\Admin\EventController;
@@ -8,18 +13,15 @@ use App\Http\Controllers\Admin\PersonnelController;
 use App\Http\Controllers\Admin\RecoverPersonnelContoller;
 use App\Http\Controllers\Admin\AnalyticsFamiltyProfileController;
 use App\Http\Controllers\Admin\EventInvatationController;
-use App\Http\Controllers\Personnel\ProvinceController;
-use App\Http\Controllers\Personnel\UserController;
-use App\Http\Controllers\Personnel\FamilyProfileChildController;
+use App\Http\Controllers\Admin\BaranggayController;
 
+
+
+use App\Http\Controllers\Personnel\UserController;
+use App\Http\Controllers\Personnel\FamilyProfileMemberController;
+use App\Http\Controllers\Personnel\FamiltyProfileController;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\FileController;
-use App\Http\Controllers\LogsController;
-use App\Http\Controllers\Personnel\FamiltyProfileController;
-use App\Http\Controllers\Personnel\BaranggayController;
-use App\Http\Controllers\Personnel\CityController;
 use App\Http\Controllers\RecoverFilesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AdminMiddleware;
@@ -44,9 +46,9 @@ Route::post('/resetpassword',[AuthController::class, 'resetpassword']);
 
 // Route::post('/register',[AuthController::class,'register']);
 
+Route::get('/file/download/{fileName}',[FileController::class,'download']);
 //check credentials middleware
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/file/download/{fileName}',[FileController::class,'download']);
     Route::resource('/recover_files',RecoverFilesController::class);
 
     // Admin routes and middleware where roles is being check if admin
@@ -56,8 +58,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('get_all_invited_province/{event_id}',[EventInvatationController::class,'invited_province']);
         Route::resource('/file',FileController::class);
         
-        Route::resource('/province',ProvinceController::class)->only(['destroy','store','index','show']);
-        Route::resource('/city',CityController::class)->only(['destroy','store','index','show']);
         Route::resource('/baranggay',BaranggayController::class)->only(['destroy','store','index','show']);
         Route::resource('/logs',LogsController::class)->only(['index','show']); 
         Route::resource('/profile', AdminController::class);
@@ -72,11 +72,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Personnel routes and middleware where roles is being check if personnel
     Route::prefix('/personnel')->middleware(PersonnelMiddleware::class)->group(function () {
-        Route::resource('/province',ProvinceController::class)->only(['destroy','store','index','show']);
-        Route::resource('/city',CityController::class)->only(['destroy','store','index','show']);
-        Route::resource('/baranggay',BaranggayController::class)->only(['destroy','store','index','show']);
         Route::resource('/famityProfile',FamiltyProfileController::class)->only(['destroy','store','index','show']);
-        Route::resource('/famityProfileChild',FamilyProfileChildController::class)->only(['destroy','store','index','show']);
+        Route::resource('/baranggay',BaranggayController::class)->only(['destroy','store','index','show']);
+        Route::resource('/famityProfileMembers',FamilyProfileMemberController::class)->only(['destroy','store','index','show']);
         Route::resource('/', UserController::class)->only(['index'])->only(['index']);
         Route::resource('/dashboard',DashboardContoller::class)->only(['index']);
         Route::resource('/event',EventController::class)->only(['index']);

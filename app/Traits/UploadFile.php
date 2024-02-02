@@ -9,13 +9,7 @@ use Illuminate\Support\Str;
 trait UploadFile{
     protected function UploadFile($file){
 
-        $extensions = [
-            'image/jpeg' => 'jpg',
-            'image/png' => 'png',
-            'image/gif' => 'gif',
-            'application/pdf' => 'pdf',
-            'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
-        ];
+       
     
         if ($file) {
             preg_match('/data:([^;]+);base64,(.+)/', $file, $matches);
@@ -44,6 +38,7 @@ trait UploadFile{
         'image/gif' => 'gif',
         'application/pdf' => 'pdf',
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'xlsx'
     ];
 
     // Default to 'unknown' if no match is found
