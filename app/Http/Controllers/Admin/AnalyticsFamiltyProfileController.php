@@ -19,9 +19,9 @@ class AnalyticsFamiltyProfileController extends Controller
     public function FPAnalyic(){
         $count_pregnant = FamilyProfileModel::where('mother_pregnant',true)->count();
         $count_prac_fam_plan = FamilyProfileModel::where('familty_planning',true)->count();
-        $brgys = BaranggayModel::all(); 
-        $baranggays=[];
-        $population = [];
+        $brgys = BaranggayModel::get(); 
+        $baranggays=['start'];
+        $population= [0];
         foreach($brgys as $baranggay){
             $householdMemberCount = FamilyProfileMemberModel::with('fam_profile.FP_members')
             ->whereHas('fam_profile.FP_members', function ($query) use ($baranggay) {
@@ -29,8 +29,11 @@ class AnalyticsFamiltyProfileController extends Controller
             })
             ->get()
             ->count();
+            $count = 0;
+            if($baranggay->fam_profile->father) $count+=1;
+            if($baranggay->fam_profile->mother) $count+=1;
             $baranggays[] = $baranggay->baranggay;
-            $population[]=$householdMemberCount;
+            $population[]=$householdMemberCount+$count;
         }
 
         $using_iodized_salt = FamilyProfileModel::where('using_iodized_salt',true)->count();

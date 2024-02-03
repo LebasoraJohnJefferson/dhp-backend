@@ -32,7 +32,8 @@ return new class extends Migration
 
             $table->foreign('brgy_id')
                 ->references('id')
-                ->on('baranggay');
+                ->on('baranggay')
+                ->onDelete('set null');
             });
     }
 
