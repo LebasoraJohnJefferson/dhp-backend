@@ -5,15 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BaranggayModel extends Model
+class fileModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'baranggay';
+    protected $table = 'file';
     protected $primaryKey = 'id';
+
     protected $fillable=[
-        'purok',
-        'baranggay'
+        'file_name',
+        'name',
+        'is_deleted',
+        'user_id'
     ];
 
 
@@ -21,9 +24,8 @@ class BaranggayModel extends Model
 
     ];
 
-    public function fam_profile(){
-        return $this->hasOne(FamilyProfileModel::class,'brgy_id');
+    public function user(){
+        return $this->belongsTo(User::class);
     }
-
 
 }

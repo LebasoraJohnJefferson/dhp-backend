@@ -24,7 +24,6 @@ class BaranggayRequest extends FormRequest
         return [
             'baranggay'=>['required','string'],
             'purok'=>['required','string'],
-            'city_id' => ['required','integer'],
         ];
     }
 }

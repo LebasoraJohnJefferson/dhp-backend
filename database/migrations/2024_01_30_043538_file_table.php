@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('province', function (Blueprint $table) {
+        Schema::create('file', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('province');
+            $table->string('name');
+            $table->string('file_name');
+            $table->boolean('is_deleted')->default(false);
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
-                ->onDelete('cascade');
+                ->onDelete('cascade');;
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('province');
+        Schema::dropIfExists('file');
     }
 };

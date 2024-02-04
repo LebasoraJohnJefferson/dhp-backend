@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Personnel;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FamiltyProfileChildRequest extends FormRequest
+class FileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,8 @@ class FamiltyProfileChildRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'file_name'=>['required','string'],
             'name'=>['required','string'],
-            'birthDay'=>['required','date'],
-            'nursing_type'=>['string','nullable']
         ];
     }
 }

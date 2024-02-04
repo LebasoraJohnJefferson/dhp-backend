@@ -40,7 +40,7 @@ class EventController extends Controller
             $image = $this->UploadImage($event->image);
         }
 
-        $event_created = EventModel::create([
+        EventModel::create([
             'image'=>$image,
             'title'=>$event->title,
             'description'=>$event->description,

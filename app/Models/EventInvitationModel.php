@@ -5,15 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BaranggayModel extends Model
+class EventInvitationModel extends Model
 {
     use HasFactory;
-
-    protected $table = 'baranggay';
+    protected $table = 'event_invitation';
     protected $primaryKey = 'id';
+
+    
     protected $fillable=[
-        'purok',
-        'baranggay'
+        'event_id',
+        'province_id',
     ];
 
 
@@ -21,8 +22,9 @@ class BaranggayModel extends Model
 
     ];
 
-    public function fam_profile(){
-        return $this->hasOne(FamilyProfileModel::class,'brgy_id');
+    public function event()
+    {
+        return $this->belongsTo(EventModel::class, 'event_id');
     }
 
 

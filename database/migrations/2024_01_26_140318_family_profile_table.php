@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('family_profile', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('brgy_id')->nullable(true);
             $table->string('household_no');
-            $table->integer('no_household_member');
+            $table->string('father')->default('');
+            $table->string('mother')->default('');
             $table->string('contact_number');
-            $table->string('housthould_head');
             $table->string('occupation');
             $table->string('educ_attain');
             $table->string('food_prod_act');
+            
             $table->string('toilet_type');
             $table->string('water_source');
             $table->boolean('using_iodized_salt');
@@ -27,7 +29,12 @@ return new class extends Migration
             $table->boolean('familty_planning');
             $table->boolean('mother_pregnant');
             $table->timestamps();
-        });
+
+            $table->foreign('brgy_id')
+                ->references('id')
+                ->on('baranggay')
+                ->onDelete('set null');
+            });
     }
 
     /**

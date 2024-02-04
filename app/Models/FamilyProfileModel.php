@@ -13,7 +13,10 @@ class FamilyProfileModel extends Model
     protected $primaryKey = 'id';
 
     protected $fillable=[
+        'brgy_id',
         'contact_number',
+        'mother',
+        'father',
         'household_no',
         'no_household_member',
         'housthould_head',
@@ -33,8 +36,12 @@ class FamilyProfileModel extends Model
 
     ];
 
-    public function fam_pro_address(){
-        return $this->hasOne(FamilyProfileAdressModel::class,'FP_id');
+    public function brgys(){
+        return $this->belongsTo(BaranggayModel::class,'brgy_id');
+    }
+
+    public function FP_members(){
+        return $this->hasMany(FamilyProfileMemberModel::class, 'FP_id');
     }
 
 

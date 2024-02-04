@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Personnel;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Personnel\FamiltyProfileChildRequest;
-use App\Http\Resources\FamilyProfileChildResource;
-use App\Models\FamilyProfileChildModel;
+use App\Models\FamilyProfileMemberModel;
+use App\Http\Requests\Personnel\FamiltyProfileMemberRequest;
+use App\Http\Resources\FamilyProfileMembersResource;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 
-class FamilyProfileChildController extends Controller
+class FamilyProfileMemberController extends Controller
 {
     use HttpResponses;
     /**
@@ -30,15 +30,17 @@ class FamilyProfileChildController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(FamiltyProfileChildRequest $familty_prof_child)
+    public function store(FamiltyProfileMemberRequest $family_prof_child)
     {
-        $familty_prof_child->validated($familty_prof_child->all());
-
-        FamilyProfileChildModel::create([
-            'FP_id'=>$familty_prof_child->FP_id,
-            'name'=>$familty_prof_child->name,
-            'birthDay'=>$familty_prof_child->birthDay,
-            'nursing_type'=>$familty_prof_child->nursing_type
+        $family_prof_child->validated($family_prof_child->all());
+        FamilyProfileMemberModel::create([
+            'FP_id'=>$family_prof_child->FP_id,
+            'name'=>$family_prof_child->name,
+            'birthDay'=>$family_prof_child->birthDay,
+            'gender'=>$family_prof_child->gender,
+            'occupation'=>$family_prof_child->occupation,
+            'relationship'=>$family_prof_child->relationship,
+            'nursing_type'=>$family_prof_child->nursing_type
         ]);
         return $this->success('','Successfully added!',201);
     }
@@ -48,8 +50,10 @@ class FamilyProfileChildController extends Controller
      */
     public function show(string $FP_id)
     {
-        return FamilyProfileChildResource::collection(FamilyProfileChildModel::where('FP_id',$FP_id)
-        ->get()); 
+        $fam_member =  FamilyProfileMemberModel::where('FP_id',$FP_id)
+        ->get(); 
+        return FamilyProfileMembersResource::collection($fam_member);
+        
     }
 
     /**
@@ -73,7 +77,7 @@ class FamilyProfileChildController extends Controller
      */
     public function destroy(string $FPCid)
     {
-        $FP = FamilyProfileChildModel::find($FPCid);
+        $FP = FamilyProfileMemberModel::find($FPCid);
         if(!$FP){
             return $this->error('','Profile family not found',404);
         }

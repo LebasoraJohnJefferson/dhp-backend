@@ -5,16 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProvinceModel extends Model
+class fileModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'province';
+    protected $table = 'file';
+    protected $primaryKey = 'id';
 
     protected $fillable=[
-        'id',
-        'user_id',
-        'province',
+        'file_name',
+        'name',
+        'is_deleted',
+        'user_id'
     ];
 
 
@@ -25,11 +27,5 @@ class ProvinceModel extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
-
-    public function cities()
-    {
-        return $this->hasMany(CityModel::class, 'province_id');
-    }
-
 
 }

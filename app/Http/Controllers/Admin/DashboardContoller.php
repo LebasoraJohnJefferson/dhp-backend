@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\BaranggayModel;
 use App\Models\EventModel;
+use App\Models\fileModel;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardContoller extends Controller
 {
@@ -29,12 +31,16 @@ class DashboardContoller extends Controller
 
         $baranggay_count = BaranggayModel::count();
         
+        $document_count = Auth::user()->roles == 'admin' ? fileModel::where('is_deleted',false)->count() : fileModel::where('user_id',Auth::user()->id)
+        ->where('is_deleted',false)
+        ->count();
 
         return $this->success([
             'active_count'=>$active_count,
             'inactive_count'=>$inactive_count,
             'event_count'=>$event_count,
-            'baranggay_count'=>$baranggay_count
+            'baranggay_count'=>$baranggay_count,
+            'document_count'=>$document_count
         ],'',200);
     }
 

@@ -4,7 +4,7 @@ namespace App\Http\Requests\Personnel;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CityRequest extends FormRequest
+class FamiltyProfileMemberRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,12 @@ class CityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'city'=>['required','string'],
-            'province_id' => ['required','integer'],
+            'name'=>['required','string'],
+            'birthDay'=>['required','date'],
+            'nursing_type'=>['string','nullable'],
+            'relationship'=>['string'],
+            'occupation'=>['string'],
+            'gender'=>['string'],
         ];
     }
 }

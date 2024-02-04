@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Personnel;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Personnel\FamiltyProfileRequest;
 use App\Http\Resources\FamilyProfileResource;
-use App\Models\FamilyProfileAdressModel;
 use App\Models\FamilyProfileModel;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
@@ -18,7 +17,8 @@ class FamiltyProfileController extends Controller
      */
     public function index()
     {
-        return FamilyProfileResource::collection(FamilyProfileModel::all()); 
+        $fam = FamilyProfileModel::latest()->get();
+        return FamilyProfileResource::collection($fam); 
     }
 
     /**
@@ -35,12 +35,12 @@ class FamiltyProfileController extends Controller
     public function store(FamiltyProfileRequest $familty_profile)
     {
         $familty_profile->validated($familty_profile->all());
-
         $FP = FamilyProfileModel::create([
+            'brgy_id'=>$familty_profile->brgy_id,
             'contact_number'=>$familty_profile->contact_number,
             'household_no'=>$familty_profile->household_no,
-            'no_household_member'=>$familty_profile->no_household_member,
-            'housthould_head'=>$familty_profile->housthould_head,
+            'father'=>$familty_profile->father,
+            'mother'=>$familty_profile->mother,
             'occupation'=>$familty_profile->occupation,
             'educ_attain'=>$familty_profile->educ_attain,
             'food_prod_act'=>$familty_profile->food_prod_act,
@@ -52,10 +52,6 @@ class FamiltyProfileController extends Controller
             'mother_pregnant'=>$familty_profile->mother_pregnant,
         ]);
         
-        FamilyProfileAdressModel::create([
-            'bray_id'=>$familty_profile->brgy_id,
-            'FP_id'=>$FP->id
-        ]);
         return $this->success('','Successfully added!',201);
 
     }
@@ -63,18 +59,13 @@ class FamiltyProfileController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $FPid)
+    public function show(string $id)
     {
-        $FP_details = FamilyProfileAdressModel::where('FP_id',$FPid)->first();
-        if(!$FP_details){
-            return $this->error('', 'Event not found', 404);
+        $family_profile = FamilyProfileModel::find($id);
+        if(!$family_profile){
+            return $this->error('','Profile not found',404);
         }
-        return $this->success([
-            'profile_familty'=>$FP_details->profile_families,
-            'address'=>$FP_details->brgys->city->province->province .", " . 
-                        $FP_details->brgys->city->city . " ".
-                        $FP_details->brgys->baranggay
-        ],'Request granted',200);
+        return new FamilyProfileResource($family_profile);
     }
 
     /**
@@ -102,6 +93,7 @@ class FamiltyProfileController extends Controller
         if(!$FP){
             return $this->error('','Profile family not found',404);
         }
+        
         $FP->delete();
         return $this->success('', 'Successfully deleted', 204);
     }

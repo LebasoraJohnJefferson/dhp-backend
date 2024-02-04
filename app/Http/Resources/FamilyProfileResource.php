@@ -14,13 +14,19 @@ class FamilyProfileResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        
+        $count = 0;
+        if($this->father) $count+=1;
+        if($this->mother) $count+=1;
         return [
         'id'=>$this->id,
         'attributes'=>[
-            'contact_number'=>$this->contact_number,
+            'baranggay'=>$this->brgy_id ?  $this->brgys->baranggay.', '. $this->brgys->purok : 'N/A',
+            'no_household_member'=>$this->FP_members->count() + $count,
             'household_no'=>$this->household_no,
-            'no_household_member'=>$this->no_household_member,
-            'housthould_head'=>$this->housthould_head,
+            'contact_number'=>$this->contact_number,
+            'father'=>$this->father,
+            'mother'=>$this->mother,
             'occupation'=>$this->occupation,
             'educ_attain'=>$this->educ_attain,
             'food_prod_act'=>$this->food_prod_act,

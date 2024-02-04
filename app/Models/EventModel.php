@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class EventModel extends Model
 {
     use HasFactory;
-
+    protected $primaryKey = 'id';
 
     protected $fillable=[
         'image',

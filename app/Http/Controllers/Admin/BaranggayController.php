@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Personnel;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Personnel\CityRequest;
-use App\Http\Resources\CityResource;
-use App\Models\CityModel;
+use App\Http\Requests\Personnel\BaranggayRequest;
+use App\Models\BaranggayModel;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class CityController extends Controller
+class BaranggayController extends Controller
 {
     use HttpResponses;
     /**
@@ -18,7 +17,11 @@ class CityController extends Controller
      */
     public function index()
     {
-        return CityResource::collection(CityModel::all()); 
+        
+        $baranggay =  BaranggayModel::get();
+        return $this->success([
+            'baranggay' => $baranggay,
+        ],'',200);
     }
 
     /**
@@ -26,18 +29,20 @@ class CityController extends Controller
      */
     public function create()
     {
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CityRequest $city)
+    public function store(BaranggayRequest $brgy)
     {
-        $city->validated($city->all());
-        CityModel::create([
-            'user_id'=>Auth::user()->id,
-            'city'=>$city->city,
-            'province_id'=>$city->province_id
+        $brgy->validated($brgy->all());
+        
+        BaranggayModel::create([
+            'brgy_id'=>$brgy->id,
+            'purok'=>$brgy->purok,
+            'baranggay'=>$brgy->baranggay,
         ]);
 
         return $this->success('','Successfully added!',201);
@@ -46,12 +51,9 @@ class CityController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $request)
+    public function show(string $id)
     {
-       
-        $cities = CityModel::where('province_id', $request)->get();
-
-        return CityResource::collection($cities);
+      
     }
 
     /**
@@ -73,9 +75,15 @@ class CityController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CityModel $city)
-    {
-        $city->delete();
-        return $this->success('', 'Personnel successfully deleted', 204);
+    public function destroy(string $brgy)
+    {   
+        $brgy = BaranggayModel::find($brgy);
+        
+        
+        if(!$brgy){
+            return $this->error('','Baranggay not found',404);
+        }
+        $brgy->delete();
+        return $this->success('', 'Successfully deleted', 204);
     }
 }
