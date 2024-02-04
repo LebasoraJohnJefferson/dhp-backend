@@ -28,7 +28,7 @@ class UsersTableSeeder extends Seeder
             'first_name' => 'Christian',
             'middle_name' => 'Rosaroso',
             'last_name' => 'Paranas',
-            'email' => 'christianparans1@gmail.com',
+            'email' => 'christianparanas1@gmail.com',
             'password' => Hash::make('admin123'),
             'roles' => 'admin',
             'is_active' => true,

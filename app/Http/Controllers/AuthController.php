@@ -25,13 +25,11 @@ class AuthController extends Controller
     public function login(LoginUserRequest $request){
         $credentails = $request->validated();
 
-
-
-        $user = User::where('email',$request->email)
+        $user = User::where('email', $request->email)
             ->first();
 
         if(!Auth::attempt($credentails) || $user && $user->is_deleted){
-            return $this->error('','Account does not exist!', 404);
+            return $this->error('','Invalid Email or Password', 401);
         }
 
         if($user && !$user->is_active){
@@ -87,14 +85,15 @@ class AuthController extends Controller
 
         return $status === Password::RESET_LINK_SENT
             ? $status
-            : $status;
+            : "The email you entered isn't registered to the system";
     }
 
-    public function resetpassword(Request $request, $token)
+    public function resetpassword(Request $request)
     {
+
         $request->validate([
+            'email' => 'email|required',
             'token' => 'required',
-            'email' => 'required|email',
             'password' => 'required|min:8|confirmed',
         ]);
 
@@ -112,8 +111,8 @@ class AuthController extends Controller
         );
 
         return $status === Password::PASSWORD_RESET
-                    ? redirect()->route('login')->with('status', __($status))
-                    : back()->withErrors(['email' => [__($status)]]);
+            ? response()->json($status)
+            : response()->json($status);
     }
 
 }

@@ -57,9 +57,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/profileFamiltyAnalytics',[AnalyticsFamiltyProfileController::class,'FPAnalyic'],);
         Route::get('get_all_invited_province/{event_id}',[EventInvatationController::class,'invited_province']);
         Route::resource('/file',FileController::class);
-        
+
         Route::resource('/baranggay',BaranggayController::class)->only(['destroy','store','index','show']);
-        Route::resource('/logs',LogsController::class)->only(['index','show']); 
+        Route::resource('/logs',LogsController::class)->only(['index','show']);
         Route::resource('/profile', AdminController::class);
         Route::resource('/event',EventController::class);
         Route::resource('/recover_personnel',RecoverPersonnelContoller::class);
@@ -67,7 +67,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::resource('/dashboard',DashboardContoller::class);
         Route::resource('/event_invitation',EventInvatationController::class);
         Route::resource('/personnel/importExcel',ImportPersonnelContoller::class)
-            ->only(['store']);   
+            ->only(['store']);
     });
 
     // Personnel routes and middleware where roles is being check if personnel
