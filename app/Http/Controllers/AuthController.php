@@ -17,6 +17,7 @@ use App\Http\Requests\Core\ResetPasswordRequest;
 use App\Models\LogModel;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Auth\Events\PasswordReset;
 
 class AuthController extends Controller
 {
@@ -24,13 +25,11 @@ class AuthController extends Controller
     public function login(LoginUserRequest $request){
         $credentails = $request->validated();
 
-
-
-        $user = User::where('email',$request->email)
+        $user = User::where('email', $request->email)
             ->first();
 
         if(!Auth::attempt($credentails) || $user && $user->is_deleted){
-            return $this->error('','Account does not exist!', 404);
+            return $this->error('','Invalid Email or Password', 401);
         }
 
         if($user && !$user->is_active){
@@ -86,28 +85,34 @@ class AuthController extends Controller
 
         return $status === Password::RESET_LINK_SENT
             ? $status
-            : $status;
+            : "The email you entered isn't registered to the system";
     }
 
-
-
-
-    public function resetPassword(ResetPasswordRequest $request, $token)
+    public function resetpassword(Request $request)
     {
-        $user = User::where('reset_password_token', $token)->first();
 
-        if (!$user) {
-            return $this->error('', 'Invalid token', 404);
-        }
-
-        $user->update([
-            'password' => Hash::make($request->password),
-            'reset_password_token' => null,
+        $request->validate([
+            'email' => 'email|required',
+            'token' => 'required',
+            'password' => 'required|min:8|confirmed',
         ]);
 
-        return $this->success([
-            'message' => 'Password reset successfully',
-        ]);
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+
+                event(new PasswordReset($user));
+            }
+        );
+
+        return $status === Password::PASSWORD_RESET
+            ? response()->json($status)
+            : response()->json($status);
     }
 
 }
