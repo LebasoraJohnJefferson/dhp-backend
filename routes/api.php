@@ -14,9 +14,7 @@ use App\Http\Controllers\Admin\RecoverPersonnelContoller;
 use App\Http\Controllers\Admin\AnalyticsFamiltyProfileController;
 use App\Http\Controllers\Admin\EventInvatationController;
 use App\Http\Controllers\Admin\BaranggayController;
-
-
-
+use App\Http\Controllers\InfantController;
 use App\Http\Controllers\Personnel\UserController;
 use App\Http\Controllers\Personnel\FamilyProfileMemberController;
 use App\Http\Controllers\Personnel\FamiltyProfileController;
@@ -49,8 +47,10 @@ Route::post('/resetpassword',[AuthController::class, 'resetpassword']);
 Route::get('/file/download/{fileName}',[FileController::class,'download']);
 //check credentials middleware
 Route::middleware('auth:sanctum')->group(function () {
-    Route::resource('/recover_files',RecoverFilesController::class);
 
+
+    Route::resource('/infant',InfantController::class);
+    Route::resource('/recover_files',RecoverFilesController::class);
     // Admin routes and middleware where roles is being check if admin
     Route::prefix('/admin')->middleware(AdminMiddleware::class)->group(function () {
         Route::patch('/personnel/status',[PersonnelController::class,'change_personnel_status']);
