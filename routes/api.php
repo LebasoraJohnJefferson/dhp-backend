@@ -54,7 +54,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Admin routes and middleware where roles is being check if admin
     Route::prefix('/admin')->middleware(AdminMiddleware::class)->group(function () {
         Route::patch('/personnel/status',[PersonnelController::class,'change_personnel_status']);
-        Route::get('/profileFamiltyAnalytics',[AnalyticsFamiltyProfileController::class,'FPAnalyic'],);
+        Route::get('/profileFamiltyAnalytics',[AnalyticsFamiltyProfileController::class,'FPAnalyic']);
+        Route::get('/profileInfantAnlytics',[AnalyticsFamiltyProfileController::class,'InfantAnalyic']);
         Route::get('get_all_invited_province/{event_id}',[EventInvatationController::class,'invited_province']);
         Route::resource('/file',FileController::class);
 

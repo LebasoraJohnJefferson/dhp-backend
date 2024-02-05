@@ -6,16 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Models\BaranggayModel;
 use App\Models\FamilyProfileMemberModel;
 use App\Models\FamilyProfileModel;
-use App\Models\ProvinceModel;
+use App\Models\InfantModel;
 use App\Traits\HttpResponses;
+use App\Traits\WeightStatus;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 
-use function Laravel\Prompts\error;
 
 class AnalyticsFamiltyProfileController extends Controller
 {
     use HttpResponses;
+    use WeightStatus;
     public function FPAnalyic(){
         $count_pregnant = FamilyProfileModel::where('mother_pregnant',true)->count();
         $count_prac_fam_plan = FamilyProfileModel::where('familty_planning',true)->count();
@@ -105,8 +105,6 @@ class AnalyticsFamiltyProfileController extends Controller
         }
 
 
-
-
         
 
         return $this->success([
@@ -125,4 +123,53 @@ class AnalyticsFamiltyProfileController extends Controller
 
 
     }
+
+
+
+    public function InfantAnalyic(){
+        $startDate = Carbon::now()->subMonths(23);
+
+        $infantInfo = InfantModel::whereHas('FPM', function ($query) use ($startDate) {
+            $query->where('birthDay', '>=', $startDate);
+        })
+        ->latest()
+        ->get();
+        $label = [0,0,0,0,0,
+                  0,0,0,0,0,
+                  0,0,0,0,0,
+                  0,0,0,0,0,
+                  0,0,0,0
+        ];
+
+        
+        $data = [
+            'severelyUnderweight'=>$label,
+            'underWeight'=>$label,
+            'normalWeight'=>$label,
+            'overWeight'=>$label,
+        ];
+
+
+
+        foreach($infantInfo as $info){
+            $birthDate = Carbon::parse($info->FPM->birthDay);
+            $createdAt = Carbon::parse($info->created_at);
+            $ageInMonths = $birthDate->diffInMonths($createdAt);
+            $weight = $info->weight;
+            $status = $this->weightStatus($ageInMonths,$weight);
+            $ageInMonthsAsString = $ageInMonths;
+            $statusAsString = (string) $status;
+            $data[$statusAsString][$ageInMonthsAsString]+=1;
+        }
+
+
+        return $this->success([
+            array_values($data['severelyUnderweight']),
+            array_values($data['underWeight']),
+            array_values($data['normalWeight']),
+            array_values($data['overWeight'])
+        ]);
+    }
+
+
 }

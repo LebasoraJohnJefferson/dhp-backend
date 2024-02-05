@@ -83,6 +83,8 @@ class AuthController extends Controller
             $request->only('email')
         );
 
+        error_log($status);
+
         return $status === Password::RESET_LINK_SENT
             ? $status
             : "The email you entered isn't registered to the system";
