@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\LogsController;
+
+
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\DashboardContoller;
 use App\Http\Controllers\Admin\EventController;
@@ -8,18 +13,13 @@ use App\Http\Controllers\Admin\PersonnelController;
 use App\Http\Controllers\Admin\RecoverPersonnelContoller;
 use App\Http\Controllers\Admin\AnalyticsFamiltyProfileController;
 use App\Http\Controllers\Admin\EventInvatationController;
-use App\Http\Controllers\Personnel\ProvinceController;
+use App\Http\Controllers\Admin\BaranggayController;
+use App\Http\Controllers\InfantController;
 use App\Http\Controllers\Personnel\UserController;
-use App\Http\Controllers\Personnel\FamilyProfileChildController;
-
+use App\Http\Controllers\Personnel\FamilyProfileMemberController;
+use App\Http\Controllers\Personnel\FamiltyProfileController;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\FileController;
-use App\Http\Controllers\LogsController;
-use App\Http\Controllers\Personnel\FamiltyProfileController;
-use App\Http\Controllers\Personnel\BaranggayController;
-use App\Http\Controllers\Personnel\CityController;
 use App\Http\Controllers\RecoverFilesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AdminMiddleware;
@@ -41,22 +41,26 @@ use App\Http\Middleware\PersonnelMiddleware;
 Route::post('/login',[AuthController::class,'login']);
 Route::post('/forgotpassword',[AuthController::class, 'forgotpassword']);
 Route::post('/resetpassword',[AuthController::class, 'resetpassword']);
-Route::get('/file/download/{fileName}',[FileController::class,'download']);
 
 // Route::post('/register',[AuthController::class,'register']);
 
+Route::get('/file/download/{fileName}',[FileController::class,'download']);
 //check credentials middleware
 Route::middleware('auth:sanctum')->group(function () {
-    Route::resource('/recover_files',RecoverFilesController::class);
 
+
+    Route::resource('/infant',InfantController::class);
+    Route::resource('/recover_files',RecoverFilesController::class);
     // Admin routes and middleware where roles is being check if admin
     Route::prefix('/admin')->middleware(AdminMiddleware::class)->group(function () {
         Route::patch('/personnel/status',[PersonnelController::class,'change_personnel_status']);
-        Route::get('/profileFamiltyAnalytics',[AnalyticsFamiltyProfileController::class,'FPAnalyic'],);
+        Route::get('/profileFamiltyAnalytics',[AnalyticsFamiltyProfileController::class,'FPAnalyic']);
+        Route::get('/profileInfantAnlytics',[AnalyticsFamiltyProfileController::class,'InfantAnalyic']);
         Route::get('get_all_invited_province/{event_id}',[EventInvatationController::class,'invited_province']);
         Route::resource('/file',FileController::class);
 
-        Route::resource('/logs',LogsController::class)->only(['index','show']); 
+        Route::resource('/baranggay',BaranggayController::class)->only(['destroy','store','index','show']);
+        Route::resource('/logs',LogsController::class)->only(['index','show']);
         Route::resource('/profile', AdminController::class);
         Route::resource('/event',EventController::class);
         Route::resource('/recover_personnel',RecoverPersonnelContoller::class);
@@ -64,16 +68,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::resource('/dashboard',DashboardContoller::class);
         Route::resource('/event_invitation',EventInvatationController::class);
         Route::resource('/personnel/importExcel',ImportPersonnelContoller::class)
-            ->only(['store']);   
+            ->only(['store']);
     });
 
     // Personnel routes and middleware where roles is being check if personnel
     Route::prefix('/personnel')->middleware(PersonnelMiddleware::class)->group(function () {
-        Route::resource('/province',ProvinceController::class)->only(['destroy','store','index','show']);
-        Route::resource('/city',CityController::class)->only(['destroy','store','index','show']);
-        Route::resource('/baranggay',BaranggayController::class)->only(['destroy','store','index','show']);
         Route::resource('/famityProfile',FamiltyProfileController::class)->only(['destroy','store','index','show']);
-        Route::resource('/famityProfileChild',FamilyProfileChildController::class)->only(['destroy','store','index','show']);
+        Route::resource('/baranggay',BaranggayController::class)->only(['destroy','store','index','show']);
+        Route::resource('/famityProfileMembers',FamilyProfileMemberController::class)->only(['destroy','store','index','show']);
         Route::resource('/', UserController::class)->only(['index'])->only(['index']);
         Route::resource('/dashboard',DashboardContoller::class)->only(['index']);
         Route::resource('/event',EventController::class)->only(['index']);
