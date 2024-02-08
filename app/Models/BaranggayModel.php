@@ -12,6 +12,8 @@ class BaranggayModel extends Model
     protected $table = 'baranggay';
     protected $primaryKey = 'id';
     protected $fillable=[
+        'city',
+        'province',
         'purok',
         'baranggay'
     ];

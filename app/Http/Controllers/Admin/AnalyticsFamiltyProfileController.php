@@ -8,14 +8,14 @@ use App\Models\FamilyProfileMemberModel;
 use App\Models\FamilyProfileModel;
 use App\Models\InfantModel;
 use App\Traits\HttpResponses;
-use App\Traits\WeightStatus;
 use Carbon\Carbon;
+use Throwable;
 
+use function App\Providers\weightStatus;
 
 class AnalyticsFamiltyProfileController extends Controller
 {
     use HttpResponses;
-    use WeightStatus;
     public function FPAnalyic(){
         $count_pregnant = FamilyProfileModel::where('mother_pregnant',true)->count();
         $count_prac_fam_plan = FamilyProfileModel::where('familty_planning',true)->count();
@@ -30,8 +30,17 @@ class AnalyticsFamiltyProfileController extends Controller
             ->get()
             ->count();
             $count = 0;
-            if($baranggay->fam_profile->father) $count+=1;
-            if($baranggay->fam_profile->mother) $count+=1;
+            if($baranggay->fam_profile) {
+                if($baranggay->fam_profile->father){
+                    $count += 1;
+                }
+            }
+            
+            if($baranggay->fam_profile) {
+                if($baranggay->fam_profile->mother){
+                    $count += 1;
+                }
+            }
             $baranggays[] = $baranggay->baranggay;
             $population[]=$householdMemberCount+$count;
         }
@@ -41,7 +50,10 @@ class AnalyticsFamiltyProfileController extends Controller
         $using_IFR = FamilyProfileModel::where('using_IFR',true)->count();
         $not_using_IFR = FamilyProfileModel::where('using_IFR',false)->count();
 
-        $no_children = FamilyProfileMemberModel::all();
+        $no_children = FamilyProfileMemberModel::where(function ($query) {
+            $query->where('relationship', 'son')
+                  ->orWhere('relationship', 'daughter');
+        })->get();
         $category_age = [0,0,0,0];
         $data_nursing_type = [
             'EBF'=>0,
@@ -156,7 +168,7 @@ class AnalyticsFamiltyProfileController extends Controller
             $createdAt = Carbon::parse($info->created_at);
             $ageInMonths = $birthDate->diffInMonths($createdAt);
             $weight = $info->weight;
-            $status = $this->weightStatus($ageInMonths,$weight);
+            $status = weightStatus($ageInMonths,$weight);
             $ageInMonthsAsString = $ageInMonths;
             $statusAsString = (string) $status;
             $data[$statusAsString][$ageInMonthsAsString]+=1;

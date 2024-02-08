@@ -40,7 +40,8 @@ class BaranggayController extends Controller
         $brgy->validated($brgy->all());
         
         BaranggayModel::create([
-            'brgy_id'=>$brgy->id,
+            'city'=>$brgy->city,
+            'province'=>$brgy->province,
             'purok'=>$brgy->purok,
             'baranggay'=>$brgy->baranggay,
         ]);

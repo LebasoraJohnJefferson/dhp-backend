@@ -6,14 +6,14 @@ use App\Http\Requests\InfantRequest;
 use App\Models\FamilyProfileMemberModel;
 use App\Models\InfantModel;
 use App\Traits\HttpResponses;
-use App\Traits\WeightStatus;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+
+use function App\Providers\weightStatus;
 
 class InfantController extends Controller
 {
     use HttpResponses;
-    use WeightStatus;
     /**
      * Display a listing of the resource.
      */
@@ -70,7 +70,7 @@ class InfantController extends Controller
             $now = Carbon::now();
             $ageInMonths = $birthDate->diffInMonths($now);
             $weight = $info->weight;
-            $status = $this->weightStatus($ageInMonths,$weight);
+            $status = weightStatus($ageInMonths,$weight);
             $data = [
                 'info'=>$info,
                 'status'=>$status,
