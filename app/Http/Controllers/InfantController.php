@@ -22,7 +22,7 @@ class InfantController extends Controller
         $infants = FamilyProfileMemberModel::where(function($query) {
         $query->whereRaw('DATEDIFF(CURDATE(), birthDay) >= 0'); 
         $query->whereRaw('DATEDIFF(CURDATE(), birthDay) <= 23 * 30'); 
-        })->get();
+        })->latest()->get();
         return $this->success(
             $infants
         );

@@ -31,16 +31,19 @@ class AnalyticsFamiltyProfileController extends Controller
             ->count();
             $count = 0;
             if($baranggay->fam_profile) {
-                if($baranggay->fam_profile->father){
-                    $count += 1;
+                foreach($baranggay->fam_profile as $fam){
+                    if($fam->father){
+                        $count += 1;
+                    }
+                    if($fam->mother){
+                        $count += 1;
+                    }
                 }
+                error_log(json_encode($baranggay->fam_profile));
+            
             }
             
-            if($baranggay->fam_profile) {
-                if($baranggay->fam_profile->mother){
-                    $count += 1;
-                }
-            }
+            
             $baranggays[] = $baranggay->baranggay;
             $population[]=$householdMemberCount+$count;
         }

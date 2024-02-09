@@ -24,7 +24,7 @@ class BaranggayModel extends Model
     ];
 
     public function fam_profile(){
-        return $this->hasOne(FamilyProfileModel::class,'brgy_id');
+        return $this->hasMany(FamilyProfileModel::class,'brgy_id');
     }
 
 
