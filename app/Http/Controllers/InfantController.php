@@ -9,7 +9,6 @@ use App\Traits\HttpResponses;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-use function App\Providers\weightStatus;
 
 class InfantController extends Controller
 {

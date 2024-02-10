@@ -9,9 +9,6 @@ use App\Models\FamilyProfileModel;
 use App\Models\InfantModel;
 use App\Traits\HttpResponses;
 use Carbon\Carbon;
-use Throwable;
-
-use function App\Providers\weightStatus;
 
 class AnalyticsFamiltyProfileController extends Controller
 {

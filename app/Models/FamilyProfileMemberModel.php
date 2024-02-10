@@ -30,5 +30,9 @@ class FamilyProfileMemberModel extends Model
         return $this->belongsTo(FamilyProfileModel::class,'FP_id');
     }
 
+    public function brgy_preschool(){
+        return $this->hasOne(BaranggayPreschoolRecordModel::class,'member_id');
+    }
+
 
 }

@@ -6,14 +6,11 @@ use App\Http\Requests\Core\LoginUserRequest;
 use App\Http\Requests\core\StoreUserRequest;
 use App\Models\User;
 use App\Traits\HttpResponses;
-use GrahamCampbell\ResultType\Success;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 
-use App\Http\Requests\Core\ForgotPasswordRequest;
-use App\Http\Requests\Core\ResetPasswordRequest;
 use App\Models\LogModel;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Password;

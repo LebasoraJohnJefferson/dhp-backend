@@ -1,12 +1,8 @@
 <?php
 
-
-namespace App\Traits;
-use Throwable;
-
-
-trait WeightStatus{
-    protected function weightStatus($age,$weight){
+if (!function_exists('weightStatus')) {
+    function weightStatus($age, $weight)
+    {
         $weightStatus = [
             "0"=>['severelyUnderweight'=>2.1,'underWeight'=>[2.2,2.4],'normalWeight'=>[2.5,4.4],'overWeight'=>4.5],
             "1"=>['severelyUnderweight'=>2.9,'underWeight'=>[3.0,3.3],'normalWeight'=>[3.4,5.8],'overWeight'=>5.9],

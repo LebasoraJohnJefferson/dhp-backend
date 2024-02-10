@@ -11,10 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('infantRecord', function (Blueprint $table) {
+        
+
+        Schema::create('brgyPreschool', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('member_id');
+            $table->string('address');
+            $table->string('indigenous_preschool_child');
             $table->float('weight', 8, 2);
+            $table->float('height', 8, 2);
             $table->foreign('member_id')
                 ->references('id')
                 ->on('family_profile_members')
@@ -28,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('infantRecord');
+        Schema::dropIfExists('brgyPreschool');
     }
 };

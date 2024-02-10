@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\EventInvitationModel;
-use App\Models\EventModel;
 use App\Models\FamilyProfileModel;
-use App\Models\ProvinceModel;
 use App\Traits\HttpResponses;
 use App\Traits\SmsSender;
 use Illuminate\Http\Request;

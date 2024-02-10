@@ -7,7 +7,6 @@ use App\Http\Requests\Personnel\BaranggayRequest;
 use App\Models\BaranggayModel;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class BaranggayController extends Controller
 {
