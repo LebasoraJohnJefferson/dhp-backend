@@ -14,7 +14,7 @@ class EventInvitationModel extends Model
     
     protected $fillable=[
         'event_id',
-        'province_id',
+        'brgy_id',
     ];
 
 
@@ -25,6 +25,11 @@ class EventInvitationModel extends Model
     public function event()
     {
         return $this->belongsTo(EventModel::class, 'event_id');
+    }
+
+
+    public function brgy(){
+        return $this->belongsTo(BaranggayModel::class,'brgy_id');
     }
 
 

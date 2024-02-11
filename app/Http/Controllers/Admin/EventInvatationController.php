@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\BaranggayModel;
 use App\Models\EventInvitationModel;
 use App\Models\FamilyProfileModel;
 use App\Traits\HttpResponses;
@@ -37,20 +38,20 @@ class EventInvatationController extends Controller
     {
         $validated_request = $request->validate([
             'event_id' => 'required|integer',
-            'province_id'=>'required|integer'
+            'brgy_id'=>'required|integer'
         ]);
 
 
         $already_exist = EventInvitationModel::where(
-            'province_id', $validated_request['province_id']
+            'brgy_id', $validated_request['brgy_id']
         )->where(
             'event_id', $validated_request['event_id']
         )->first();
-        
+
         if(!$already_exist){
             EventInvitationModel::create([
                 'event_id'=>$request->event_id,
-                'province_id'=>$request->province_id
+                'brgy_id'=>$request->brgy_id
             ]);
         }
         
@@ -63,7 +64,7 @@ class EventInvatationController extends Controller
         . ' What: ' . $event->event->description;
 
         foreach($contact_every_person as $person){
-            if ($person->fam_pro_address->brgys->city->province->id == $request->province_id){
+            if ($person->brgys->id == $request->province_id){
                 $contactNumber = $person->contact_number;
                 if (substr($contactNumber, 0, 2) === "09") {
                     $contactNumber = "+639" . substr($contactNumber, 2);
@@ -81,17 +82,17 @@ class EventInvatationController extends Controller
      */
     public function show(string $eventId)
     {   
-        // $eventId = (int)$eventId;
-        // $provinces = ProvinceModel::whereNotIn('id', function ($query) use ($eventId) {
-        //     $query->select('province_id')
-        //           ->from('event_invitation')
-        //           ->where('event_id', $eventId);
-        // })->get();
+        $eventId = (int)$eventId;
+        $provinces = BaranggayModel::whereNotIn('id', function ($query) use ($eventId) {
+            $query->select('brgy_id')
+                  ->from('event_invitation')
+                  ->where('event_id', $eventId);
+        })->get();
 
 
-        // return $this->success([
-        //     'provinces'=>$provinces
-        // ]);
+        return $this->success([
+            'provinces'=>$provinces
+        ]);
     }
 
     /**
@@ -121,13 +122,15 @@ class EventInvatationController extends Controller
 
 
     public function invited_province(string $event_id){
-        $invited_provinces = EventInvitationModel::with('province')
-            ->where('event_id', $event_id)->get();
-        if (!$invited_provinces) {
-            return $this->error('','No provinces invited',404);
+        $invited_provinces = EventInvitationModel::with('brgy')
+        ->where('event_id', $event_id)
+        ->latest()
+        ->get();
+
+        if ($invited_provinces->isEmpty()) {
+            return $this->success([]);
         }
-        return $this->success([
-            'provinces'=>$invited_provinces
-        ]);
+
+        return $this->success($invited_provinces);
     }
 }
