@@ -35,10 +35,10 @@ class FamiltyProfileController extends Controller
     public function store(FamiltyProfileRequest $familty_profile)
     {
         $familty_profile->validated($familty_profile->all());
+
         $FP = FamilyProfileModel::create([
             'brgy_id'=>$familty_profile->brgy_id,
             'contact_number'=>$familty_profile->contact_number,
-            'household_no'=>$familty_profile->household_no,
             'father'=>$familty_profile->father,
             'mother'=>$familty_profile->mother,
             'occupation'=>$familty_profile->occupation,

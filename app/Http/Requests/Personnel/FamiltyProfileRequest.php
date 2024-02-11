@@ -25,7 +25,6 @@ class FamiltyProfileRequest extends FormRequest
             return [
                 'brgy_id'=>['required','integer'],
                 'contact_number'=>['required','string'],
-                'household_no' => ['required','string'],
                 'mother' => ['required','string'],
                 'father' => ['required','string'],
                 'occupation' => ['required','string'],

@@ -14,7 +14,10 @@ class FamilyProfileResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        
+        $numericPart = str_pad($this->id, 6, '0', STR_PAD_LEFT);
+
+        // Format the AI key
+        $aiKey = 'BHN-' . $numericPart;   
         $count = 0;
         if($this->father) $count+=1;
         if($this->mother) $count+=1;
@@ -23,7 +26,7 @@ class FamilyProfileResource extends JsonResource
         'attributes'=>[
             'baranggay'=>$this->brgy_id ?  $this->brgys->baranggay.', '. $this->brgys->purok : 'N/A',
             'no_household_member'=>$this->FP_members->count() + $count,
-            'household_no'=>$this->household_no,
+            'household_no'=>$aiKey,
             'contact_number'=>$this->contact_number,
             'father'=>$this->father,
             'mother'=>$this->mother,
