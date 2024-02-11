@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\BaranggayModel;
+use App\Models\BaranggayPreschoolRecordModel;
 use App\Models\FamilyProfileMemberModel;
 use App\Models\FamilyProfileModel;
 use App\Models\InfantModel;
@@ -36,7 +37,6 @@ class AnalyticsFamiltyProfileController extends Controller
                         $count += 1;
                     }
                 }
-                error_log(json_encode($baranggay->fam_profile));
             
             }
             
@@ -181,6 +181,43 @@ class AnalyticsFamiltyProfileController extends Controller
             array_values($data['normalWeight']),
             array_values($data['overWeight'])
         ]);
+    }
+
+
+
+    public function BrgyPreschoolerAnalytic(string $year){
+
+        
+        $data = [
+            [0,0,0,0,0,0,0,0,0,0,0,0], //male
+            [0,0,0,0,0,0,0,0,0,0,0,0], //female
+            [0,0,0,0,0,0,0,0,0,0,0,0], //indigenous
+            [0,0,0,0,0,0,0,0,0,0,0,0], //total population
+        ];
+
+        $brgy_preschooler = BaranggayPreschoolRecordModel::whereYear('created_at', $year)->get();
+
+        foreach($brgy_preschooler as $pres){
+            $month = $pres->created_at->format('n'); 
+
+            //gender
+            $monthIndex = $month-1;
+            if($pres->fam_profile_member->gender == 'female'){
+                $data[1][$monthIndex]+=1;
+            }else{
+                $data[0][$monthIndex]+=1;
+            }
+
+            if($pres->indigenous_preschool_child){
+                $data[2][$monthIndex]+=1;
+            }
+
+            $data[3][$monthIndex]+=1;
+
+        }
+
+        return $this->success($data);
+
     }
 
 
