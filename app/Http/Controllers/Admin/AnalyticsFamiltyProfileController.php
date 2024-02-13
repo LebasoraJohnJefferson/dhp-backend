@@ -139,12 +139,12 @@ class AnalyticsFamiltyProfileController extends Controller
 
 
 
-    public function InfantAnalyic(){
+    public function InfantAnalyic(string $year){
         $startDate = Carbon::now()->subMonths(23);
 
         $infantInfo = InfantModel::whereHas('FPM', function ($query) use ($startDate) {
             $query->where('birthDay', '>=', $startDate);
-        })
+        })->whereYear('created_at', $year)
         ->latest()
         ->get();
         $label = [0,0,0,0,0,
