@@ -8,6 +8,7 @@ use App\Models\BaranggayPreschoolRecordModel;
 use App\Models\FamilyProfileMemberModel;
 use App\Models\FamilyProfileModel;
 use App\Models\InfantModel;
+use App\Models\PreschoolWithNutrionalStatusModel;
 use App\Traits\HttpResponses;
 use Carbon\Carbon;
 
@@ -215,6 +216,52 @@ class AnalyticsFamiltyProfileController extends Controller
             $data[3][$monthIndex]+=1;
 
         }
+
+        return $this->success($data);
+
+    }
+
+
+    public function PreschoolWithNutritionalStatus(string $year){
+
+        $data = [
+            [0,0,0,0,0,0,0,0,0,0,0,0], //male
+            [0,0,0,0,0,0,0,0,0,0,0,0], //female
+            [0,0,0,0,0,0,0,0,0,0,0,0], //Underweight
+            [0,0,0,0,0,0,0,0,0,0,0,0], //Normal Weight
+            [0,0,0,0,0,0,0,0,0,0,0,0], //Overweight
+            [0,0,0,0,0,0,0,0,0,0,0,0], //Obese
+        ];
+
+        $preschooler = PreschoolWithNutrionalStatusModel::whereYear('created_at', $year)->get();
+
+        foreach($preschooler as $pres){
+            $month = $pres->created_at->format('n'); 
+            $monthIndex = $month-1;
+
+
+            $birthDate = Carbon::parse($pres->FPM->birthDay);
+            $createdAt = Carbon::parse($pres->created_at);
+            $age_in_year = $birthDate->diffInYears($createdAt);
+            $sex = $pres->FPM->gender == 'male' ? 1 : 2;
+            $percentile = calculateBMIPercentile($pres->weight,$pres->height, $age_in_year, $sex);
+            $status = interpretNutritionalStatus($percentile);
+            if ($status == 'Underweight') {
+                $data[2][$monthIndex]+=1;
+            } elseif ($status == 'Normal Weight') {
+                $data[3][$monthIndex]+=1;
+            } elseif ($status == 'Overweight') {
+                $data[4][$monthIndex]+=1;
+            } else {
+                $data[5][$monthIndex]+=1;
+            }
+            if($pres->FPM->gender == 'female'){
+                $data[1][$monthIndex]+=1;
+            }else{
+                $data[0][$monthIndex]+=1;
+            }
+        }
+
 
         return $this->success($data);
 

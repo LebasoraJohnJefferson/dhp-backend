@@ -66,7 +66,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/personnel/status',[PersonnelController::class,'change_personnel_status']);
         Route::get('/profileFamiltyAnalytics',[AnalyticsFamiltyProfileController::class,'FPAnalyic']);
         Route::get('/profileInfantAnlytics',[AnalyticsFamiltyProfileController::class,'InfantAnalyic']);
+        Route::get('/PreschoolWithNutritionalStatusAnlytics/{year}', [AnalyticsFamiltyProfileController::class, 'PreschoolWithNutritionalStatus']);
+
         Route::get('/BrgyPreschoolerAnalytic/{year}',[AnalyticsFamiltyProfileController::class,'BrgyPreschoolerAnalytic']);
+
         Route::get('/get_all_invited_province/{event_id}',[EventInvatationController::class,'invited_province']);
 
         Route::resource('/logs',LogsController::class)->only(['index','show']);
