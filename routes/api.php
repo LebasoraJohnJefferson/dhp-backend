@@ -19,6 +19,7 @@ use App\Http\Controllers\Personnel\UserController;
 use App\Http\Controllers\Personnel\FamilyProfileMemberController;
 use App\Http\Controllers\Personnel\FamiltyProfileController;
 use App\Http\Controllers\PreschoolController;
+use App\Http\Controllers\PreschoolWithNutrionalStatus;
 use Illuminate\Http\Request;
 use App\Http\Controllers\RecoverFilesController;
 use Illuminate\Support\Facades\Route;
@@ -58,6 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('/baranggay',BaranggayController::class)->only(['destroy','store','index','show']);
     Route::resource('/dashboard',DashboardContoller::class)->only(['index','show']);
     Route::resource('/preschool',PreschoolController::class);
+    Route::resource('/preschoolWIthNutrionalStatus',PreschoolWithNutrionalStatus::class);
 
     // Admin routes and middleware where roles is being check if admin
     Route::prefix('/admin')->middleware(AdminMiddleware::class)->group(function () {

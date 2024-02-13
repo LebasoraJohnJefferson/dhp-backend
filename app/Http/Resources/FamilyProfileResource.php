@@ -15,9 +15,9 @@ class FamilyProfileResource extends JsonResource
     public function toArray(Request $request): array
     {
         $numericPart = str_pad($this->id, 6, '0', STR_PAD_LEFT);
-
+        $year  = $this->created_at->format('Y');
         // Format the AI key
-        $aiKey = 'BHN-' . $numericPart;   
+        $aiKey = $year.'-' . $numericPart;   
         $count = 0;
         if($this->father) $count+=1;
         if($this->mother) $count+=1;

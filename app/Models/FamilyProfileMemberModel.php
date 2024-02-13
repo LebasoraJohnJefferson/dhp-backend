@@ -34,5 +34,9 @@ class FamilyProfileMemberModel extends Model
         return $this->hasOne(BaranggayPreschoolRecordModel::class,'member_id');
     }
 
+    public function preschool_with_status(){
+        return $this->hasOne(BaranggayPreschoolRecordModel::class,'member_id');
+    }
+
 
 }
