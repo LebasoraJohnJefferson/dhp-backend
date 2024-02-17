@@ -20,6 +20,7 @@ use App\Http\Controllers\Personnel\FamilyProfileMemberController;
 use App\Http\Controllers\Personnel\FamiltyProfileController;
 use App\Http\Controllers\PreschoolController;
 use App\Http\Controllers\PreschoolWithNutrionalStatus;
+use App\Http\Controllers\PreschoolAtRiskController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\RecoverFilesController;
 use Illuminate\Support\Facades\Route;
@@ -52,7 +53,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::resource('/infant',InfantController::class);
     Route::resource('/recover_files',RecoverFilesController::class);
-    
+
     Route::resource('/famityProfile',FamiltyProfileController::class)->only(['destroy','store','index','show']);
     Route::resource('/file',FileController::class);
     Route::resource('/famityProfileMembers',FamilyProfileMemberController::class)->only(['destroy','store','index','show']);
@@ -60,6 +61,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('/dashboard',DashboardContoller::class)->only(['index','show']);
     Route::resource('/preschool',PreschoolController::class);
     Route::resource('/preschoolWIthNutrionalStatus',PreschoolWithNutrionalStatus::class);
+    Route::resource('/preschoolAtRisk',PreschoolAtRiskController::class);
 
     // Admin routes and middleware where roles is being check if admin
     Route::prefix('/admin')->middleware(AdminMiddleware::class)->group(function () {

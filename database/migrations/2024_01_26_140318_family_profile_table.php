@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('occupation');
             $table->string('educ_attain');
             $table->string('food_prod_act');
-            
+
             $table->string('toilet_type');
             $table->string('water_source');
             $table->boolean('using_iodized_salt');
