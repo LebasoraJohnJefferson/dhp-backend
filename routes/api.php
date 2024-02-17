@@ -69,8 +69,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/profileFamiltyAnalytics',[AnalyticsFamiltyProfileController::class,'FPAnalyic']);
         Route::get('/profileInfantAnlytics/{year}',[AnalyticsFamiltyProfileController::class,'InfantAnalyic']);
         Route::get('/PreschoolWithNutritionalStatusAnlytics/{year}', [AnalyticsFamiltyProfileController::class, 'PreschoolWithNutritionalStatus']);
-
+        Route::get('/AtRiskAnalytics/{year}', [AnalyticsFamiltyProfileController::class, 'AtRiskAnalytics']);
         Route::get('/BrgyPreschoolerAnalytic/{year}',[AnalyticsFamiltyProfileController::class,'BrgyPreschoolerAnalytic']);
+
 
         Route::get('/get_all_invited_province/{event_id}',[EventInvatationController::class,'invited_province']);
 

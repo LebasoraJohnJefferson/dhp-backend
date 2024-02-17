@@ -8,6 +8,7 @@ use App\Models\BaranggayPreschoolRecordModel;
 use App\Models\FamilyProfileMemberModel;
 use App\Models\FamilyProfileModel;
 use App\Models\InfantModel;
+use App\Models\PreschoolAtRiskModel;
 use App\Models\PreschoolWithNutrionalStatusModel;
 use App\Traits\HttpResponses;
 use Carbon\Carbon;
@@ -18,7 +19,7 @@ class AnalyticsFamiltyProfileController extends Controller
     public function FPAnalyic(){
         $count_pregnant = FamilyProfileModel::where('mother_pregnant',true)->count();
         $count_prac_fam_plan = FamilyProfileModel::where('familty_planning',true)->count();
-        $brgys = BaranggayModel::get(); 
+        $brgys = BaranggayModel::get();
         $baranggays=['start'];
         $population= [0];
         foreach($brgys as $baranggay){
@@ -38,10 +39,10 @@ class AnalyticsFamiltyProfileController extends Controller
                         $count += 1;
                     }
                 }
-            
+
             }
-            
-            
+
+
             $baranggays[] = $baranggay->baranggay;
             $population[]=$householdMemberCount+$count;
         }
@@ -80,7 +81,7 @@ class AnalyticsFamiltyProfileController extends Controller
             $birthday = Carbon::parse($child->birthDay);
             $age = $birthday->diffInMonths(Carbon::now());
             $nursing_type = $child->nursing_type;
-            
+
             if ($age < 6) {
                 $category_age[0] += 1;
             } elseif ($age >= 6 && $age <= 23) {
@@ -91,7 +92,7 @@ class AnalyticsFamiltyProfileController extends Controller
                 $category_age[3] += 1;
             }
             if($nursing_type){
-                $data_nursing_type[$nursing_type]+=1;            
+                $data_nursing_type[$nursing_type]+=1;
             }
 
         }
@@ -102,7 +103,7 @@ class AnalyticsFamiltyProfileController extends Controller
             $toi = $fam->toilet_type;
             $water = $fam->water_source;
             $food = $fam->food_prod_act;
-            
+
             if($water){
                 $typeOfWater[$water]+=1;
             }
@@ -118,7 +119,7 @@ class AnalyticsFamiltyProfileController extends Controller
         }
 
 
-        
+
 
         return $this->success([
             'count_pregnant'=>$count_pregnant,
@@ -154,7 +155,7 @@ class AnalyticsFamiltyProfileController extends Controller
                   0,0,0,0
         ];
 
-        
+
         $data = [
             'severelyUnderweight'=>$label,
             'underWeight'=>$label,
@@ -188,7 +189,7 @@ class AnalyticsFamiltyProfileController extends Controller
 
     public function BrgyPreschoolerAnalytic(string $year){
 
-        
+
         $data = [
             [0,0,0,0,0,0,0,0,0,0,0,0], //male
             [0,0,0,0,0,0,0,0,0,0,0,0], //female
@@ -199,7 +200,7 @@ class AnalyticsFamiltyProfileController extends Controller
         $brgy_preschooler = BaranggayPreschoolRecordModel::whereYear('created_at', $year)->get();
 
         foreach($brgy_preschooler as $pres){
-            $month = $pres->created_at->format('n'); 
+            $month = $pres->created_at->format('n');
 
             //gender
             $monthIndex = $month-1;
@@ -236,7 +237,7 @@ class AnalyticsFamiltyProfileController extends Controller
         $preschooler = PreschoolWithNutrionalStatusModel::whereYear('created_at', $year)->get();
 
         foreach($preschooler as $pres){
-            $month = $pres->created_at->format('n'); 
+            $month = $pres->created_at->format('n');
             $monthIndex = $month-1;
 
 
@@ -265,6 +266,30 @@ class AnalyticsFamiltyProfileController extends Controller
 
         return $this->success($data);
 
+    }
+
+
+    public function AtRiskAnalytics(string $year){
+        $data = [
+            [0,0,0,0,0,0,0,0,0,0,0,0], //male
+            [0,0,0,0,0,0,0,0,0,0,0,0], //female
+        ];
+
+        $brgy_preschooler = PreschoolAtRiskModel::whereYear('created_at', $year)->get();
+
+        foreach($brgy_preschooler as $pres){
+            $month = $pres->created_at->format('n');
+
+            //gender
+            $monthIndex = $month-1;
+            if($pres->FPM->gender == 'female'){
+                $data[1][$monthIndex]+=1;
+            }else{
+                $data[0][$monthIndex]+=1;
+            }
+        }
+
+        return $this->success($data);
     }
 
 

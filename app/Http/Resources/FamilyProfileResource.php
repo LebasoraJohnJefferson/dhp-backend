@@ -17,14 +17,14 @@ class FamilyProfileResource extends JsonResource
         $numericPart = str_pad($this->id, 6, '0', STR_PAD_LEFT);
         $year  = $this->created_at->format('Y');
         // Format the AI key
-        $aiKey = $year.'-' . $numericPart;   
+        $aiKey = $year.'-' . $numericPart;
         $count = 0;
         if($this->father) $count+=1;
         if($this->mother) $count+=1;
         return [
         'id'=>$this->id,
         'attributes'=>[
-            'baranggay'=>$this->brgy_id ?  $this->brgys->baranggay.', '. $this->brgys->purok : 'N/A',
+            'baranggay'=>$this->brgy_id ?  $this->brgys->province.', '.$this->brgys->city.', '.$this->brgys->baranggay.', '. $this->brgys->purok : 'N/A',
             'no_household_member'=>$this->FP_members->count() + $count,
             'household_no'=>$aiKey,
             'contact_number'=>$this->contact_number,

@@ -81,6 +81,9 @@ class PreschoolAtRiskController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $is_risk_preschooler_exist = PreschoolAtRiskModel::find($id);
+        if(!$is_risk_preschooler_exist) return $this->error(null,'Infant record not found',404);
+        $is_risk_preschooler_exist->delete();
+        return $this->success(null,'Successfully deleted',204);
     }
 }
