@@ -21,6 +21,7 @@ use App\Http\Controllers\Personnel\FamiltyProfileController;
 use App\Http\Controllers\PreschoolController;
 use App\Http\Controllers\PreschoolWithNutrionalStatus;
 use App\Http\Controllers\PreschoolAtRiskController;
+use App\Http\Controllers\PupolationBracketController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\RecoverFilesController;
 use Illuminate\Support\Facades\Route;
@@ -66,6 +67,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Admin routes and middleware where roles is being check if admin
     Route::prefix('/admin')->middleware(AdminMiddleware::class)->group(function () {
         Route::patch('/personnel/status',[PersonnelController::class,'change_personnel_status']);
+        Route::get('/PopulationBracket',[PupolationBracketController::class,'PopulationBracket']);
         Route::get('/profileFamiltyAnalytics',[AnalyticsFamiltyProfileController::class,'FPAnalyic']);
         Route::get('/profileInfantAnlytics/{year}',[AnalyticsFamiltyProfileController::class,'InfantAnalyic']);
         Route::get('/PreschoolWithNutritionalStatusAnlytics/{year}', [AnalyticsFamiltyProfileController::class, 'PreschoolWithNutritionalStatus']);
