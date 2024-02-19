@@ -93,12 +93,12 @@ class BrgyAgeRange{
 
 
 class CityAgeRange{
-    public $city;
+    public $brgy;
     public $ageRange;
 
-    function __construct($city)
+    function __construct($brgy)
     {
-        $this->city = $city;
+        $this->brgy = $brgy;
         $this->ageRange =[
             ['male'=>0,'female'=>0,],
             ['male'=>0,'female'=>0,],
@@ -132,7 +132,7 @@ class CityAgeRange{
 
     function returnData(){
         return [
-            'city'=>$this->city,
+            'brgy'=>$this->brgy,
             'genderPopulation'=>$this->ageRange,
         ];
     }
