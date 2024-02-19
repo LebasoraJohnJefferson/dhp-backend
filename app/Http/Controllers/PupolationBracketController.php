@@ -123,8 +123,6 @@ class CityAgeRange{
 
     function addGenderCount($index,$gender){
         $this->ageRange[$index][$gender]+=1;
-        error_log('index :'.$index);
-        error_log(json_encode($this->ageRange[$index]));
     }
 
 
