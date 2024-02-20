@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Core\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\LogModel;
 use App\Models\User;
@@ -26,7 +27,7 @@ class PersonnelController extends Controller
         return UserResource::collection($users);
     }
 
- 
+
 
     /**
      * Store a newly created resource in storage.
@@ -49,7 +50,7 @@ class PersonnelController extends Controller
             'title'=>'Authentication',
             'description'=>'Account Created'
         ]);
-        
+
         return $this->success([
             'user'=>$user,
             'token'=> $user->createToken('API token of' . $user->name)->plainTextToken
@@ -65,7 +66,7 @@ class PersonnelController extends Controller
             ->where('id',$id)
             ->where('is_deleted',false)
             ->first();
-            
+
         if(!$user){
             return $this->error('','Personnel Not Found',404);
         }
@@ -82,10 +83,10 @@ class PersonnelController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(string $id,Request $request)
-    {   
+    public function update(string $id,UpdateUserRequest $request)
+    {
 
-        
+
         $user = User::find($id);
 
         if (!$user) {
@@ -100,7 +101,7 @@ class PersonnelController extends Controller
             return $this->error('','Email already taken!',409);
         }
 
-        
+
         $user->update($request->all());
         return $this->success('','Successfully updated',201);
     }

@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Personnel;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
+use App\Models\User;
+use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    use HttpResponses;
     /**
      * Display a listing of the resource.
      */
@@ -55,7 +59,7 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
     }
 
     /**
@@ -64,5 +68,24 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function BasicInfo(UpdateUserRequest $request){
+        $user = User::find(Auth::user()->id);
+        if (!$user) {
+            return $this->error('', 'User not found', 404);
+        }
+
+        $isEmailAlreadyExist = User::where('email', $request->email)
+                ->where('id', '!=', $user->id)
+                ->exists();
+
+        if($isEmailAlreadyExist){
+            return $this->error('','Email already taken!',409);
+        }
+
+
+        $user->update($request->all());
+        return $this->success('','Successfully updated',201);
     }
 }

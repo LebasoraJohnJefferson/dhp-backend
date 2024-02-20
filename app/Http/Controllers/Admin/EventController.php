@@ -21,7 +21,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        return EventResource::collection(EventModel::all());
+        $events = EventModel::all()->sortByDesc('created_at');
+        return EventResource::collection($events);
     }
 
     /**
@@ -32,7 +33,7 @@ class EventController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(EventRequest $event)
-    {   
+    {
         $image =null;
         $validatedData  = $event->validated();
         error_log($event->image);
@@ -48,7 +49,7 @@ class EventController extends Controller
             'venue'=>$event->venue,
             'created_at'=>$event->created_at
         ]);
-        
+
         return $this->success([
             "message"=>"Event created successfully!"
         ]);
@@ -65,7 +66,7 @@ class EventController extends Controller
         if (!$event) {
             return $this->error('', 'Event not found', 404);
         }
-    
+
         return new EventResource($event);
     }
 
@@ -74,7 +75,7 @@ class EventController extends Controller
      */
     public function edit(string $id)
     {
-        
+
     }
 
     /**
