@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        
+
 
         Schema::create('brgyPreschool', function (Blueprint $table) {
             $table->id();
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->foreign('member_id')
                 ->references('id')
                 ->on('family_profile_members')
-                ->onDelete('cascade');;
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

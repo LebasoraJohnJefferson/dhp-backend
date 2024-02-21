@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreign('member_id')
                 ->references('id')
                 ->on('family_profile_members')
-                ->onDelete('cascade');;
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('brgyPreschool');
+        Schema::dropIfExists('preschoolerWithNutritionalStatus');
     }
 };
