@@ -14,6 +14,12 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
+        $image=null;
+        if($this->moreInfo && $this->moreInfo->image){
+            $image=$this->moreInfo->image;
+        }
+
         return [
             'id'=>$this->id,
             'first_name'=>$this->first_name,
@@ -24,7 +30,7 @@ class UserResource extends JsonResource
             'updated_at'=>$this->updated_at,
             'created_at'=>$this->created_at,
             'more_info'=>$this->moreInfo,
-            'image'=>$this->moreInfo->image ? asset('storage/' . $this->moreInfo->image) : null
+            'image'=>$image ? asset('storage/' . $image) : null
         ];
     }
 }
