@@ -22,7 +22,9 @@ class UserResource extends JsonResource
             'email'=>$this->email,
             'is_active'=>$this->is_active,
             'updated_at'=>$this->updated_at,
-            'created_at'=>$this->created_at
+            'created_at'=>$this->created_at,
+            'more_info'=>$this->moreInfo,
+            'image'=>$this->moreInfo->image ? asset('storage/' . $this->moreInfo->image) : null
         ];
     }
 }

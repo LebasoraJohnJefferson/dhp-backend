@@ -89,6 +89,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Personnel routes and middleware where roles is being check if personnel
     Route::prefix('/personnel')->middleware(PersonnelMiddleware::class)->group(function () {
         Route::put('/basicInfo',[UserController::class,'BasicInfo']);
+        Route::put('/moreInfo',[UserController::class,'MoreInfo']);
         Route::resource('/personnelEvent',EventController::class)->only(['index']);
         Route::resource('/', UserController::class)->only(['index']);
     });

@@ -3,16 +3,20 @@
 namespace App\Http\Controllers\Personnel;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Personnel\UpdateMoreInfoOfPersonnel;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
+use App\Models\PersonnelMoreInfo;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\UploadFile;
 
 class UserController extends Controller
 {
     use HttpResponses;
+    use UploadFile;
     /**
      * Display a listing of the resource.
      */
@@ -88,4 +92,37 @@ class UserController extends Controller
         $user->update($request->all());
         return $this->success('','Successfully updated',201);
     }
+
+
+    public function MoreInfo(UpdateMoreInfoOfPersonnel $moreInfo){
+        $moreInfo->validated($moreInfo->all());
+        $user_id = Auth::user()->id;
+
+        $is_personnel_info_exist = PersonnelMoreInfo::where('user_id',$user_id)->first();
+        $file_name = $this->UploadFile($moreInfo->image);
+
+        if($is_personnel_info_exist){
+            $moreInfo['image'] = $file_name ? $file_name : $is_personnel_info_exist->image;
+        }
+
+        if($is_personnel_info_exist){
+            $is_personnel_info_exist->update($moreInfo->all());
+        }else{
+            PersonnelMoreInfo::create([
+                'user_id'=>$user_id,
+                'image'=>$file_name,
+                'address'=>$moreInfo->address,
+                'birthday'=>$moreInfo->birthday,
+                'gender'=>$moreInfo->gender,
+                'contact_number'=>$moreInfo->contact_number,
+                'emergency_contact_relationship'=>$moreInfo->emergency_contact_relationship,
+                'emergency_contact_number'=>$moreInfo->emergency_contact_number,
+            ]);
+        }
+
+
+        $this->success(null,'Successfully uploaded',201);
+    }
+
+
 }
