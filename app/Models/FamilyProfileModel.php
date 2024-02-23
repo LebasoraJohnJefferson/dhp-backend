@@ -20,8 +20,6 @@ class FamilyProfileModel extends Model
         'household_no',
         'no_household_member',
         'housthould_head',
-        'occupation',
-        'educ_attain',
         'food_prod_act',
         'toilet_type',
         'water_source',
@@ -29,6 +27,12 @@ class FamilyProfileModel extends Model
         'using_IFR',
         'familty_planning',
         'mother_pregnant',
+        'mother_occupation',
+        'father_occupation' ,
+        'mother_educ_attain' ,
+        'father_educ_attain' ,
+        'mother_birthday' ,
+        'father_birthday' ,
     ];
 
 

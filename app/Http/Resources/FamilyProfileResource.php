@@ -30,8 +30,6 @@ class FamilyProfileResource extends JsonResource
             'contact_number'=>$this->contact_number,
             'father'=>$this->father,
             'mother'=>$this->mother,
-            'occupation'=>$this->occupation,
-            'educ_attain'=>$this->educ_attain,
             'food_prod_act'=>$this->food_prod_act,
             'toilet_type'=>$this->toilet_type,
             'water_source'=>$this->water_source,
@@ -39,6 +37,12 @@ class FamilyProfileResource extends JsonResource
             'using_IFR'=>$this->using_IFR,
             'familty_planning'=>$this->familty_planning,
             'mother_pregnant'=>$this->mother_pregnant,
+            'mother_occupation' => $this->mother_occupation,
+            'father_occupation' => $this->father_occupation,
+            'mother_educ_attain' => $this->mother_educ_attain,
+            'father_educ_attain' => $this->father_educ_attain,
+            'mother_birthday' => $this->mother_birthday,
+            'father_birthday' => $this->father_birthday
             ]
         ];
     }

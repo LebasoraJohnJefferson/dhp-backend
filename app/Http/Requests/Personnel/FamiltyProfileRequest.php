@@ -27,15 +27,20 @@ class FamiltyProfileRequest extends FormRequest
                 'contact_number'=>['required','string'],
                 'mother' => ['required','string'],
                 'father' => ['required','string'],
-                'occupation' => ['required','string'],
-                'educ_attain' => ['required','string'],
                 'food_prod_act' => ['required','string'],
                 'toilet_type' => ['required','string'],
                 'water_source' => ['required','string'],
                 'using_iodized_salt' => ['required','boolean'],
                 'using_IFR' => ['required','boolean'],
                 'familty_planning' => ['required','boolean'],
-                'mother_pregnant' => ['required','boolean']
+                'mother_pregnant' => ['required','boolean'],
+
+                'mother_occupation' => ['required','string'],
+                'father_occupation' => ['required','string'],
+                'mother_educ_attain' => ['required','string'],
+                'father_educ_attain' => ['required','string'],
+                'mother_birthday' => ['required','date'],
+                'father_birthday' => ['required','date']
             ];
     }
 }

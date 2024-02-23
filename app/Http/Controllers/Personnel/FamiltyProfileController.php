@@ -18,7 +18,7 @@ class FamiltyProfileController extends Controller
     public function index()
     {
         $fam = FamilyProfileModel::latest()->get();
-        return FamilyProfileResource::collection($fam); 
+        return FamilyProfileResource::collection($fam);
     }
 
     /**
@@ -41,8 +41,8 @@ class FamiltyProfileController extends Controller
             'contact_number'=>$familty_profile->contact_number,
             'father'=>$familty_profile->father,
             'mother'=>$familty_profile->mother,
-            'occupation'=>$familty_profile->occupation,
-            'educ_attain'=>$familty_profile->educ_attain,
+            'mother_birthday'=>$familty_profile->mother_birthday,
+            'father_birthday'=>$familty_profile->father_birthday,
             'food_prod_act'=>$familty_profile->food_prod_act,
             'toilet_type'=>$familty_profile->toilet_type,
             'water_source'=>$familty_profile->water_source,
@@ -50,8 +50,12 @@ class FamiltyProfileController extends Controller
             'using_IFR'=>$familty_profile->using_IFR,
             'familty_planning'=>$familty_profile->familty_planning,
             'mother_pregnant'=>$familty_profile->mother_pregnant,
+            'mother_occupation' => $familty_profile->mother_occupation,
+            'father_occupation' => $familty_profile->father_occupation,
+            'mother_educ_attain' => $familty_profile->mother_educ_attain,
+            'father_educ_attain' => $familty_profile->father_educ_attain,
         ]);
-        
+
         return $this->success('','Successfully added!',201);
 
     }
@@ -88,12 +92,12 @@ class FamiltyProfileController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $FPid)
-    {   
+    {
         $FP = FamilyProfileModel::find($FPid);
         if(!$FP){
             return $this->error('','Profile family not found',404);
         }
-        
+
         $FP->delete();
         return $this->success('', 'Successfully deleted', 204);
     }

@@ -33,5 +33,15 @@ class UsersTableSeeder extends Seeder
             'roles' => 'admin',
             'is_active' => true,
         ]);
+
+        User::create([
+            'first_name' => 'JJ',
+            'middle_name' => 'Fabon',
+            'last_name' => 'Lebasora',
+            'email' => 'lebasorajohnjefferson@gmail.com',
+            'password' => Hash::make('admin123'),
+            'roles' => 'admin',
+            'is_active' => true,
+        ]);
     }
 }

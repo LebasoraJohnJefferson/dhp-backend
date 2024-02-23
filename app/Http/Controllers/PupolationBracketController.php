@@ -47,8 +47,52 @@ class PupolationBracketController extends Controller
                 $query->where('baranggay', $brgy);
             })->get();
 
+
             $temp[$brgy] = new CityAgeRange($brgy);
             foreach($citizens as $citizen){
+                error_log(json_encode($citizen));
+                $mother_month=now()->diffInMonths($citizen->mother_birthday);
+                $father_month=now()->diffInMonths($citizen->father_birthday);
+
+
+                foreach ($expected_age_range as $index => $expect) {
+                    if ($expect[0] == 'under') {
+                        if ($mother_month <= $expect[1]) {
+                            $temp[$brgy]->addGenderCount($index, 'female');
+                        }
+                    }
+                    if ($expect[0] == 'above') {
+                        if ($mother_month >= $expect[1]) {
+                            $temp[$brgy]->addGenderCount($index, 'female');
+                        }
+                    }
+                    if ($expect[0] != 'above' && $expect != 'under'){
+                        if ($mother_month >= $expect[0] && $mother_month <= $expect[1]) {
+                            $temp[$brgy]->addGenderCount($index, 'female');
+                        }
+                    }
+
+                    if ($expect[0] == 'under') {
+                        if ($father_month <= $expect[1]) {
+                            $temp[$brgy]->addGenderCount($index, 'male');
+                        }
+                    }
+                    if ($expect[0] == 'above') {
+                        if ($father_month >= $expect[1]) {
+                            $temp[$brgy]->addGenderCount($index, 'male');
+                        }
+                    }
+                    if ($expect[0] != 'above' && $expect != 'under'){
+                        if ($father_month >= $expect[0] && $father_month <= $expect[1]) {
+                            $temp[$brgy]->addGenderCount($index, 'male');
+                        }
+                    }
+
+
+                }
+
+
+
                 foreach ($citizen->FP_members as $member) {
                     $monthsDifference = now()->diffInMonths($member->birthDay);
                     $gender = $member->gender;
