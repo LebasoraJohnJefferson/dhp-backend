@@ -12,6 +12,7 @@ use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\UploadFile;
+use Illuminate\Validation\Rules;
 
 class UserController extends Controller
 {
@@ -119,6 +120,58 @@ class UserController extends Controller
                 'emergency_contact_number'=>$moreInfo->emergency_contact_number,
             ]);
         }
+
+
+        $this->success(null,'Successfully uploaded',201);
+    }
+
+
+    public function updateAdminInfo(Request $request){
+        $request->validate([
+            'email' => ['required', 'email'],
+            'image' => ['string', 'nullable'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'password' => ['required', 'string', 'max:255', Rules\Password::defaults()],
+        ]);
+        $user = User::find(Auth::user()->id);
+        $user_id = Auth::user()->id;
+        $is_personnel_info_exist = PersonnelMoreInfo::where('user_id',$user_id)->first();
+        if(!$user) return $this->error('','User not found!',409);
+
+        $file_name = $this->UploadFile($request->image);
+
+        if($is_personnel_info_exist){
+            $request['image'] = $file_name ? $file_name : $is_personnel_info_exist->image;
+        }
+
+        $is_email_exist = User::where('email',$request->email)
+        ->where('id','!=',Auth::user()->id)
+        ->first();
+
+        if($is_email_exist) return $this->error('','Email already exist!',409);
+
+        if($is_personnel_info_exist){
+            $is_personnel_info_exist->update(['image'=>$file_name]);
+        }else{
+            PersonnelMoreInfo::create([
+                'user_id'=>$user_id,
+                'image'=>$file_name,
+                'address'=>'N/A',
+                'birthday'=>date('Y-m-d'),
+                'gender'=>'N/A',
+                'contact_number'=>'N/A',
+                'emergency_contact_relationship'=>'N/A',
+                'emergency_contact_number'=>'N/A',
+            ]);
+        }
+
+
+        $user->update([
+            'first_name'=>$request->first_name,
+            'email'=>$request->email,
+            'password'=>$request->password
+            ]
+        );
 
 
         $this->success(null,'Successfully uploaded',201);
