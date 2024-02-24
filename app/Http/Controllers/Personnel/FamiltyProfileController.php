@@ -85,9 +85,16 @@ class FamiltyProfileController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(FamiltyProfileRequest $famity_profile, string $id)
     {
-        //
+        $famity_profile->validated($famity_profile->all());
+        $famity_profile_exist = FamilyProfileModel::find($id);
+        if (!$famity_profile_exist) {
+            return $this->error('', 'Family profile not found', 404);
+        }
+
+        $famity_profile_exist->update($famity_profile->all());
+        return $this->success('','Successfully updated',201);
     }
 
     /**
