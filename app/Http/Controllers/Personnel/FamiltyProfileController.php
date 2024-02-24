@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Personnel;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Personnel\FamiltyProfileRequest;
 use App\Http\Resources\FamilyProfileResource;
+use App\Models\BaranggayModel;
 use App\Models\FamilyProfileModel;
 use App\Traits\HttpResponses;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
 class FamiltyProfileController extends Controller
@@ -101,4 +103,73 @@ class FamiltyProfileController extends Controller
         $FP->delete();
         return $this->success('', 'Successfully deleted', 204);
     }
+
+
+    public function saveImportedFamilyProfile(Request $familty_profile){
+
+
+        foreach($familty_profile->familiesData as $fp){
+            $fp['mother_pregnant'] = strtolower($fp['mother_pregnant']) == 'no' ? false : true;
+            $fp['using_iodized_salt'] = strtolower($fp['using_iodized_salt']) == 'no' ? false : true;
+            $fp['using_IFR'] = strtolower($fp['using_IFR']) == 'no' ? false : true;
+            $fp['familty_planning'] = strtolower($fp['familty_planning']) == 'no' ? false : true;
+            $validator = Validator::make($fp, [
+                'contact_number' => ['required', 'string'],
+                'mother' => ['required', 'string'],
+                'father' => ['required', 'string'],
+                'food_prod_act' => ['required', 'string'],
+                'toilet_type' => ['required', 'string'],
+                'water_source' => ['required', 'string'],
+                'using_iodized_salt' => ['required', 'boolean'],
+                'using_IFR' => ['required', 'boolean'],
+                'familty_planning' => ['required', 'boolean'],
+                'mother_pregnant' => ['required', 'boolean'],
+                'mother_occupation' => ['required', 'string'],
+                'father_occupation' => ['required', 'string'],
+                'mother_educ_attain' => ['required', 'string'],
+                'father_educ_attain' => ['required', 'string'],
+                'mother_birthday' => ['required', 'date_format:Y-m-d'],
+                'father_birthday' => ['required', 'date_format:Y-m-d']
+            ]);
+
+            error_log(json_encode($fp));
+
+            // Check if validation success
+            if (!$validator->fails()) {
+                $fp_exist = FamilyProfileModel::where('mother',$fp['mother'])
+                ->where('father',$fp['father'])
+                ->first();
+                if(!$fp_exist){
+                    $is_brgy_exist = BaranggayModel::find($fp['brgy_id']);
+                    $FP = FamilyProfileModel::create([
+                        'brgy_id'=>$is_brgy_exist ? $fp['brgy_id'] : null,
+                        'contact_number'=>$fp['contact_number'],
+                        'father'=>$fp['father'],
+                        'mother'=>$fp['mother'],
+                        'mother_birthday'=>$fp['mother_birthday'],
+                        'father_birthday'=>$fp['father_birthday'],
+                        'food_prod_act'=>$fp['food_prod_act'],
+                        'toilet_type'=>$fp['toilet_type'],
+                        'water_source'=>$fp['water_source'],
+                        'using_iodized_salt'=>$fp['using_iodized_salt'],
+                        'using_IFR'=>$fp['using_IFR'],
+                        'familty_planning'=>$fp['familty_planning'],
+                        'mother_pregnant'=>$fp['mother_pregnant'],
+                        'mother_occupation' => $fp['mother_occupation'],
+                        'father_occupation' => $fp['father_occupation'],
+                        'mother_educ_attain' => $fp['mother_educ_attain'],
+                        'father_educ_attain' => $fp['father_educ_attain'],
+                    ]);
+                }
+            }else{
+                error_log($validator->errors());
+            }
+
+
+
+        }
+        return $this->success('','Successfully added!',201);
+    }
+
+
 }
