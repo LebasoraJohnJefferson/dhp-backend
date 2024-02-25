@@ -77,6 +77,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
         Route::get('/get_all_invited_province/{event_id}',[EventInvatationController::class,'invited_province']);
+        Route::post('/saveImportedFCM/{FP_id}',[FamilyProfileMemberController::class,'saveImportedFCM']);
         Route::post('/saveImportedFamilyProfile',[FamiltyProfileController::class,'saveImportedFamilyProfile']);
 
         Route::resource('/logs',LogsController::class)->only(['index','show']);

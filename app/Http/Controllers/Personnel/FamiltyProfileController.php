@@ -139,7 +139,6 @@ class FamiltyProfileController extends Controller
                 'father_birthday' => ['required', 'date_format:Y-m-d']
             ]);
 
-            error_log(json_encode($fp));
 
             // Check if validation success
             if (!$validator->fails()) {

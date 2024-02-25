@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\FamilyProfileMemberModel;
 use App\Http\Requests\Personnel\FamiltyProfileMemberRequest;
 use App\Http\Resources\FamilyProfileMembersResource;
+use App\Models\FamilyProfileModel;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class FamilyProfileMemberController extends Controller
 {
@@ -51,9 +53,9 @@ class FamilyProfileMemberController extends Controller
     public function show(string $FP_id)
     {
         $fam_member =  FamilyProfileMemberModel::where('FP_id',$FP_id)
-        ->get(); 
+        ->get();
         return FamilyProfileMembersResource::collection($fam_member);
-        
+
     }
 
     /**
@@ -83,5 +85,43 @@ class FamilyProfileMemberController extends Controller
         }
         $FP->delete();
         return $this->success('', 'Successfully deleted', 204);
+    }
+
+
+    public function saveImportedFCM(Request $data,string $FP_id){
+        $FPM = FamilyProfileModel::find($FP_id);
+        if(!$FPM){
+            return $this->error('','Profile family not found',404);
+        }
+
+        foreach($data->familiesMemberData as $info){
+            $validator = Validator::make($info, [
+                'name'=>['required','string'],
+                'birthDay'=>['required','date'],
+                'nursing_type'=>['string','nullable'],
+                'relationship'=>['string'],
+                'occupation'=>['string'],
+                'gender'=>['string']
+            ]);
+
+            $FP_member_exist = FamilyProfileMemberModel::where('name',$info['name'])
+            ->where('FP_id',$FP_id)
+            ->first();
+
+            if (!$validator->fails() && !$FP_member_exist) {
+                FamilyProfileMemberModel::create([
+                    'FP_id'=>$FP_id,
+                    'name'=>$info['name'],
+                    'birthDay'=>$info['birthDay'],
+                    'gender'=>$info['gender'],
+                    'occupation'=>$info['occupation'],
+                    'relationship'=>$info['relationship'],
+                    'nursing_type'=>$info['nursing_type']
+                ]);
+            }else{
+                error_log($validator->errors());
+            }
+        }
+        return $this->success('','Successfully added!',201);
     }
 }
