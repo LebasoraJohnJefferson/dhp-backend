@@ -69,9 +69,15 @@ class FamilyProfileMemberController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(string $id ,FamiltyProfileMemberRequest $fpc_updated_details)
     {
-        //
+        $fpc_updated_details->validated($fpc_updated_details->all());
+        $FP = FamilyProfileMemberModel::find($id);
+        if(!$FP){
+            return $this->error('','Profile family member not found',404);
+        }
+        $FP->update($fpc_updated_details->all());
+        return $this->success('','Successfully updated',200);
     }
 
     /**

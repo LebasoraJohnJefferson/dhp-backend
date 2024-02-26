@@ -57,7 +57,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::resource('/famityProfile',FamiltyProfileController::class)->only(['destroy','store','index','show','update']);
     Route::resource('/file',FileController::class);
-    Route::resource('/famityProfileMembers',FamilyProfileMemberController::class)->only(['destroy','store','index','show']);
+    Route::resource('/famityProfileMembers',FamilyProfileMemberController::class)->only(['destroy','store','index','show','update']);
     Route::resource('/baranggay',BaranggayController::class)->only(['destroy','store','index','show']);
     Route::resource('/dashboard',DashboardContoller::class)->only(['index','show']);
     Route::resource('/preschool',PreschoolController::class);

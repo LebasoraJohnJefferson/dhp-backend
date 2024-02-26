@@ -94,7 +94,7 @@ class FamiltyProfileController extends Controller
         }
 
         $famity_profile_exist->update($famity_profile->all());
-        return $this->success('','Successfully updated',201);
+        return $this->success('','Successfully updated',200);
     }
 
     /**
