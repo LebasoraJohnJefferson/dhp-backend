@@ -21,7 +21,10 @@ class PreschoolAtRiskResource extends JsonResource
         return [
             'id'=>$this->id,
             'created_at'=>$this->created_at,
-            'name'=>$this->FPM->name,
+            'first_name'=>$this->FPM->first_name,
+            'last_name'=>$this->FPM->last_name,
+            'middle_name'=>$this->FPM->middle_name,
+            'suffix'=>$this->FPM->suffix,
             'FP_id'=>$this->FPM->fam_profile->id,
             'ageInMonths'=>$ageInMonths,
             'weight'=>$this->weight,

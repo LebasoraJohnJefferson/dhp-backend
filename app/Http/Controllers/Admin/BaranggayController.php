@@ -17,7 +17,7 @@ class BaranggayController extends Controller
     public function index()
     {
         
-        $baranggay =  BaranggayModel::get();
+        $baranggay =  BaranggayModel::latest()->get();
         return $this->success([
             'baranggay' => $baranggay,
         ],'',200);

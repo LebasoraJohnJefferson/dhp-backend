@@ -37,7 +37,10 @@ class FamilyProfileMemberController extends Controller
         $family_prof_child->validated($family_prof_child->all());
         FamilyProfileMemberModel::create([
             'FP_id'=>$family_prof_child->FP_id,
-            'name'=>$family_prof_child->name,
+            'first_name'=>$family_prof_child->first_name,
+            'middle_name'=>$family_prof_child->middle_name,
+            'last_name'=>$family_prof_child->last_name,
+            'suffix'=>$family_prof_child->suffix ? $family_prof_child->suffix : null,
             'birthDay'=>$family_prof_child->birthDay,
             'gender'=>$family_prof_child->gender,
             'occupation'=>$family_prof_child->occupation,
@@ -53,6 +56,7 @@ class FamilyProfileMemberController extends Controller
     public function show(string $FP_id)
     {
         $fam_member =  FamilyProfileMemberModel::where('FP_id',$FP_id)
+        ->latest()
         ->get();
         return FamilyProfileMembersResource::collection($fam_member);
 
@@ -102,7 +106,10 @@ class FamilyProfileMemberController extends Controller
 
         foreach($data->familiesMemberData as $info){
             $validator = Validator::make($info, [
-                'name'=>['required','string'],
+                'first_name'=>['required','string'],
+                'middle_name'=>['required','string'],
+                'last_name'=>['required','string'],
+                'suffix'=>['string','nullable'],
                 'birthDay'=>['required','date'],
                 'nursing_type'=>['string','nullable'],
                 'relationship'=>['string'],
@@ -110,14 +117,24 @@ class FamilyProfileMemberController extends Controller
                 'gender'=>['string']
             ]);
 
-            $FP_member_exist = FamilyProfileMemberModel::where('name',$info['name'])
+            $suffix = isset($info['suffix']) ? $info['suffix'] : null;
+
+            error_log(isset($info['suffix']) ? $info['suffix'] : null);
+
+            $FP_member_exist = FamilyProfileMemberModel::where('first_name',$info['first_name'])
+            ->where('middle_name',$info['middle_name'])
+            ->where('last_name',$info['last_name'])
+            ->where('suffix',$suffix)
             ->where('FP_id',$FP_id)
             ->first();
 
             if (!$validator->fails() && !$FP_member_exist) {
                 FamilyProfileMemberModel::create([
                     'FP_id'=>$FP_id,
-                    'name'=>$info['name'],
+                    'first_name'=>$info['first_name'],
+                    'middle_name'=>$info['middle_name'],
+                    'last_name'=>$info['last_name'],
+                    'suffix'=>isset($info['suffix']) ? $info['suffix'] : null,
                     'birthDay'=>$info['birthDay'],
                     'gender'=>$info['gender'],
                     'occupation'=>$info['occupation'],

@@ -32,6 +32,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('family_profile', function (Blueprint $table) {
+            $table->string('mother');
+            $table->string('father');
             $table->dropColumn('mother_first_name');
             $table->dropColumn('mother_middle_name');
             $table->dropColumn('mother_last_name');

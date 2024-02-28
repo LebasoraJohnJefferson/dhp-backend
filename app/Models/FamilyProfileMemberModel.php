@@ -13,7 +13,10 @@ class FamilyProfileMemberModel extends Model
 
     protected $fillable=[
         'FP_id',
-        'name',
+        'first_name',
+        'last_name',
+        'middle_name',
+        'suffix',
         'birthDay',
         'relationship',
         'occupation',

@@ -33,7 +33,10 @@ class PreschoolWithNutrionalStatus extends Controller
                 'percentile'=>$percentile.'%',
                 'preDetails'=>$pres,
                 'BMI'=>$BMI,
-                'name'=>$pres->FPM->name,
+                'first_name'=>$pres->FPM->first_name,
+                'middle_name'=>$pres->FPM->middle_name,
+                'last_name'=>$pres->FPM->last_name,
+                'suffix'=>$pres->FPM->suffix,
                 'FP_id'=>$pres->FPM->FP_id,
                 'created_at'=>$pres->created_at
             ];

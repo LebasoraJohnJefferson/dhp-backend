@@ -21,7 +21,10 @@ class FamilyProfileMembersResource extends JsonResource
             'birthDay'=>$this->birthDay,
             'nursing_type'=>$this->nursing_type,
             'relationship'=>$this->relationship,
-            'name'=>$this->name
+            'first_name'=>$this->first_name,
+            'middle_name'=>$this->middle_name,
+            'last_name'=>$this->last_name,
+            'suffix'=>$this->suffix,
         ];
     }
 }
