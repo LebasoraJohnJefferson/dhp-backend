@@ -15,8 +15,16 @@ class FamilyProfileModel extends Model
     protected $fillable=[
         'brgy_id',
         'contact_number',
-        'mother',
-        'father',
+        'mother_first_name',
+        'mother_middle_name',
+        'mother_last_name',
+        'mother_suffix',
+
+        'father_first_name',
+        'father_middle_name',
+        'father_last_name',
+        'father_suffix',
+        
         'household_no',
         'no_household_member',
         'housthould_head',

@@ -21,6 +21,7 @@ class FamilyProfileResource extends JsonResource
         $count = 0;
         if($this->father) $count+=1;
         if($this->mother) $count+=1;
+        
         return [
         'id'=>$this->id,
         'attributes'=>[
@@ -29,8 +30,16 @@ class FamilyProfileResource extends JsonResource
             'brgy_id'=>$this->brgy_id,
             'household_no'=>$aiKey,
             'contact_number'=>$this->contact_number,
-            'father'=>$this->father,
-            'mother'=>$this->mother,
+            'father_first_name'=>$this->father_first_name,
+            'father_middle_name'=>$this->father_middle_name,
+            'father_last_name'=>$this->father_last_name,
+            'father_suffix'=>$this->father_suffix,
+
+            'mother_first_name'=>$this->mother_first_name,
+            'mother_middle_name'=>$this->mother_middle_name,
+            'mother_last_name'=>$this->mother_last_name,
+            'mother_suffix'=>$this->mother_suffix,
+
             'food_prod_act'=>$this->food_prod_act,
             'toilet_type'=>$this->toilet_type,
             'water_source'=>$this->water_source,

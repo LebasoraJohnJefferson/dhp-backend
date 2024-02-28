@@ -22,6 +22,7 @@ class PersonnelController extends Controller
     {
         $users = User::where('roles', 'personnel')
                 ->where('is_deleted', false)
+                ->latest()
                 ->get();
 
         return UserResource::collection($users);
@@ -35,12 +36,12 @@ class PersonnelController extends Controller
     public function store(StoreUserRequest $request)
     {
         $request->validated($request->all());
-
         $user = User::create([
             'first_name'=>$request->first_name,
             'middle_name'=>$request->middle_name,
             'last_name'=>$request->last_name,
             'email'=>$request->email,
+            'suffix'=>$request->suffix,
             'password'=>Hash::make($request->password),
             'is_active'=>$request->is_active
         ]);

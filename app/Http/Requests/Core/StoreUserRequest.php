@@ -27,6 +27,7 @@ class StoreUserRequest extends FormRequest
             'first_name'=>['required','string','max:255'],
             'middle_name'=>['required','string','max:255'],
             'last_name'=>['required','string','max:255'],
+            'suffix'=>['string'],
             'email'=>['required','string','max:255','unique:users'],
             'password'=>['required','confirmed',Rules\Password::defaults()],
             'is_active'=>['boolean'],

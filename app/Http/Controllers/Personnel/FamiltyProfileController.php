@@ -41,8 +41,15 @@ class FamiltyProfileController extends Controller
         $FP = FamilyProfileModel::create([
             'brgy_id'=>$familty_profile->brgy_id,
             'contact_number'=>$familty_profile->contact_number,
-            'father'=>$familty_profile->father,
-            'mother'=>$familty_profile->mother,
+            'mother_first_name' => $familty_profile->mother_first_name,
+            'mother_middle_name' => $familty_profile->mother_middle_name,
+            'mother_last_name' => $familty_profile->mother_last_name,
+            'mother_suffix' => $familty_profile->mother_suffix,
+
+            'father_first_name' => $familty_profile->father_first_name,
+            'father_middle_name' => $familty_profile->father_middle_name,
+            'father_last_name' => $familty_profile->father_last_name,
+            'father_suffix' =>$familty_profile->father_suffix,
             'mother_birthday'=>$familty_profile->mother_birthday,
             'father_birthday'=>$familty_profile->father_birthday,
             'food_prod_act'=>$familty_profile->food_prod_act,

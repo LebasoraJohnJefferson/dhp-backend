@@ -28,6 +28,7 @@ class User extends Authenticatable
         'is_deleted',
         'is_active',
         'password',
+        'suffix'
     ];
 
     /**
