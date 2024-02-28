@@ -41,7 +41,7 @@ class PersonnelController extends Controller
             'middle_name'=>$request->middle_name,
             'last_name'=>$request->last_name,
             'email'=>$request->email,
-            'suffix'=>$request->suffix,
+            'suffix'=>$request->suffix ,
             'password'=>Hash::make($request->password),
             'is_active'=>$request->is_active
         ]);

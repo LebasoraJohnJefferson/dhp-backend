@@ -127,10 +127,17 @@ class FamiltyProfileController extends Controller
             $fp['using_iodized_salt'] = strtolower($fp['using_iodized_salt']) == 'no' ? false : true;
             $fp['using_IFR'] = strtolower($fp['using_IFR']) == 'no' ? false : true;
             $fp['familty_planning'] = strtolower($fp['familty_planning']) == 'no' ? false : true;
+            
             $validator = Validator::make($fp, [
                 'contact_number' => ['required', 'string'],
-                'mother' => ['required', 'string'],
-                'father' => ['required', 'string'],
+                'mother_first_name' => ['required', 'string'],
+                'mother_middle_name' => ['required', 'string'],
+                'mother_last_name' => ['required', 'string'],
+                'mother_suffix' => ['string','nullable'],
+                'father_first_name' => ['required', 'string'],
+                'father_middle_name' => ['required', 'string'],
+                'father_last_name' => ['required', 'string'],
+                'father_suffix' =>['string','nullable'],
                 'food_prod_act' => ['required', 'string'],
                 'toilet_type' => ['required', 'string'],
                 'water_source' => ['required', 'string'],
@@ -149,16 +156,34 @@ class FamiltyProfileController extends Controller
 
             // Check if validation success
             if (!$validator->fails()) {
-                $fp_exist = FamilyProfileModel::where('mother',$fp['mother'])
-                ->where('father',$fp['father'])
+                $father_suffix = isset($fp['father_suffix']) ? $fp['father_suffix'] : null;
+                $mother_suffix = isset($fp['mother_suffix']) ? $fp['mother_suffix'] : null;
+                $fp_exist = FamilyProfileModel::where('mother_first_name',$fp['mother_first_name'])
+                ->where('mother_middle_name',$fp['mother_middle_name'])
+                ->where('mother_last_name',$fp['mother_last_name'])
+                ->where('father_first_name',$fp['father_first_name'])
+                ->where('father_middle_name',$fp['father_middle_name'])
+                ->where('father_last_name',$fp['father_last_name'])
+                ->where('mother_suffix', $mother_suffix)
+                ->where('father_suffix', $father_suffix)
                 ->first();
                 if(!$fp_exist){
                     $is_brgy_exist = BaranggayModel::find($fp['brgy_id']);
+                    error_log(json_encode($fp['father_suffix']));
                     $FP = FamilyProfileModel::create([
                         'brgy_id'=>$is_brgy_exist ? $fp['brgy_id'] : null,
                         'contact_number'=>$fp['contact_number'],
-                        'father'=>$fp['father'],
-                        'mother'=>$fp['mother'],
+                        
+                        'mother_first_name' => $fp['mother_first_name'],
+                        'mother_middle_name' => $fp['mother_middle_name'],
+                        'mother_last_name' => $fp['mother_last_name'],
+                        'mother_suffix' => $mother_suffix,
+
+                        'father_first_name' => $fp['father_first_name'],
+                        'father_middle_name' => $fp['father_middle_name'],
+                        'father_last_name' => $fp['father_last_name'],
+                        'father_suffix' =>$father_suffix,
+
                         'mother_birthday'=>$fp['mother_birthday'],
                         'father_birthday'=>$fp['father_birthday'],
                         'food_prod_act'=>$fp['food_prod_act'],

@@ -34,7 +34,9 @@ class ImportPersonnelContoller extends Controller
                 $middle_name = $person['middle_name'];
                 $last_name = $person['last_name'];
                 $email = $person['email'];
+                $suffix =$person['suffix'];
                 $is_active = $person['is_active'];
+                error_log($suffix);
                 if(
                     !empty($first_name) &&
                     !empty($middle_name) &&
@@ -50,6 +52,7 @@ class ImportPersonnelContoller extends Controller
                             'middle_name' => $middle_name,
                             'last_name' => $last_name,
                             'email' => $email,
+                            'suffix'=>$suffix,
                             'password' => Hash::make('password123'),
                             'is_active' => $is_active
                         ]);
