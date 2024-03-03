@@ -13,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        
+
     }
 
     /**
@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         ResetPassword::createUrlUsing(function ($notifiable, $token) {
-            return 'http://localhost:4200/resetpassword?token='.$token;
+            return 'https://rhu-barugo.vercel.app/resetpassword?token='.$token;
         });
     }
 }
