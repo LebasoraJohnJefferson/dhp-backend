@@ -20,7 +20,7 @@ class EventInvatationController extends Controller
      */
     public function index()
     {
-       
+
     }
 
     /**
@@ -28,7 +28,7 @@ class EventInvatationController extends Controller
      */
     public function create()
     {
-        
+
     }
 
     /**
@@ -54,22 +54,28 @@ class EventInvatationController extends Controller
                 'brgy_id'=>$request->brgy_id
             ]);
         }
-        
+
         $event = EventInvitationModel::where('event_id',$request->event_id)->first();
-        
+
         $contact_every_person = FamilyProfileModel::all();
-        $msg = 'Title: ' . $event->event->title 
-        . ' When: ' . $event->event->date 
-        . ' Where: ' . $event->event->venue 
+        $msg = 'Title: ' . $event->event->title
+        . ' When: ' . $event->event->date
+        . ' Where: ' . $event->event->venue
         . ' What: ' . $event->event->description;
 
+
+
         foreach($contact_every_person as $person){
-            if ($person->brgys->id == $request->province_id){
+
+            if ($person->brgys->id == $request->brgy_id){
                 $contactNumber = $person->contact_number;
                 if (substr($contactNumber, 0, 2) === "09") {
-                    $contactNumber = "+639" . substr($contactNumber, 2);
+                    $contactNumber = "639" . substr($contactNumber, 2);
                 }
                 $this->sendSms($msg,$contactNumber);
+
+                // error_log($contact_every_person);
+
             }
         }
 
@@ -81,7 +87,7 @@ class EventInvatationController extends Controller
      * Display the specified resource.
      */
     public function show(string $eventId)
-    {   
+    {
         $eventId = (int)$eventId;
         $provinces = BaranggayModel::whereNotIn('id', function ($query) use ($eventId) {
             $query->select('brgy_id')
