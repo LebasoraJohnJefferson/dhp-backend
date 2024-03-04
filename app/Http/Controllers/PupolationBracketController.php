@@ -50,7 +50,6 @@ class PupolationBracketController extends Controller
 
             $temp[$brgy] = new CityAgeRange($brgy);
             foreach($citizens as $citizen){
-                error_log(json_encode($citizen));
                 $mother_month=now()->diffInMonths($citizen->mother_birthday);
                 $father_month=now()->diffInMonths($citizen->father_birthday);
 
