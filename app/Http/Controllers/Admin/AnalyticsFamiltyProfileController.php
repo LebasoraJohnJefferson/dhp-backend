@@ -43,7 +43,7 @@ class AnalyticsFamiltyProfileController extends Controller
             }
 
 
-            $baranggays[] = $baranggay->baranggay." ".$baranggay->purok;
+            $baranggays[] = $baranggay->baranggay;
             $population[]=$householdMemberCount+$count;
         }
 

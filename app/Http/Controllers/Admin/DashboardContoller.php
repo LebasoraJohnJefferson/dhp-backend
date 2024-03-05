@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\BaranggayModel;
 use App\Models\EventModel;
+use App\Models\FamilyProfileMemberModel;
+use App\Models\FamilyProfileModel;
 use App\Models\fileModel;
 use App\Models\User;
 use App\Traits\HttpResponses;
@@ -35,12 +37,18 @@ class DashboardContoller extends Controller
         ->where('is_deleted',false)
         ->count();
 
+        $total_members = FamilyProfileMemberModel::count();
+
+        $families = FamilyProfileModel::count();
+
         return $this->success([
             'active_count'=>$active_count,
             'inactive_count'=>$inactive_count,
             'event_count'=>$event_count,
             'baranggay_count'=>$baranggay_count,
-            'document_count'=>$document_count
+            'document_count'=>$document_count,
+            'population'=>$total_members+($families*2),
+            'families'=>$families
         ],'',200);
     }
 
