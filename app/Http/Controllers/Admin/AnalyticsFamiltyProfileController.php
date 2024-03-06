@@ -22,6 +22,10 @@ class AnalyticsFamiltyProfileController extends Controller
         $brgys = BaranggayModel::get();
         $baranggays=['start'];
         $population= [0];
+        $temp = [];
+        foreach ($brgys as $barangay) {
+            $temp[$barangay->baranggay] = 0;
+        }
         foreach($brgys as $baranggay){
             $householdMemberCount = FamilyProfileMemberModel::with('fam_profile.FP_members')
             ->whereHas('fam_profile.FP_members', function ($query) use ($baranggay) {
@@ -32,20 +36,25 @@ class AnalyticsFamiltyProfileController extends Controller
             $count = 0;
             if($baranggay->fam_profile) {
                 foreach($baranggay->fam_profile as $fam){
-                    if($fam->father){
+                    if($fam->mother_first_name){
                         $count += 1;
                     }
-                    if($fam->mother){
+                    if($fam->father_first_name){
                         $count += 1;
                     }
                 }
-
             }
+            
+            $temp[$baranggay->baranggay] += $householdMemberCount + $count;
 
-
-            $baranggays[] = $baranggay->baranggay;
-            $population[]=$householdMemberCount+$count;
         }
+        $baranggays = array_keys($temp);
+        array_unshift($baranggays, 'start');
+        $population=array_values($temp);
+        array_unshift($population, 0);
+        
+        error_log(json_encode($temp));
+
 
         $using_iodized_salt = FamilyProfileModel::where('using_iodized_salt',true)->count();
         $not_using_iodized_salt = FamilyProfileModel::where('using_iodized_salt',false)->count();
