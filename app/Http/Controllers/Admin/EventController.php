@@ -36,7 +36,6 @@ class EventController extends Controller
     {
         $image =null;
         $validatedData  = $event->validated();
-        error_log($event->image);
         if (array_key_exists('image', $validatedData)) {
             $image = $this->UploadImage($event->image);
         }
@@ -81,9 +80,29 @@ class EventController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(EventRequest $eventRequest, string $id)
     {
-        //
+        $event = EventModel::find($id);
+
+        if (!$event) {
+            return $this->error('', 'Event not Found', 404);
+        }
+
+        $validatedData = $eventRequest->validated();
+
+        $image = null;
+        if (array_key_exists('image', $validatedData)) {
+            $image = $this->UploadImage($validatedData['image']);
+        }
+
+        $eventRequest['image'] = $image ? $image : $event->image;
+
+        $event->update($eventRequest->all());
+
+        return $this->success([
+            "message"=>"Event updated successfully!"
+        ]);
+        
     }
 
     /**
