@@ -29,7 +29,7 @@ class PreschoolAtRiskResource extends JsonResource
             'ageInMonths'=>$ageInMonths,
             'weight'=>$this->weight,
             'height'=>$this->height,
-            'period_of_measurement'=>$this->height,
+            'period_of_measurement'=>$this->period_of_measurement,
         ];
     }
 }
