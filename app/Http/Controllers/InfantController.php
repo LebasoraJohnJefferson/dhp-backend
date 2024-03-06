@@ -41,6 +41,18 @@ class InfantController extends Controller
     public function store(InfantRequest $infant)
     {
         $infant->validated($infant->all());
+
+        $infant_exist = InfantModel::where('member_id',$infant->member_id)->latest()->first();
+
+        if($infant_exist){
+            $oneMonthAgo = Carbon::now()->subMonth();
+            $createdAt = Carbon::parse($infant_exist->created_at);
+            if ($createdAt->gt($oneMonthAgo)) {
+                return $this->error('','This child already have a record for this month',406);
+            }
+        }
+
+
         InfantModel::create([
             'member_id'=>$infant->member_id,
             'weight'=>$infant->weight
