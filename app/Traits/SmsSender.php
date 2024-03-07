@@ -21,8 +21,13 @@ trait SmsSender{
         // } else {
         //     error_log("The message failed with status: " . $message->getStatus() . "\n");
         // }
-        $response = InfobipSms::send('+639772671851',$msg);
-        
-        error_log(json_encode($response));
+        if (substr($phone_number, 0, 2) === '09') {
+            // If yes, replace '09' with '+639'
+            $phone_number = '+639' . substr($phone_number, 2);
+        } elseif (substr($phone_number, 0, 4) !== '+639') {
+            // If it doesn't start with '+639', prepend it
+            $phone_number = '+639' . $phone_number;
+        }
+        $response = InfobipSms::send($phone_number,$msg);
     }
 }

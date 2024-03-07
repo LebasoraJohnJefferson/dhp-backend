@@ -59,7 +59,7 @@ class EventInvatationController extends Controller
 
         $contact_every_person = FamilyProfileModel::all();
         $msg = 'Title: ' . $event->event->title
-        . ' When: ' . date('F j, Y', strtotime($event->event->date))
+        . ' When: ' . $event->event->date
         . ' Where: ' . $event->event->venue
         . ' What: ' . $event->event->description;
 

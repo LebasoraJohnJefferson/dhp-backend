@@ -13,6 +13,7 @@
         "laravel/tinker": "^2.8",
         "nexmo/client": "^2.4",
         "pnlinh/laravel-infobip-sms": "^1.0",
+        "psy/psysh": "@stable",
         "twilio/sdk": "^7.14",
         "vonage/client": "^4.0"
     },
