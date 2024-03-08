@@ -66,16 +66,15 @@ class EventInvatationController extends Controller
 
 
         foreach($contact_every_person as $person){
-
-            if ($person->brgys->id == $request->brgy_id){
-                $contactNumber = $person->contact_number;
-                if (substr($contactNumber, 0, 2) === "09") {
-                    $contactNumber = "639" . substr($contactNumber, 2);
+            if($person->brgys){
+                if ($person->brgys->id == $request->brgy_id){
+                    $contactNumber = $person->contact_number;
+                    if (substr($contactNumber, 0, 2) === "09") {
+                        $contactNumber = "639" . substr($contactNumber, 2);
+                    }
+                    $this->sendSms($msg,$contactNumber);
+    
                 }
-                $this->sendSms($msg,$contactNumber);
-
-                // error_log($contact_every_person);
-
             }
         }
 
