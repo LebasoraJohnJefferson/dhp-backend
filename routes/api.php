@@ -65,6 +65,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('/preschoolWIthNutrionalStatus',PreschoolWithNutrionalStatus::class);
     Route::resource('/preschoolAtRisk',PreschoolAtRiskController::class);
     Route::resource('/resident',ResidentController::class);
+    Route::post('resident/importResident/{brgy_id}',[ResidentController::class,'handleResidentImport']);
 
     // Admin routes and middleware where roles is being check if admin
     Route::prefix('/admin')->middleware(AdminMiddleware::class)->group(function () {
