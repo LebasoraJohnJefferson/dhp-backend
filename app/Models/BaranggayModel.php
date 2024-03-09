@@ -28,4 +28,9 @@ class BaranggayModel extends Model
     }
 
 
+    public function resident(){
+        return $this->hasMany(ResidentModel::class,'brgy_id');
+    }
+
+
 }

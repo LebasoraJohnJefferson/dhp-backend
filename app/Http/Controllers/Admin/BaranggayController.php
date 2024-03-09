@@ -53,7 +53,11 @@ class BaranggayController extends Controller
      */
     public function show(string $id)
     {
-      
+      $brgy_details = BaranggayModel::find($id);
+      if(!$brgy_details){
+        return $this->error('', 'Barangay not found', 404);
+      }
+      return $this->success($brgy_details);
     }
 
     /**

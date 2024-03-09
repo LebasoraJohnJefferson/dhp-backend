@@ -24,6 +24,7 @@ use App\Http\Controllers\PreschoolAtRiskController;
 use App\Http\Controllers\PupolationBracketController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\RecoverFilesController;
+use App\Http\Controllers\ResidentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\PersonnelMiddleware;
@@ -63,6 +64,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('/preschool',PreschoolController::class);
     Route::resource('/preschoolWIthNutrionalStatus',PreschoolWithNutrionalStatus::class);
     Route::resource('/preschoolAtRisk',PreschoolAtRiskController::class);
+    Route::resource('/resident',ResidentController::class);
 
     // Admin routes and middleware where roles is being check if admin
     Route::prefix('/admin')->middleware(AdminMiddleware::class)->group(function () {
