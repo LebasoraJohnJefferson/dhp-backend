@@ -21,6 +21,10 @@ return new class extends Migration
             $table->string('father_middle_name');
             $table->string('father_last_name');
             $table->string('father_suffix');
+            $table->string('mother_citizenship');
+            $table->string('father_citizenship');
+            $table->string('mother_place_birth');
+            $table->string('father_place_birth');
             $table->date('father_birthday');
             $table->date('mother_birthday');
             $table->timestamps();

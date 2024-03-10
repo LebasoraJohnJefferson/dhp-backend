@@ -32,6 +32,10 @@ class ResidentRequest extends FormRequest
             'father_suffix'=>['nullable', 'string'],
             'father_birthday'=>['required', 'date'],
             'mother_birthday'=>['required', 'date'],
+            'mother_citizenship'=>['required', 'string'],
+            'father_citizenship'=>['required', 'string'],
+            'mother_place_birth'=>['required', 'string'],
+            'father_place_birth'=>['required', 'string'],
         ];
     }
 }

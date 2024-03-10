@@ -22,6 +22,10 @@ class ResidentModel extends Model
         'father_suffix',
         'father_birthday',
         'mother_birthday',
+        'mother_citizenship',
+        'father_citizenship',
+        'mother_place_birth',
+        'father_place_birth',
     ];
 
 

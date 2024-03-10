@@ -17,8 +17,21 @@ class ResidentController extends Controller
         
     }
 
-    public function update(Request $request, string $id){
-
+    public function update(ResidentRequest $residentRequest, string $id)
+    {
+        $resident = ResidentModel::find($id);
+    
+        if (!$resident) {
+            return $this->error('', 'User not found', 404);
+        }
+    
+        $resident->brgy_id = $residentRequest->input('brgy_id');
+    
+        $validatedResident = $residentRequest->validated();
+    
+        $resident->update($validatedResident);
+    
+        return $this->success('', 'Successfully updated', 201);
     }
 
     public function show(string $brgy_id)
