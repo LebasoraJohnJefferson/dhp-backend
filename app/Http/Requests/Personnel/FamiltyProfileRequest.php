@@ -23,18 +23,8 @@ class FamiltyProfileRequest extends FormRequest
     {
 
             return [
-                'brgy_id' => ['required', 'integer'],
+                'resident_id' => ['required', 'integer'],
                 'contact_number' => ['required', 'string'],
-
-                'mother_first_name' => ['string', 'required'],
-                'mother_middle_name' => ['string', 'required'],
-                'mother_last_name' => ['string', 'required'],
-                'mother_suffix' => ['string','nullable'],
-
-                'father_first_name' => ['string', 'required'],
-                'father_middle_name' => ['string', 'required'],
-                'father_last_name' => ['string', 'required'],
-                'father_suffix' => ['string','nullable'],
 
                 'food_prod_act' => ['required', 'string'],
                 'toilet_type' => ['required', 'string'],
@@ -49,8 +39,6 @@ class FamiltyProfileRequest extends FormRequest
                 'father_occupation' => ['required', 'string'],
                 'mother_educ_attain' => ['required', 'string'],
                 'father_educ_attain' => ['required', 'string'],
-                'mother_birthday' => ['required', 'date'],
-                'father_birthday' => ['required', 'date'],
             ];
     }
 }

@@ -13,18 +13,8 @@ class FamilyProfileModel extends Model
     protected $primaryKey = 'id';
 
     protected $fillable=[
-        'brgy_id',
+        'resident_id',
         'contact_number',
-        'mother_first_name',
-        'mother_middle_name',
-        'mother_last_name',
-        'mother_suffix',
-
-        'father_first_name',
-        'father_middle_name',
-        'father_last_name',
-        'father_suffix',
-        
         'household_no',
         'no_household_member',
         'housthould_head',
@@ -39,8 +29,7 @@ class FamilyProfileModel extends Model
         'father_occupation' ,
         'mother_educ_attain' ,
         'father_educ_attain' ,
-        'mother_birthday' ,
-        'father_birthday' ,
+       
     ];
 
 
@@ -54,6 +43,11 @@ class FamilyProfileModel extends Model
 
     public function FP_members(){
         return $this->hasMany(FamilyProfileMemberModel::class, 'FP_id');
+    }
+
+
+    public function resident(){
+        return $this->belongsTo(ResidentModel::class,'resident_id');
     }
 
 

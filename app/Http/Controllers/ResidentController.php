@@ -14,7 +14,19 @@ class ResidentController extends Controller
 {
     use HttpResponses;
     public function index(){
-        
+        $residents = ResidentModel::whereNotIn('id', function ($query) {
+            $query->select('resident_id')->from('family_profile');
+        })->get();
+        $temp=[];
+        foreach($residents as $resident){
+            $father_suffix = $resident->father_suffix ? $resident->father_suffix : '';
+            $temp[] = [
+                "id"=>$resident->id,
+                "father"=>$resident->father_first_name.' '. $resident->father_middle_name[0]. ' ,'. $resident->father_last_name.' '. $father_suffix,
+                "mother"=>$resident->mother_first_name.' '. $resident->mother_first_name[0]. ' ,'. $resident->mother_first_name
+            ];
+        }   
+        return $this->success($temp);
     }
 
     public function update(ResidentRequest $residentRequest, string $id)
@@ -41,9 +53,17 @@ class ResidentController extends Controller
         ->get();
 
         $brgyDetails = BaranggayModel::find($brgy_id);
-
+        $temp = [];
+        foreach ($residents as $resident) {
+            $numericPart = str_pad($resident->id, 6, '0', STR_PAD_LEFT);
+            $year = $resident->created_at->format('Y');
+        
+            $aiKey = $year . '-' . $numericPart;
+        
+            $temp[] = array_merge($resident->toArray(), ['household_no' => $aiKey]);
+        }
         return $this->success([
-            'residents'=>$residents,
+            'residents'=>$temp,
             'brgyDetails'=>$brgyDetails
         ],null,200);
     }

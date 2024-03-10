@@ -39,5 +39,9 @@ class ResidentModel extends Model
         return $this->belongsTo(BaranggayModel::class,'brgy_id');
     }
 
+    public function familyProfile(){
+        return $this->hasOne(FamilyProfileModel::class,'resident_id');
+    }
+
 
 }

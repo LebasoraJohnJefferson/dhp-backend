@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('father_first_name');
             $table->string('father_middle_name');
             $table->string('father_last_name');
-            $table->string('father_suffix');
+            $table->string('father_suffix')->nullable(true);
             $table->string('mother_citizenship');
             $table->string('father_citizenship');
             $table->string('mother_place_birth');

@@ -20,8 +20,6 @@ return new class extends Migration
             $table->string('father_occupation')->after('father')->nullable(false);
             $table->string('mother_educ_attain')->after('father_occupation')->nullable(false);
             $table->string('father_educ_attain')->after('mother_educ_attain')->nullable(false);
-            $table->date('mother_birthday')->after('father_educ_attain')->nullable(false);
-            $table->date('father_birthday')->after('mother_birthday')->nullable(false);
         });
     }
 
@@ -39,8 +37,6 @@ return new class extends Migration
                 'father_occupation',
                 'mother_educ_attain',
                 'father_educ_attain',
-                'mother_birthday',
-                'father_birthday',
             ]);
         });
     }
