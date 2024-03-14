@@ -7,6 +7,7 @@ use App\Http\Requests\Personnel\FamiltyProfileRequest;
 use App\Http\Resources\FamilyProfileResource;
 use App\Models\BaranggayModel;
 use App\Models\FamilyProfileModel;
+use App\Models\ResidentModel;
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ class FamiltyProfileController extends Controller
     public function index()
     {
         $fam = FamilyProfileModel::latest()->get();
-        return FamilyProfileResource::collection($fam);
+        return $this->success($fam);
     }
 
     /**
@@ -63,11 +64,11 @@ class FamiltyProfileController extends Controller
      */
     public function show(string $id)
     {
-        $family_profile = FamilyProfileModel::find($id);
-        if(!$family_profile){
+        $details = ResidentModel::find($id);
+        if(!$details){
             return $this->error('','Profile not found',404);
         }
-        return new FamilyProfileResource($family_profile);
+        return new FamilyProfileResource($details);
     }
 
     /**

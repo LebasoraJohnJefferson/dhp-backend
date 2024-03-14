@@ -41,9 +41,7 @@ class FamilyProfileModel extends Model
         return $this->belongsTo(BaranggayModel::class,'brgy_id');
     }
 
-    public function FP_members(){
-        return $this->hasMany(FamilyProfileMemberModel::class, 'FP_id');
-    }
+    
 
 
     public function resident(){

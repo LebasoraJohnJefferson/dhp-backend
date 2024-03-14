@@ -12,7 +12,7 @@ class FamilyProfileMemberModel extends Model
     protected $primaryKey = 'id';
 
     protected $fillable=[
-        'FP_id',
+        'resident_id',
         'first_name',
         'last_name',
         'middle_name',
@@ -30,7 +30,7 @@ class FamilyProfileMemberModel extends Model
     ];
 
     public function fam_profile(){
-        return $this->belongsTo(FamilyProfileModel::class,'FP_id');
+        return $this->belongsTo(ResidentModel::class,'resident_id');
     }
 
     public function brgy_preschool(){

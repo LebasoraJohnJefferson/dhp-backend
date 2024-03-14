@@ -7,6 +7,7 @@ use App\Models\FamilyProfileMemberModel;
 use App\Http\Requests\Personnel\FamiltyProfileMemberRequest;
 use App\Http\Resources\FamilyProfileMembersResource;
 use App\Models\FamilyProfileModel;
+use App\Models\ResidentModel;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -36,7 +37,7 @@ class FamilyProfileMemberController extends Controller
     {
         $family_prof_child->validated($family_prof_child->all());
         FamilyProfileMemberModel::create([
-            'FP_id'=>$family_prof_child->FP_id,
+            'resident_id'=>$family_prof_child->resident_id,
             'first_name'=>$family_prof_child->first_name,
             'middle_name'=>$family_prof_child->middle_name,
             'last_name'=>$family_prof_child->last_name,
@@ -53,9 +54,9 @@ class FamilyProfileMemberController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $FP_id)
+    public function show(string $resident_id)
     {
-        $fam_member =  FamilyProfileMemberModel::where('FP_id',$FP_id)
+        $fam_member =  FamilyProfileMemberModel::where('resident_id',$resident_id)
         ->latest()
         ->get();
         return FamilyProfileMembersResource::collection($fam_member);
@@ -98,8 +99,8 @@ class FamilyProfileMemberController extends Controller
     }
 
 
-    public function saveImportedFCM(Request $data,string $FP_id){
-        $FPM = FamilyProfileModel::find($FP_id);
+    public function saveImportedFCM(Request $data,string $resident_id){
+        $FPM = ResidentModel::find($resident_id);
         if(!$FPM){
             return $this->error('','Profile family not found',404);
         }
@@ -125,12 +126,12 @@ class FamilyProfileMemberController extends Controller
             ->where('middle_name',$info['middle_name'])
             ->where('last_name',$info['last_name'])
             ->where('suffix',$suffix)
-            ->where('FP_id',$FP_id)
+            ->where('resident_id',$resident_id)
             ->first();
 
             if (!$validator->fails() && !$FP_member_exist) {
                 FamilyProfileMemberModel::create([
-                    'FP_id'=>$FP_id,
+                    'resident_id'=>$resident_id,
                     'first_name'=>$info['first_name'],
                     'middle_name'=>$info['middle_name'],
                     'last_name'=>$info['last_name'],

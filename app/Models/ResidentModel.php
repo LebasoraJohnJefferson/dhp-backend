@@ -34,6 +34,10 @@ class ResidentModel extends Model
 
     ];
 
+
+    public function resident_member(){
+        return $this->hasMany(FamilyProfileMemberModel::class, 'resident_id');
+    }
     
     public function brgys(){
         return $this->belongsTo(BaranggayModel::class,'brgy_id');

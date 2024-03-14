@@ -14,22 +14,23 @@ class FamilyProfileResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $numericPart = str_pad($this->resident->id, 6, '0', STR_PAD_LEFT);
+        $numericPart = str_pad($this->id, 6, '0', STR_PAD_LEFT);
         $year  = $this->created_at->format('Y');
         // Format the AI key
         $aiKey = $year.'-' . $numericPart;
-        $father_suffix = $this->resident->father_suffix ? $this->resident->father_suffix : '';
-        error_log($this->FP_members);
+        $father_suffix = $this->father_suffix ? $this->father_suffix : '';
         return [
         'id'=>$this->id,
         'attributes'=>[
-            'no_household_member'=>$this->FP_members->count() + 2,
-            'brgy_id'=>$this->resident->brgy_id,
+            'no_household_member'=>$this->resident_member->count() + 2,
+            'brgy_id'=>$this->brgy_id,
             'household_no'=>$aiKey,
             'contact_number'=>$this->contact_number,
-            "father"=>$this->resident->father_first_name.' '. $this->resident->father_middle_name[0]. ' ,'. $this->resident->father_last_name.' '. $father_suffix,
-            "mother"=>$this->resident->mother_first_name.' '. $this->resident->mother_first_name[0]. ' ,'. $this->resident->mother_first_name,
+            "father"=>$this->father_first_name.' '. $this->father_middle_name[0]. ' ,'. $this->father_last_name.' '. $father_suffix,
+            "mother"=>$this->mother_first_name.' '. $this->mother_first_name[0]. ' ,'. $this->mother_first_name,
             'food_prod_act'=>$this->food_prod_act,
+            'mother_birthday'=>$this->mother_birthday,
+            'father_birthday'=>$this->father_birthday,
             'toilet_type'=>$this->toilet_type,
             'water_source'=>$this->water_source,
             'using_iodized_salt'=>$this->using_iodized_salt,

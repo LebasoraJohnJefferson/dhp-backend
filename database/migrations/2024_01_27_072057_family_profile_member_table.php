@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('family_profile_members', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('FP_id');
+            $table->unsignedBigInteger('resident_id');
             $table->string('name');
             $table->date('birthDay');
             $table->string('gender');
             $table->string('relationship');
             $table->string('occupation')->nullable();
             $table->string('nursing_type')->nullable();
-            $table->foreign('FP_id')
+            $table->foreign('resident_id')
                 ->references('id')
-                ->on('family_profile')
+                ->on('resident')
                 ->onDelete('cascade');
             $table->timestamps();
         });
@@ -34,7 +34,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('family_profile_members', function (Blueprint $table) {
-            $table->dropForeign(['FP_id']);
+            $table->dropForeign(['resident_id']);
         });
 
         Schema::dropIfExists('family_profile_members');
