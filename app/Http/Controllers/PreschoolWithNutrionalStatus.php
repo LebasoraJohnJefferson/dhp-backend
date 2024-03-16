@@ -37,7 +37,7 @@ class PreschoolWithNutrionalStatus extends Controller
                 'middle_name'=>$pres->FPM->middle_name,
                 'last_name'=>$pres->FPM->last_name,
                 'suffix'=>$pres->FPM->suffix,
-                'FP_id'=>$pres->FPM->FP_id,
+                'resident_id'=>$pres->FPM->resident_id,
                 'created_at'=>$pres->created_at
             ];
         }

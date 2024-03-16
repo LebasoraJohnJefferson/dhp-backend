@@ -30,8 +30,8 @@ class ResidentResource extends JsonResource
             "mother"=>$this->mother_first_name.' '. $this->mother_first_name[0]. ' ,'. $this->mother_first_name,
             'mother_birthday'=>$this->mother_birthday,
             'father_birthday'=>$this->father_birthday,
-            'mother_educ_attain' => $this->mother_educ_attain,
-            'father_educ_attain' => $this->father_educ_attain,
+            'mother_educ_attain' => $this->familyProfile ? $this->familyProfile->mother_educ_attain : null,
+            'father_educ_attain' => $this->familyProfile ? $this->familyProfile->father_educ_attain : null,
             
             'contact_number'=>$this->familyProfile ? $this->familyProfile->contact_number : null, 
             "toilet_type"=>$this->familyProfile ? $this->familyProfile->toilet_type : null,

@@ -67,7 +67,7 @@ class PreschoolController extends Controller
                 'age'=>$age_in_year,
                 'preDetails'=>$pres,
                 'name'=>$pres->fam_profile_member->first_name. ' ' .$pres->fam_profile_member->middle_name[0]. '. ' .$pres->fam_profile_member->last_name. ' ' . $pres->fam_profile_member->suffix.'.',
-                'FP_id'=>$pres->fam_profile_member->FP_id,
+                'resident_id'=>$pres->fam_profile_member->resident_id,
             ];
         }
 
