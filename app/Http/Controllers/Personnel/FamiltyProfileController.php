@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Personnel;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Personnel\FamiltyProfileRequest;
 use App\Http\Resources\FamilyProfileResource;
+use App\Http\Resources\ResidentResource;
 use App\Models\BaranggayModel;
 use App\Models\FamilyProfileModel;
 use App\Models\ResidentModel;
@@ -21,7 +22,7 @@ class FamiltyProfileController extends Controller
     public function index()
     {
         $fam = FamilyProfileModel::latest()->get();
-        return $this->success($fam);
+        return FamilyProfileResource::collection($fam);
     }
 
     /**
@@ -38,7 +39,7 @@ class FamiltyProfileController extends Controller
     public function store(FamiltyProfileRequest $familty_profile)
     {
         $familty_profile->validated($familty_profile->all());
-
+        
         $FP = FamilyProfileModel::create([
             'resident_id'=>$familty_profile->resident_id,
             'contact_number'=>$familty_profile->contact_number,
@@ -64,11 +65,11 @@ class FamiltyProfileController extends Controller
      */
     public function show(string $id)
     {
-        $details = ResidentModel::find($id);
+        $details = ResidentModel::with('familyProfile')->find($id);
         if(!$details){
             return $this->error('','Profile not found',404);
         }
-        return new FamilyProfileResource($details);
+        return new ResidentResource($details);
     }
 
     /**
