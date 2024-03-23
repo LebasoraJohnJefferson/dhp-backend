@@ -12,6 +12,7 @@ use App\Models\PreschoolAtRiskModel;
 use App\Models\PreschoolWithNutrionalStatusModel;
 use App\Traits\HttpResponses;
 use Carbon\Carbon;
+use Exception;
 
 class AnalyticsFamiltyProfileController extends Controller
 {
@@ -27,25 +28,14 @@ class AnalyticsFamiltyProfileController extends Controller
             $temp[$barangay->baranggay] = 0;
         }
         foreach($brgys as $baranggay){
-            $householdMemberCount = FamilyProfileMemberModel::with('fam_profile.FP_members')
-            ->whereHas('fam_profile.FP_members', function ($query) use ($baranggay) {
+            $householdMemberCount = FamilyProfileMemberModel::with('fam_profile.resident_member')
+            ->whereHas('fam_profile.resident_member', function ($query) use ($baranggay) {
                 $query->where('brgy_id', $baranggay->id);
             })
             ->get()
             ->count();
-            $count = 0;
-            if($baranggay->fam_profile) {
-                foreach($baranggay->fam_profile as $fam){
-                    if($fam->mother_first_name){
-                        $count += 1;
-                    }
-                    if($fam->father_first_name){
-                        $count += 1;
-                    }
-                }
-            }
             
-            $temp[$baranggay->baranggay] += $householdMemberCount + $count;
+            $temp[$baranggay->baranggay] += $householdMemberCount + 2;
 
         }
         $baranggays = array_keys($temp);
@@ -53,8 +43,6 @@ class AnalyticsFamiltyProfileController extends Controller
         $population=array_values($temp);
         array_unshift($population, 0);
         
-        error_log(json_encode($temp));
-
 
         $using_iodized_salt = FamilyProfileModel::where('using_iodized_salt',true)->count();
         $not_using_iodized_salt = FamilyProfileModel::where('using_iodized_salt',false)->count();
@@ -62,9 +50,12 @@ class AnalyticsFamiltyProfileController extends Controller
         $not_using_IFR = FamilyProfileModel::where('using_IFR',false)->count();
 
         $no_children = FamilyProfileMemberModel::where(function ($query) {
-            $query->where('relationship', 'son')
-                  ->orWhere('relationship', 'daughter');
+            $query->where('relationship', 'Son')
+                  ->orWhere('relationship', 'Son-in-law')
+                  ->orWhere('relationship', 'Daughter')
+                  ->orWhere('relationship', 'Daugter-in-law');
         })->get();
+
         $category_age = [0,0,0,0];
         $data_nursing_type = [
             'EBF'=>0,
@@ -73,57 +64,68 @@ class AnalyticsFamiltyProfileController extends Controller
             'Others'=>0];
 
             $toiletTypes= [
-                'WS'=>0,
-                'OP'=>0,
-                'O'=>0,
-                'N'=>0];
+                'Water sealed'=>0,
+                'Open pit'=>0,
+                'Others'=>0,
+                'None'=>0];
             $typeOfWater=[
-                'P'=>0,
-                'W'=>0,
-                'S'=>0];
+                'Pipe'=>0,
+                'Well'=>0,
+                'Spring'=>0];
             $foodProdActs=[
-                'VG'=>0,
-                'P/L'=>0,
-                'FP'=>0];
-
+                'Vegetable Garden'=>0,
+                'Poultry/Livestock'=>0,
+                'Fishpond'=>0];
+            
         foreach($no_children as $child){
             $birthday = Carbon::parse($child->birthDay);
             $age = $birthday->diffInMonths(Carbon::now());
             $nursing_type = $child->nursing_type;
-
-            if ($age < 6) {
-                $category_age[0] += 1;
-            } elseif ($age >= 6 && $age <= 23) {
-                $category_age[1] += 1;
-            } elseif ($age >= 24 && $age <= 59) {
-                $category_age[2] += 1;
-            } else {
-                $category_age[3] += 1;
+            error_log(json_encode($nursing_type));
+            try{
+                if ($age < 6) {
+                    $category_age[0] += 1;
+                } elseif ($age >= 6 && $age <= 23) {
+                    $category_age[1] += 1;
+                } elseif ($age >= 24 && $age <= 59) {
+                    $category_age[2] += 1;
+                } else {
+                    $category_age[3] += 1;
+                }
+                if($nursing_type){
+                    $data_nursing_type[$nursing_type]+=1;
+                }
+            }catch(Exception $e){
+                error_log($e);
             }
-            if($nursing_type){
-                $data_nursing_type[$nursing_type]+=1;
-            }
+            
 
         }
 
         $familyProfile = FamilyProfileModel::all();
 
         foreach($familyProfile as $fam){
-            $toi = $fam->toilet_type;
-            $water = $fam->water_source;
-            $food = $fam->food_prod_act;
+            try{
 
-            if($water){
-                $typeOfWater[$water]+=1;
-            }
+                $toi = $fam->toilet_type;
+                $water = $fam->water_source;
+                $food = $fam->food_prod_act;
 
-            if($toi){
-                $toiletTypes[$toi]+=1;
-            }
+                if($water){
+                    $typeOfWater[$water]+=1;
+                }
 
-            if($food){
-                $foodProdActs[$food]+=1;
+                if($toi){
+                    $toiletTypes[$toi]+=1;
+                }
+
+                if($food){
+                    $foodProdActs[$food]+=1;
+                }
+            }catch(Exception $e){
+                error_log($e);
             }
+            
 
         }
 
