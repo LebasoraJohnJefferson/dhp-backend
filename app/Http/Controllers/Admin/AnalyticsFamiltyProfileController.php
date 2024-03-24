@@ -18,16 +18,38 @@ class AnalyticsFamiltyProfileController extends Controller
 {
     use HttpResponses;
     public function FPAnalyic(string $selectedBaragay){
-        $count_pregnant = FamilyProfileModel::where('mother_pregnant',true)->count();
-        $count_prac_fam_plan = FamilyProfileModel::where('familty_planning',true)->count();
-        $brgys = BaranggayModel::get();
-        $list_barangays = BaranggayModel::distinct()->get(['baranggay']);
+        if($selectedBaragay != 'null'){
+            $count_pregnant = FamilyProfileModel::where('mother_pregnant', true)
+            ->whereHas('resident.brgys', function ($query) use ($selectedBaragay) {
+                $query->where('baranggay', $selectedBaragay);
+            })
+            ->count();
+
+            $count_prac_fam_plan = FamilyProfileModel::where('familty_planning', true)
+            ->whereHas('resident.brgys', function ($query) use ($selectedBaragay) {
+                $query->where('baranggay', $selectedBaragay);
+            })
+            ->count();
+            $brgys = BaranggayModel::where('baranggay',$selectedBaragay)->get();
+            
+            
+        }else{
+            $count_pregnant = FamilyProfileModel::where('mother_pregnant',true)->count();
+            $brgys = BaranggayModel::get();
+            $count_prac_fam_plan = FamilyProfileModel::where('familty_planning',true)->count();
+        }
+
+        $list_barangays = BaranggayModel::groupBy('baranggay')->pluck('baranggay');
+
+
+
         $baranggays=['start'];
         $population= [0];
         $temp = [];
         foreach ($brgys as $barangay) {
             $temp[$barangay->baranggay] = 0;
         }
+
         foreach($brgys as $baranggay){
             $householdMemberCount = FamilyProfileMemberModel::with('fam_profile.resident_member')
             ->whereHas('fam_profile.resident_member', function ($query) use ($baranggay) {
@@ -35,10 +57,15 @@ class AnalyticsFamiltyProfileController extends Controller
             })
             ->get()
             ->count();
-            
-            $temp[$baranggay->baranggay] += $householdMemberCount + 2;
+            $count = FamilyProfileMemberModel::with('fam_profile.brgys')
+            ->whereHas('fam_profile.brgys', function ($query) use ($baranggay) {
+                $query->where('brgy_id', $baranggay->id);
+            })->count();
+           
+            $temp[$baranggay->baranggay] += $householdMemberCount + ($count*2) ;
 
         }
+
         $baranggays = array_keys($temp);
         array_unshift($baranggays, 'start');
         $population=array_values($temp);
@@ -82,7 +109,6 @@ class AnalyticsFamiltyProfileController extends Controller
             $birthday = Carbon::parse($child->birthDay);
             $age = $birthday->diffInMonths(Carbon::now());
             $nursing_type = $child->nursing_type;
-            error_log(json_encode($nursing_type));
             try{
                 if ($age < 6) {
                     $category_age[0] += 1;
