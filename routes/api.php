@@ -72,7 +72,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/personnel/status',[PersonnelController::class,'change_personnel_status']);
         Route::patch('/updateAdminInfo',[UserController::class,'updateAdminInfo']);
         Route::get('/PopulationBracket',[PupolationBracketController::class,'PopulationBracket']);
-        Route::get('/profileFamiltyAnalytics',[AnalyticsFamiltyProfileController::class,'FPAnalyic']);
+        Route::get('/profileFamiltyAnalytics/{selectedBaragay}',[AnalyticsFamiltyProfileController::class,'FPAnalyic']);
         Route::get('/profileInfantAnlytics/{year}',[AnalyticsFamiltyProfileController::class,'InfantAnalyic']);
         Route::get('/PreschoolWithNutritionalStatusAnlytics/{year}', [AnalyticsFamiltyProfileController::class, 'PreschoolWithNutritionalStatus']);
         Route::get('/AtRiskAnalytics/{year}', [AnalyticsFamiltyProfileController::class, 'AtRiskAnalytics']);

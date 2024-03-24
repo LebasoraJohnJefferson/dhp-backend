@@ -17,10 +17,11 @@ use Exception;
 class AnalyticsFamiltyProfileController extends Controller
 {
     use HttpResponses;
-    public function FPAnalyic(){
+    public function FPAnalyic(string $selectedBaragay){
         $count_pregnant = FamilyProfileModel::where('mother_pregnant',true)->count();
         $count_prac_fam_plan = FamilyProfileModel::where('familty_planning',true)->count();
         $brgys = BaranggayModel::get();
+        $list_barangays = BaranggayModel::distinct()->get(['baranggay']);
         $baranggays=['start'];
         $population= [0];
         $temp = [];
@@ -144,6 +145,7 @@ class AnalyticsFamiltyProfileController extends Controller
             'toilet_type'=>array_values($toiletTypes),
             'water_soruce'=>array_values($typeOfWater),
             'food_prod_act'=>array_values($foodProdActs),
+            'list_barangays'=>$list_barangays
         ],'Request granted',200);
 
 
