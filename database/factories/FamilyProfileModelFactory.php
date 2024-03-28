@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\BaranggayModel;
 use App\Models\FamilyProfileModel;
+use App\Models\ResidentModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -30,20 +31,10 @@ class FamilyProfileModelFactory extends Factory
         $typeOfWater=['P','W','S'];
         $occupations = ['employed','unemployed','self-employed'];
         $educAttans = ['Advance Learning System','College','College Student','College undergrad','Elem Student','Elem Undegrad','Elem Education','High Scool Education','HS Student','HS undegrad','No Formal Education','Not Applicable','Postgraduate Program','Pre-School','Senior HS','Vacational',];
+        
         return [
-            'brgy_id'=>BaranggayModel::all()->random()->id,
+            'resident_id'=>ResidentModel::all()->random()->id,
             'contact_number'=>'09' . $randomDigits,
-            'mother_first_name' => $this->faker->name('female'),
-            'mother_middle_name' => $this->faker->firstName,
-            'mother_last_name' => $this->faker->lastName,
-            'mother_suffix' => null,
-
-            'father_first_name' => $this->faker->name('male'),
-            'father_middle_name' => $this->faker->firstName,
-            'father_last_name' => $this->faker->lastName,
-            'father_suffix' =>$this->faker->randomElement($extensions),
-            'mother_birthday'=>$motherBirthday,
-            'father_birthday'=>$fatherBirthday,
             'food_prod_act'=>$this->faker->randomElement($foodProdActs),
             'toilet_type'=>$this->faker->randomElement($toiletTypes),
             'water_source'=>$this->faker->randomElement($typeOfWater),

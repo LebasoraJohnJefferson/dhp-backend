@@ -32,8 +32,72 @@ class AnalyticsFamiltyProfileController extends Controller
             ->count();
             $brgys = BaranggayModel::where('baranggay',$selectedBaragay)->get();
             
+               
+            $using_iodized_salt = FamilyProfileModel::where('using_iodized_salt', true)
+            ->whereHas('resident', function ($query) use ($selectedBaragay) {
+                $query->whereHas('brgys', function ($query) use ($selectedBaragay) {
+                    $query->where('baranggay', $selectedBaragay);
+                });
+            })
+            ->count();
+
+            $not_using_iodized_salt = FamilyProfileModel::where('using_iodized_salt', false)
+            ->whereHas('resident', function ($query) use ($selectedBaragay) {
+                $query->whereHas('brgys', function ($query) use ($selectedBaragay) {
+                    $query->where('baranggay', $selectedBaragay);
+                });
+            })
+            ->count();
+
+            $using_IFR = FamilyProfileModel::where('using_IFR', true)
+            ->whereHas('resident', function ($query) use ($selectedBaragay) {
+                $query->whereHas('brgys', function ($query) use ($selectedBaragay) {
+                    $query->where('baranggay', $selectedBaragay);
+                });
+            })
+            ->count();
+            
+            $not_using_IFR = FamilyProfileModel::where('using_IFR', false)
+            ->whereHas('resident', function ($query) use ($selectedBaragay) {
+                $query->whereHas('brgys', function ($query) use ($selectedBaragay) {
+                    $query->where('baranggay', $selectedBaragay);
+                });
+            })
+            ->count();
+
+            $familyProfile = FamilyProfileModel::whereHas('resident', function ($query) use ($selectedBaragay) {
+                $query->whereHas('brgys', function ($query) use ($selectedBaragay) {
+                    $query->where('baranggay', $selectedBaragay);
+                });
+            })
+            ->get();
+
+
+            $no_children = FamilyProfileMemberModel::where(function ($query) {
+                $query->where('relationship', 'Son')
+                      ->orWhere('relationship', 'Son-in-law')
+                      ->orWhere('relationship', 'Daughter')
+                      ->orWhere('relationship', 'Daugter-in-law');
+            })
+            ->whereHas('fam_profile', function ($query) use ($selectedBaragay) {
+                $query->whereHas('brgys', function ($query) use ($selectedBaragay) {
+                    $query->where('baranggay', $selectedBaragay);
+                });
+            })
+            ->get();
             
         }else{
+            $no_children = FamilyProfileMemberModel::where(function ($query) {
+                $query->where('relationship', 'Son')
+                      ->orWhere('relationship', 'Son-in-law')
+                      ->orWhere('relationship', 'Daughter')
+                      ->orWhere('relationship', 'Daugter-in-law');
+            })->get();
+            $familyProfile = FamilyProfileModel::all();
+            $not_using_IFR = FamilyProfileModel::where('using_IFR',false)->count();
+            $using_IFR = FamilyProfileModel::where('using_IFR',true)->count();
+            $not_using_iodized_salt = FamilyProfileModel::where('using_iodized_salt',false)->count();
+            $using_iodized_salt = FamilyProfileModel::where('using_iodized_salt',true)->count();
             $count_pregnant = FamilyProfileModel::where('mother_pregnant',true)->count();
             $brgys = BaranggayModel::get();
             $count_prac_fam_plan = FamilyProfileModel::where('familty_planning',true)->count();
@@ -72,19 +136,11 @@ class AnalyticsFamiltyProfileController extends Controller
         array_unshift($population, 0);
         
 
-        $using_iodized_salt = FamilyProfileModel::where('using_iodized_salt',true)->count();
-        $not_using_iodized_salt = FamilyProfileModel::where('using_iodized_salt',false)->count();
-        $using_IFR = FamilyProfileModel::where('using_IFR',true)->count();
-        $not_using_IFR = FamilyProfileModel::where('using_IFR',false)->count();
 
-        $no_children = FamilyProfileMemberModel::where(function ($query) {
-            $query->where('relationship', 'Son')
-                  ->orWhere('relationship', 'Son-in-law')
-                  ->orWhere('relationship', 'Daughter')
-                  ->orWhere('relationship', 'Daugter-in-law');
-        })->get();
-
+        
+        
         $category_age = [0,0,0,0];
+
         $data_nursing_type = [
             'EBF'=>0,
             'Mixed feeding'=>0,
@@ -129,7 +185,6 @@ class AnalyticsFamiltyProfileController extends Controller
 
         }
 
-        $familyProfile = FamilyProfileModel::all();
 
         foreach($familyProfile as $fam){
             try{
@@ -155,8 +210,6 @@ class AnalyticsFamiltyProfileController extends Controller
             
 
         }
-
-
 
 
         return $this->success([

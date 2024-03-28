@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\FamilyProfileModel;
 use App\Models\FamilyProfileMemberModel;
+use App\Models\ResidentModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -28,7 +28,7 @@ class FamilyProfileMemberModelFactory extends Factory
         $relationships= ['Father','Mother','Grandmother','Grandfather','Brother','Sister','Son','Daughter','Aunt','Uncle','Father-in-law','Mother-in-law','Brother-in-law','Sister-in-law','Son-in-law','Daugter-in-law','Nephew','Niece','Great-Grandfather','Great-Grandmother','Great-Grandson','Great-Granddaughter','Friend'];
         $occupations=['employed','unemployed','self-employed'];
         return [
-            'FP_id' => FamilyProfileModel::all()->random()->id,
+            'resident_id' => ResidentModel::all()->random()->id,
             'first_name' => $this->faker->name(),
             'last_name' => $this->faker->lastName,
             'middle_name' => $this->faker->firstName,
