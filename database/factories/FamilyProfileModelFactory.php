@@ -23,12 +23,10 @@ class FamilyProfileModelFactory extends Factory
     public function definition(): array
     {
         $randomDigits = $this->faker->randomNumber(9);
-        $extensions = ['','Jr','Sr','II','III','IV','V','VI','VII','VIII','IX','X'];
-        $motherBirthday = $this->faker->dateTimeBetween('-40 years', '-24 years')->format('Y-m-d');
-        $fatherBirthday = $this->faker->dateTimeBetween('-40 years', '-24 years')->format('Y-m-d');
-        $foodProdActs=['VG','P/L','FP'];
-        $toiletTypes = ['WS','OP','O','N'];
-        $typeOfWater=['P','W','S'];
+        
+        $foodProdActs=['Vegetable Garden','Poultry/Livestock','Fishpond'];
+        $toiletTypes =  ['Water sealed','Open pit','Others','None'];
+        $typeOfWater=['Pipe','Well','Spring'];
         $occupations = ['employed','unemployed','self-employed'];
         $educAttans = ['Advance Learning System','College','College Student','College undergrad','Elem Student','Elem Undegrad','Elem Education','High Scool Education','HS Student','HS undegrad','No Formal Education','Not Applicable','Postgraduate Program','Pre-School','Senior HS','Vacational',];
         

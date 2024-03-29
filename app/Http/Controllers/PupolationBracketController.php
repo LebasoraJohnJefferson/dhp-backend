@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BaranggayModel;
 use App\Models\FamilyProfileModel;
+use App\Models\ResidentModel;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 
@@ -40,14 +41,15 @@ class PupolationBracketController extends Controller
         $brgys = BaranggayModel::distinct()->pluck('baranggay');
         $data=[];
 
-
         foreach ($brgys as $brgy) {
             // total population in every city;
-            $citizens = FamilyProfileModel::with('resident.resident_member')
-            ->whereHas('resident.brgys', function ($query) use ($brgy) {
+            $citizens = ResidentModel::with('resident_member')
+            ->whereHas('brgys', function ($query) use ($brgy) {
                 $query->where('baranggay', $brgy);
             })
             ->get();
+            
+            error_log(json_encode($brgy));
 
             $temp[$brgy] = new CityAgeRange($brgy);
             if($citizens != null){
@@ -124,7 +126,6 @@ class PupolationBracketController extends Controller
 
             $data[] = $temp[$brgy]->returnData();
         }
-
 
 
 

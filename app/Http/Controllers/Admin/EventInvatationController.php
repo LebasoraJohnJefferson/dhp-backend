@@ -56,8 +56,12 @@ class EventInvatationController extends Controller
         }
 
         $event = EventInvitationModel::where('event_id',$request->event_id)->first();
+       
 
-        $contact_every_person = FamilyProfileModel::all();
+        $contact_every_person = FamilyProfileModel::whereHas('resident.brgys', function ($query) use ($request) {
+            $query->where('brgy_id', $request->brgy_id);
+        })->get();
+
         $msg = 'Title: ' . $event->event->title
         . ' When: ' . date('F j, Y', strtotime($event->event->date))
         . ' Where: ' . $event->event->venue
@@ -66,16 +70,13 @@ class EventInvatationController extends Controller
 
 
         foreach($contact_every_person as $person){
-            if($person->brgys){
-                if ($person->brgys->id == $request->brgy_id){
-                    $contactNumber = $person->contact_number;
-                    if (substr($contactNumber, 0, 2) === "09") {
-                        $contactNumber = "639" . substr($contactNumber, 2);
-                    }
-                    $this->sendSms($msg,$contactNumber);
-    
-                }
+            
+            $contactNumber = $person->contact_number;
+            if (substr($contactNumber, 0, 2) === "09") {
+                $contactNumber = "639" . substr($contactNumber, 2);
             }
+            $this->sendSms($msg,$contactNumber);
+              
         }
 
 

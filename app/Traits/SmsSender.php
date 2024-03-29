@@ -21,6 +21,8 @@ trait SmsSender{
         // } else {
         //     error_log("The message failed with status: " . $message->getStatus() . "\n");
         // }
+        error_log('hi');
+
         if (substr($phone_number, 0, 2) === '09') {
             // If yes, replace '09' with '+639'
             $phone_number = '+639' . substr($phone_number, 2);
@@ -29,5 +31,6 @@ trait SmsSender{
             $phone_number = '+639' . $phone_number;
         }
         $response = InfobipSms::send($phone_number,$msg);
+        error_log(json_encode($response));
     }
 }

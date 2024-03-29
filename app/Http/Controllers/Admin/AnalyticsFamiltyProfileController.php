@@ -10,6 +10,7 @@ use App\Models\FamilyProfileModel;
 use App\Models\InfantModel;
 use App\Models\PreschoolAtRiskModel;
 use App\Models\PreschoolWithNutrionalStatusModel;
+use App\Models\ResidentModel;
 use App\Traits\HttpResponses;
 use Carbon\Carbon;
 use Exception;
@@ -73,18 +74,14 @@ class AnalyticsFamiltyProfileController extends Controller
             ->get();
 
 
-            $no_children = FamilyProfileMemberModel::where(function ($query) {
-                $query->where('relationship', 'Son')
-                      ->orWhere('relationship', 'Son-in-law')
-                      ->orWhere('relationship', 'Daughter')
-                      ->orWhere('relationship', 'Daugter-in-law');
-            })
+            $no_children = FamilyProfileMemberModel::whereIn('relationship', ['Son', 'Son-in-law', 'Daughter', 'Daughter-in-law'])
             ->whereHas('fam_profile', function ($query) use ($selectedBaragay) {
                 $query->whereHas('brgys', function ($query) use ($selectedBaragay) {
                     $query->where('baranggay', $selectedBaragay);
                 });
             })
             ->get();
+
             
         }else{
             $no_children = FamilyProfileMemberModel::where(function ($query) {
@@ -115,18 +112,15 @@ class AnalyticsFamiltyProfileController extends Controller
         }
 
         foreach($brgys as $baranggay){
-            $householdMemberCount = FamilyProfileMemberModel::with('fam_profile.resident_member')
-            ->whereHas('fam_profile.resident_member', function ($query) use ($baranggay) {
+            $householdMemberCount = FamilyProfileMemberModel::with('fam_profile')
+            ->whereHas('fam_profile', function ($query) use ($baranggay) {
                 $query->where('brgy_id', $baranggay->id);
             })
-            ->get()
             ->count();
-            $count = FamilyProfileMemberModel::with('fam_profile.brgys')
-            ->whereHas('fam_profile.brgys', function ($query) use ($baranggay) {
-                $query->where('brgy_id', $baranggay->id);
-            })->count();
-           
-            $temp[$baranggay->baranggay] += $householdMemberCount + ($count*2) ;
+            $count = ResidentModel::where('brgy_id', $baranggay->id)->count();
+            
+            $temp[$baranggay->baranggay] += $householdMemberCount + ($count*2);
+            
 
         }
 
