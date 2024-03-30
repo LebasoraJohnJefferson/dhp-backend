@@ -40,6 +40,14 @@ class ResidentModel extends Model
         return $this->belongsTo(BaranggayModel::class,'brgy_id');
     }
 
+    public function father_familyProfile(){
+        return $this->hasOne(FamilyProfileModel::class,'father_id');
+    }
+
+    public function mother_familyProfile(){
+        return $this->hasOne(FamilyProfileModel::class,'mother_id');
+    }
+
     public function familyProfile(){
         return $this->hasOne(FamilyProfileModel::class,'resident_id');
     }

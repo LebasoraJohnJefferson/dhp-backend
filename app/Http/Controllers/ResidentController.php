@@ -14,19 +14,9 @@ class ResidentController extends Controller
 {
     use HttpResponses;
     public function index(){
-        $residents = ResidentModel::whereNotIn('id', function ($query) {
-            $query->select('resident_id')->from('family_profile');
-        })->get();
-        $temp=[];
-        foreach($residents as $resident){
-            $father_suffix = $resident->father_suffix ? $resident->father_suffix : '';
-            $temp[] = [
-                "id"=>$resident->id,
-                "father"=>$resident->father_first_name.' '. $resident->father_middle_name[0]. ' ,'. $resident->father_last_name.' '. $father_suffix,
-                "mother"=>$resident->mother_first_name.' '. $resident->mother_first_name[0]. ' ,'. $resident->mother_first_name
-            ];
-        }   
-        return $this->success($temp);
+        // $query->select('resident_id')->from('family_profile');
+        $residents = ResidentModel::get();
+        return $this->success($residents);
     }
 
     public function update(ResidentRequest $residentRequest, string $id)

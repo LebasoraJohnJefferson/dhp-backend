@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('family_profile', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('resident_id');
+            $table->unsignedBigInteger('father_id');
+            $table->unsignedBigInteger('mother_id');
             $table->string('household_no');
-            $table->string('father')->default('');
-            $table->string('mother')->default('');
             $table->string('contact_number');
             $table->string('occupation');
             $table->string('educ_attain');
@@ -30,11 +29,17 @@ return new class extends Migration
             $table->boolean('mother_pregnant');
             $table->timestamps();
 
-            $table->foreign('resident_id')
+            $table->foreign('father_id')
+                ->references('id')
+                ->on('resident')
+                ->onDelete('cascade');
+
+            $table->foreign('mother_id')
                 ->references('id')
                 ->on('resident')
                 ->onDelete('cascade');
             });
+            
     }
 
     /**

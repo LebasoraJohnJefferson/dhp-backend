@@ -23,7 +23,8 @@ class FamiltyProfileRequest extends FormRequest
     {
 
             return [
-                'resident_id' => ['required', 'integer'],
+                'father_id' => ['required', 'integer'],
+                'mother_id' => ['required', 'integer'],
                 'contact_number' => ['required', 'string'],
 
                 'food_prod_act' => ['required', 'string'],

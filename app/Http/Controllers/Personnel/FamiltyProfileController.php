@@ -41,7 +41,8 @@ class FamiltyProfileController extends Controller
         $familty_profile->validated($familty_profile->all());
         
         $FP = FamilyProfileModel::create([
-            'resident_id'=>$familty_profile->resident_id,
+            'father_id'=>$familty_profile->father_id,
+            'mother_id'=>$familty_profile->mother_id,
             'contact_number'=>$familty_profile->contact_number,
             'food_prod_act'=>$familty_profile->food_prod_act,
             'toilet_type'=>$familty_profile->toilet_type,
