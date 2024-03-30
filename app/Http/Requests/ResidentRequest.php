@@ -19,23 +19,18 @@ class ResidentRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules(): array      
     {
         return [
             'brgy_id'=>['required','numeric'],
-            'mother_first_name'=>['required','string'],
-            'mother_middle_name'=>['required', 'string'],
-            'mother_last_name'=>['required', 'string'],
-            'father_first_name'=>['required','string'],
-            'father_middle_name'=>['required', 'string'],
-            'father_last_name'=>['required', 'string'],
-            'father_suffix'=>['nullable', 'string'],
-            'father_birthday'=>['required', 'date'],
-            'mother_birthday'=>['required', 'date'],
-            'mother_citizenship'=>['required', 'string'],
-            'father_citizenship'=>['required', 'string'],
-            'mother_place_birth'=>['required', 'string'],
-            'father_place_birth'=>['required', 'string'],
+            'first_name'=>['required','string'],
+            'middle_name'=>['required', 'string'],
+            'last_name'=>['required', 'string'],
+            'suffix'=>['nullable', 'string'],
+            'birthday'=>['required', 'date'],
+            'civil_status'=>['required', 'string'],
+            'sex'=>['required', 'string'],
+            'occupation'=>['required', 'string'],
         ];
     }
 }

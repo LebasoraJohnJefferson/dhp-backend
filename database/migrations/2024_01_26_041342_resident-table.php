@@ -14,19 +14,14 @@ return new class extends Migration
         Schema::create('resident', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('brgy_id');
-            $table->string('mother_first_name');
-            $table->string('mother_middle_name');
-            $table->string('mother_last_name');
-            $table->string('father_first_name');
-            $table->string('father_middle_name');
-            $table->string('father_last_name');
-            $table->string('father_suffix')->nullable(true);
-            $table->string('mother_citizenship');
-            $table->string('father_citizenship');
-            $table->string('mother_place_birth');
-            $table->string('father_place_birth');
-            $table->date('father_birthday');
-            $table->date('mother_birthday');
+            $table->string('first_name');
+            $table->string('middle_name')->nullable(true);
+            $table->string('last_name');
+            $table->string('suffix')->nullable(true);
+            $table->string('sex');
+            $table->string('civil_status');
+            $table->string('occupation')->nullable(true);
+            $table->date('birthday');
             $table->timestamps();
             $table->foreign('brgy_id')
                 ->references('id')

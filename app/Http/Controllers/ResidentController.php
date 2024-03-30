@@ -53,17 +53,8 @@ class ResidentController extends Controller
         ->get();
 
         $brgyDetails = BaranggayModel::find($brgy_id);
-        $temp = [];
-        foreach ($residents as $resident) {
-            $numericPart = str_pad($resident->id, 6, '0', STR_PAD_LEFT);
-            $year = $resident->created_at->format('Y');
-        
-            $aiKey = $year . '-' . $numericPart;
-        
-            $temp[] = array_merge($resident->toArray(), ['household_no' => $aiKey]);
-        }
         return $this->success([
-            'residents'=>$temp,
+            'residents'=>$residents,
             'brgyDetails'=>$brgyDetails
         ],null,200);
     }
@@ -113,13 +104,10 @@ class ResidentController extends Controller
             );
 
             if (!$validator->fails()) {
-                $residentExist = ResidentModel::where('mother_first_name',$resident['mother_first_name'])
-                ->where('mother_middle_name',$resident['mother_middle_name'])
-                ->where('mother_last_name',$resident['mother_last_name'])
-                ->where('father_first_name',$resident['father_first_name'])
-                ->where('father_middle_name',$resident['father_middle_name'])
-                ->where('father_last_name',$resident['father_last_name'])
-                ->where('father_suffix',$resident['father_suffix'])
+                $residentExist = ResidentModel::where('first_name',$resident['first_name'])
+                ->where('middle_name',$resident['middle_name'])
+                ->where('last_name',$resident['last_name'])
+                ->where('suffix',$resident['suffix'])
                 ->first();
                 if(!$residentExist){
                     ResidentModel::create($validator->validated());

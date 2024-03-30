@@ -49,7 +49,6 @@ class PupolationBracketController extends Controller
             })
             ->get();
             
-            error_log(json_encode($brgy));
 
             $temp[$brgy] = new CityAgeRange($brgy);
             if($citizens != null){
