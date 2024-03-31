@@ -22,15 +22,11 @@ class FamiltyProfileMemberRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name'=>['required','string'],
-            'middle_name'=>['required','string'],
-            'last_name'=>['required','string'],
-            'suffix'=>['string','nullable'],
-            'birthDay'=>['required','date'],
+            'fp_id'=>['integer','required'],
+            'resident_id'=>['integer','required'],
             'nursing_type'=>['string','nullable'],
             'relationship'=>['string'],
             'occupation'=>['string'],
-            'gender'=>['string'],
         ];
     }
 }

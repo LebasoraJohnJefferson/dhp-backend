@@ -51,8 +51,6 @@ class FamiltyProfileController extends Controller
             'using_IFR'=>$familty_profile->using_IFR,
             'familty_planning'=>$familty_profile->familty_planning,
             'mother_pregnant'=>$familty_profile->mother_pregnant,
-            'mother_occupation' => $familty_profile->mother_occupation,
-            'father_occupation' => $familty_profile->father_occupation,
             'mother_educ_attain' => $familty_profile->mother_educ_attain,
             'father_educ_attain' => $familty_profile->father_educ_attain,
         ]);
@@ -66,7 +64,7 @@ class FamiltyProfileController extends Controller
      */
     public function show(string $id)
     {
-        $details = ResidentModel::with('familyProfile')->find($id);
+        $details = FamilyProfileModel::find($id);
         if(!$details){
             return $this->error('','Profile not found',404);
         }
@@ -161,7 +159,6 @@ class FamiltyProfileController extends Controller
                 ->first();
                 if(!$fp_exist){
                     $is_brgy_exist = BaranggayModel::find($fp['brgy_id']);
-                    error_log(json_encode($fp['father_suffix']));
                     $FP = FamilyProfileModel::create([
                         'brgy_id'=>$is_brgy_exist ? $fp['brgy_id'] : null,
                         'contact_number'=>$fp['contact_number'],

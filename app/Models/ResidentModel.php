@@ -33,7 +33,7 @@ class ResidentModel extends Model
 
 
     public function resident_member(){
-        return $this->hasMany(FamilyProfileMemberModel::class, 'resident_id');
+        return $this->hasOne(FamilyProfileMemberModel::class, 'resident_id');
     }
     
     public function brgys(){

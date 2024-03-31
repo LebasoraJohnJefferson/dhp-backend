@@ -51,6 +51,10 @@ class FamilyProfileModel extends Model
         return $this->belongsTo(ResidentModel::class,'mother_id');
     }
 
+    public function fam_member(){
+        return $this->hasMany(FamilyProfileMemberModel::class,'fp_id');
+    }
+
 
     public function resident(){
         return $this->belongsTo(ResidentModel::class,'resident_id');

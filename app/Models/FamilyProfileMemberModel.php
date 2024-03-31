@@ -13,14 +13,8 @@ class FamilyProfileMemberModel extends Model
 
     protected $fillable=[
         'resident_id',
-        'first_name',
-        'last_name',
-        'middle_name',
-        'suffix',
-        'birthDay',
+        'fp_id',
         'relationship',
-        'occupation',
-        'gender',
         'nursing_type'
     ];
 
@@ -30,6 +24,10 @@ class FamilyProfileMemberModel extends Model
     ];
 
     public function fam_profile(){
+        return $this->belongsTo(FamilyProfileModel::class,'fp_id');
+    }
+    
+    public function resident_profile(){
         return $this->belongsTo(ResidentModel::class,'resident_id');
     }
 

@@ -16,15 +16,15 @@ class FamilyProfileMembersResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'occupation'=>$this->occupation,
-            'gender'=>$this->gender,
-            'birthDay'=>$this->birthDay,
+            'occupation'=>$this->resident_profile->occupation,
+            'gender'=>$this->resident_profile->sex,
+            'birthDay'=>$this->resident_profile->birthday,
             'nursing_type'=>$this->nursing_type,
             'relationship'=>$this->relationship,
-            'first_name'=>$this->first_name,
-            'middle_name'=>$this->middle_name,
-            'last_name'=>$this->last_name,
-            'suffix'=>$this->suffix,
+            'first_name'=>$this->resident_profile->first_name,
+            'middle_name'=>$this->resident_profile->middle_name,
+            'last_name'=>$this->resident_profile->last_name,
+            'suffix'=>$this->resident_profile->suffix,
         ];
     }
 }

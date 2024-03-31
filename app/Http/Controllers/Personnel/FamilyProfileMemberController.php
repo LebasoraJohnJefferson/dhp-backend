@@ -20,6 +20,11 @@ class FamilyProfileMemberController extends Controller
      */
     public function index()
     {
+        $residents = ResidentModel::doesntHave('resident_member') //how to make this "or"
+        ->doesntHave('father_familyProfile') //and this "or"
+        ->doesntHave('mother_familyProfile') //and this "or"
+        ->get();
+        return $this->success($residents);
     }
 
     /**
@@ -37,14 +42,8 @@ class FamilyProfileMemberController extends Controller
     {
         $family_prof_child->validated($family_prof_child->all());
         FamilyProfileMemberModel::create([
+            'fp_id'=>$family_prof_child->fp_id,
             'resident_id'=>$family_prof_child->resident_id,
-            'first_name'=>$family_prof_child->first_name,
-            'middle_name'=>$family_prof_child->middle_name,
-            'last_name'=>$family_prof_child->last_name,
-            'suffix'=>$family_prof_child->suffix ? $family_prof_child->suffix : null,
-            'birthDay'=>$family_prof_child->birthDay,
-            'gender'=>$family_prof_child->gender,
-            'occupation'=>$family_prof_child->occupation,
             'relationship'=>$family_prof_child->relationship,
             'nursing_type'=>$family_prof_child->nursing_type
         ]);
@@ -54,9 +53,9 @@ class FamilyProfileMemberController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $resident_id)
+    public function show(string $fp_id)
     {
-        $fam_member =  FamilyProfileMemberModel::where('resident_id',$resident_id)
+        $fam_member =  FamilyProfileMemberModel::where('fp_id',$fp_id)
         ->latest()
         ->get();
         return FamilyProfileMembersResource::collection($fam_member);

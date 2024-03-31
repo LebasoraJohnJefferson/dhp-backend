@@ -16,10 +16,8 @@ return new class extends Migration
             $table->dropColumn(['occupation', 'educ_attain']);
 
             // Add new columns
-            $table->string('mother_occupation')->nullable(false);
-            $table->string('father_occupation')->nullable(false);
-            $table->string('mother_educ_attain')->after('father_occupation')->nullable(false);
-            $table->string('father_educ_attain')->after('mother_educ_attain')->nullable(false);
+            $table->string('mother_educ_attain')->nullable(false);
+            $table->string('father_educ_attain')->nullable(false);
         });
     }
 
@@ -33,8 +31,6 @@ return new class extends Migration
             $table->string('educ_attain');
 
             $table->dropColumn([
-                'mother_occupation',
-                'father_occupation',
                 'mother_educ_attain',
                 'father_educ_attain',
             ]);

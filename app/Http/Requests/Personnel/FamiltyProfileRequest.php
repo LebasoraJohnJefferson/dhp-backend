@@ -36,8 +36,6 @@ class FamiltyProfileRequest extends FormRequest
                 'familty_planning' => [ 'boolean'],
                 'mother_pregnant' => [ 'boolean'],
 
-                'mother_occupation' => ['required', 'string'],
-                'father_occupation' => ['required', 'string'],
                 'mother_educ_attain' => ['required', 'string'],
                 'father_educ_attain' => ['required', 'string'],
             ];
