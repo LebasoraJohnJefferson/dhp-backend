@@ -6,6 +6,7 @@ use App\Http\Requests\PreschoolAtRiskRequest;
 use App\Http\Resources\PreschoolAtRiskResource;
 use App\Models\FamilyProfileMemberModel;
 use App\Models\PreschoolAtRiskModel;
+use App\Models\ResidentModel;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponses;
 
@@ -52,7 +53,7 @@ class PreschoolAtRiskController extends Controller
      */
     public function show(string $id)
     {
-        $children = FamilyProfileMemberModel::where(function ($query) {
+        $children = ResidentModel::where(function ($query) {
             $query->whereRaw('TIMESTAMPDIFF(MONTH, birthDay, CURDATE()) >= 0');
             $query->whereRaw('TIMESTAMPDIFF(MONTH, birthDay, CURDATE()) < 60');
         })->latest()->get();

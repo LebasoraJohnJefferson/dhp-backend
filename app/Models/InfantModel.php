@@ -22,7 +22,7 @@ class InfantModel extends Model
     ];
 
     public function FPM(){
-        return $this->belongsTo(FamilyProfileMemberModel::class,'member_id');
+        return $this->belongsTo(ResidentModel::class,'member_id');
     }
 
   

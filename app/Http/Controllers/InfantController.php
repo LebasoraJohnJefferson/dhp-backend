@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\InfantRequest;
 use App\Models\FamilyProfileMemberModel;
 use App\Models\InfantModel;
+use App\Models\ResidentModel;
 use App\Traits\HttpResponses;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -18,10 +19,12 @@ class InfantController extends Controller
      */
     public function index()
     {
-        $infants = FamilyProfileMemberModel::where(function($query) {
+        $infants = ResidentModel::where(function($query) {
         $query->whereRaw('DATEDIFF(CURDATE(), birthDay) >= 0'); 
         $query->whereRaw('DATEDIFF(CURDATE(), birthDay) <= 23 * 30'); 
         })->latest()->get();
+
+        error_log(json_encode($infants));
         return $this->success(
             $infants
         );
@@ -82,7 +85,9 @@ class InfantController extends Controller
             $ageInMonths = $birthDate->diffInMonths($now);
             $weight = $info->weight;
             $status = weightStatus($ageInMonths,$weight);
+            $brgy_id = $info->FPM->brgys->id;
             $data = [
+                'brgy_id'=>$brgy_id,
                 'info'=>$info,
                 'status'=>$status,
                 'ageInMoth'=>$birthDate->diffInMonths($createdAt)

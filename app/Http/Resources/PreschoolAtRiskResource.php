@@ -19,6 +19,7 @@ class PreschoolAtRiskResource extends JsonResource
         $createdAt = Carbon::parse($this->created_at);
         $ageInMonths = $birthDate->diffInMonths($createdAt);
         return [
+            'brgy_id'=>$this->FPM->brgys->id,
             'id'=>$this->id,
             'created_at'=>$this->created_at,
             'first_name'=>$this->FPM->first_name,

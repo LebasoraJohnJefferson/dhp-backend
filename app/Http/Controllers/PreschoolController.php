@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BrgyPreschoolRequest;
 use App\Models\BaranggayPreschoolRecordModel;
 use App\Models\FamilyProfileMemberModel;
+use App\Models\ResidentModel;
 use App\Traits\HttpResponses;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ class PreschoolController extends Controller
      */
     public function index()
     {
-        $children = FamilyProfileMemberModel::where(function ($query) {
+        $children = ResidentModel::where(function ($query) {
             $query->whereRaw('DATEDIFF(CURDATE(), birthDay) >= 3 * 365'); 
             $query->whereRaw('DATEDIFF(CURDATE(), birthDay) <= 5 * 365'); 
         })->latest()->get();
@@ -63,8 +64,10 @@ class PreschoolController extends Controller
             $birthDate = Carbon::parse($pres->fam_profile_member->birthDay);
             $createdAt = Carbon::parse($pres->created_at);
             $age_in_year = $birthDate->diffInYears($createdAt);
+            $brgy_id = $pres->fam_profile_member->brgys->id;
             $data[]=[
                 'age'=>$age_in_year,
+                'brgy_id'=>$brgy_id,
                 'preDetails'=>$pres,
                 'name'=>$pres->fam_profile_member->first_name. ' ' .$pres->fam_profile_member->middle_name[0]. '. ' .$pres->fam_profile_member->last_name. ' ' . $pres->fam_profile_member->suffix.'.',
                 'resident_id'=>$pres->fam_profile_member->resident_id,

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->float('height', 8, 2);
             $table->foreign('member_id')
                 ->references('id')
-                ->on('family_profile_members')
+                ->on('resident')
                 ->onDelete('cascade');;
             $table->timestamps();
         });

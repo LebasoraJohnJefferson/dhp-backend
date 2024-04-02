@@ -26,7 +26,7 @@ class BaranggayPreschoolRecordModel extends Model
     ];
 
     public function fam_profile_member(){
-        return $this->belongsTo(FamilyProfileMemberModel::class,'member_id');
+        return $this->belongsTo(ResidentModel::class,'member_id');
     }
 
     

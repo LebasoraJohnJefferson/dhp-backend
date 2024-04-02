@@ -8,6 +8,7 @@ use App\Models\EventModel;
 use App\Models\FamilyProfileMemberModel;
 use App\Models\FamilyProfileModel;
 use App\Models\fileModel;
+use App\Models\ResidentModel;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
@@ -37,7 +38,7 @@ class DashboardContoller extends Controller
         ->where('is_deleted',false)
         ->count();
 
-        $total_members = FamilyProfileMemberModel::count();
+        $total_members = ResidentModel::count();
 
         $families = FamilyProfileModel::count();
 

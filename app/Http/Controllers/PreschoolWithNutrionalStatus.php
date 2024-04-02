@@ -28,6 +28,7 @@ class PreschoolWithNutrionalStatus extends Controller
             $percentile = calculateBMIPercentile($pres->weight,$pres->height, $age_in_year, $sex);
             $status = interpretNutritionalStatus($percentile);
             $data[]=[
+                'brgy_id'=>$pres->FPM->brgys->id,
                 'age'=>$age_in_year,
                 'status'=>$status,
                 'percentile'=>$percentile.'%',
