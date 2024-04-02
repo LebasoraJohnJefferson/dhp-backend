@@ -27,6 +27,7 @@ class ResidentRequest extends FormRequest
             'middle_name'=>['required', 'string'],
             'last_name'=>['required', 'string'],
             'suffix'=>['nullable', 'string'],
+            'citizenship'=>['nullable', 'string'],
             'birthday'=>['required', 'date'],
             'civil_status'=>['required', 'string'],
             'sex'=>['required', 'string'],

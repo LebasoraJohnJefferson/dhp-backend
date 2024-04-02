@@ -13,6 +13,7 @@ class ResidentModel extends Model
 
     protected $fillable=[
         'brgy_id',
+        'citizenship',
         'first_name',
         'middle_name',
         'last_name',

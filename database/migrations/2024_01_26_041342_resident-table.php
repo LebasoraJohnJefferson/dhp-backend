@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('civil_status');
             $table->string('occupation')->nullable(true);
             $table->date('birthday');
+            $table->string('citizenship');
             $table->timestamps();
             $table->foreign('brgy_id')
                 ->references('id')
