@@ -48,7 +48,7 @@ class DashboardContoller extends Controller
             'event_count'=>$event_count,
             'baranggay_count'=>$baranggay_count,
             'document_count'=>$document_count,
-            'population'=>$total_members+($families*2),
+            'population'=>$total_members,
             'families'=>$families
         ],'',200);
     }

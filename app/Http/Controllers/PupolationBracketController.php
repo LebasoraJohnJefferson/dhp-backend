@@ -53,9 +53,7 @@ class PupolationBracketController extends Controller
             $temp[$brgy] = new CityAgeRange($brgy);
             if($citizens != null){
                 foreach($citizens as $citizen){
-                    $mother_month=now()->diffInMonths($citizen->mother_birthday);
-                    $father_month=now()->diffInMonths($citizen->father_birthday);
-    
+                    $mother_month=now()->diffInMonths($citizen->birthday);
     
                     foreach ($expected_age_range as $index => $expect) {
                         if ($expect[0] == 'under') {
@@ -74,21 +72,6 @@ class PupolationBracketController extends Controller
                             }
                         }
     
-                        if ($expect[0] == 'under') {
-                            if ($father_month <= $expect[1]) {
-                                $temp[$brgy]->addGenderCount($index, 'male');
-                            }
-                        }
-                        if ($expect[0] == 'above') {
-                            if ($father_month >= $expect[1]) {
-                                $temp[$brgy]->addGenderCount($index, 'male');
-                            }
-                        }
-                        if ($expect[0] != 'above' && $expect != 'under'){
-                            if ($father_month >= $expect[0] && $father_month <= $expect[1]) {
-                                $temp[$brgy]->addGenderCount($index, 'male');
-                            }
-                        }
     
     
                     }
