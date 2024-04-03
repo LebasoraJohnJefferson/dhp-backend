@@ -7,6 +7,7 @@ use App\Http\Resources\ResidentResource;
 use App\Models\BaranggayModel;
 use App\Models\ResidentModel;
 use App\Traits\HttpResponses;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -44,7 +45,10 @@ class ResidentController extends Controller
 
         foreach($residents as $resident){
             // error_log(json_encode($resident->mother_familyProfile));
-            
+            $birthday = Carbon::parse($resident->birthday);
+            $age = $birthday->age;
+            $resident->age = $age;
+            error_log($age);
             if($resident->mother_familyProfile){
                $household_details = $resident->mother_familyProfile;
             }else if($resident->father_familyProfile){

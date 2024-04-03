@@ -21,13 +21,13 @@ class AnalyticsFamiltyProfileController extends Controller
     public function FPAnalyic(string $selectedBaragay){
         if($selectedBaragay != 'null'){
             $count_pregnant = FamilyProfileModel::where('mother_pregnant', true)
-            ->whereHas('resident.brgys', function ($query) use ($selectedBaragay) {
+            ->whereHas('father_details.brgys', function ($query) use ($selectedBaragay) {
                 $query->where('baranggay', $selectedBaragay);
             })
             ->count();
 
             $count_prac_fam_plan = FamilyProfileModel::where('familty_planning', true)
-            ->whereHas('resident.brgys', function ($query) use ($selectedBaragay) {
+            ->whereHas('father_details.brgys', function ($query) use ($selectedBaragay) {
                 $query->where('baranggay', $selectedBaragay);
             })
             ->count();
@@ -35,50 +35,39 @@ class AnalyticsFamiltyProfileController extends Controller
             
                
             $using_iodized_salt = FamilyProfileModel::where('using_iodized_salt', true)
-            ->whereHas('resident', function ($query) use ($selectedBaragay) {
-                $query->whereHas('brgys', function ($query) use ($selectedBaragay) {
-                    $query->where('baranggay', $selectedBaragay);
-                });
+            ->whereHas('father_details.brgys', function ($query) use ($selectedBaragay) {
+                $query->where('baranggay', $selectedBaragay);
             })
             ->count();
 
             $not_using_iodized_salt = FamilyProfileModel::where('using_iodized_salt', false)
-            ->whereHas('resident', function ($query) use ($selectedBaragay) {
-                $query->whereHas('brgys', function ($query) use ($selectedBaragay) {
-                    $query->where('baranggay', $selectedBaragay);
-                });
+            ->whereHas('father_details.brgys', function ($query) use ($selectedBaragay) {
+                $query->where('baranggay', $selectedBaragay);
             })
             ->count();
 
             $using_IFR = FamilyProfileModel::where('using_IFR', true)
-            ->whereHas('resident', function ($query) use ($selectedBaragay) {
-                $query->whereHas('brgys', function ($query) use ($selectedBaragay) {
-                    $query->where('baranggay', $selectedBaragay);
-                });
+            ->whereHas('father_details.brgys', function ($query) use ($selectedBaragay) {
+                $query->where('baranggay', $selectedBaragay);
             })
             ->count();
             
             $not_using_IFR = FamilyProfileModel::where('using_IFR', false)
-            ->whereHas('resident', function ($query) use ($selectedBaragay) {
-                $query->whereHas('brgys', function ($query) use ($selectedBaragay) {
-                    $query->where('baranggay', $selectedBaragay);
-                });
+            ->whereHas('father_details.brgys', function ($query) use ($selectedBaragay) {
+                $query->where('baranggay', $selectedBaragay);
             })
             ->count();
 
-            $familyProfile = FamilyProfileModel::whereHas('resident', function ($query) use ($selectedBaragay) {
-                $query->whereHas('brgys', function ($query) use ($selectedBaragay) {
-                    $query->where('baranggay', $selectedBaragay);
-                });
+            $familyProfile = FamilyProfileModel::whereHas('father_details.brgys', function ($query) use ($selectedBaragay) {
+                $query->where('baranggay', $selectedBaragay);
             })
             ->get();
+            
 
 
             $no_children = FamilyProfileMemberModel::whereIn('relationship', ['Son', 'Son-in-law', 'Daughter', 'Daughter-in-law'])
-            ->whereHas('fam_profile', function ($query) use ($selectedBaragay) {
-                $query->whereHas('brgys', function ($query) use ($selectedBaragay) {
-                    $query->where('baranggay', $selectedBaragay);
-                });
+            ->whereHas('resident_profile.brgys', function ($query) use ($selectedBaragay) {
+                $query->where('baranggay', $selectedBaragay);
             })
             ->get();
 
@@ -112,16 +101,8 @@ class AnalyticsFamiltyProfileController extends Controller
         }
 
         foreach($brgys as $baranggay){
-            $householdMemberCount = FamilyProfileMemberModel::with('fam_profile')
-            ->whereHas('fam_profile', function ($query) use ($baranggay) {
-                $query->where('brgy_id', $baranggay->id);
-            })
-            ->count();
             $count = ResidentModel::where('brgy_id', $baranggay->id)->count();
-            
-            $temp[$baranggay->baranggay] += $householdMemberCount + ($count*2);
-            
-
+            $temp[$baranggay->baranggay] += $count;
         }
 
         $baranggays = array_keys($temp);
