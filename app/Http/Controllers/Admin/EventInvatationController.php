@@ -58,7 +58,7 @@ class EventInvatationController extends Controller
         $event = EventInvitationModel::where('event_id',$request->event_id)->first();
        
 
-        $contact_every_person = FamilyProfileModel::whereHas('resident.brgys', function ($query) use ($request) {
+        $contact_every_person = FamilyProfileModel::whereHas('father_details.brgys', function ($query) use ($request) {
             $query->where('brgy_id', $request->brgy_id);
         })->get();
 
