@@ -36,7 +36,6 @@ class ImportPersonnelContoller extends Controller
                 $email = $person['email'];
                 $suffix =$person['suffix'];
                 $is_active = $person['is_active'];
-                error_log($suffix);
                 if(
                     !empty($first_name) &&
                     !empty($middle_name) &&

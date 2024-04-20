@@ -20,9 +20,8 @@ class PreschoolWithNutrionalStatus extends Controller
         ->get();
         $data=[];
         foreach($preschoolder as $pres){
-            $birthDate = Carbon::parse($pres->FPM->birthDay);
-            $createdAt = Carbon::parse($pres->created_at);
-            $age_in_year = $birthDate->diffInYears($createdAt);
+            $birthDate = Carbon::parse($pres->FPM->birthday);
+            $age_in_year = $birthDate->age;
             $BMI = calculateBMI($pres->weight,$pres->height);
             $sex = $pres->FPM->gender == 'male' ? 1 : 2;
             $percentile = calculateBMIPercentile($pres->weight,$pres->height, $age_in_year, $sex);
@@ -101,7 +100,6 @@ class PreschoolWithNutrionalStatus extends Controller
      */
     public function destroy(string $id)
     {
-        error_log($id);
         $record = PreschoolWithNutrionalStatusModel::find($id);
         if(!$record) return $this->error(null,'Infant record not found',404);
         $record->delete();

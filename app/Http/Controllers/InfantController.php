@@ -20,11 +20,10 @@ class InfantController extends Controller
     public function index()
     {
         $infants = ResidentModel::where(function($query) {
-        $query->whereRaw('DATEDIFF(CURDATE(), birthDay) >= 0'); 
-        $query->whereRaw('DATEDIFF(CURDATE(), birthDay) <= 23 * 30'); 
+        $query->whereRaw('DATEDIFF(CURDATE(), birthday) >= 0'); 
+        $query->whereRaw('DATEDIFF(CURDATE(), birthday) <= 23 * 30'); 
         })->latest()->get();
-
-        error_log(json_encode($infants));
+        
         return $this->success(
             $infants
         );

@@ -126,7 +126,6 @@ class PersonnelController extends Controller
 
 
     public function change_personnel_status(Request $request){
-        error_log($request->id);
         $user = User::where('id',$request->id)->first();
         if(!$user){
             return $this->error('','Personnel not found',404);

@@ -60,6 +60,7 @@ if (!function_exists('weightStatus')) {
             $rank++;
         }
 
+
         // Calculate percentile rank
         $percentileRank = ($rank - 1) / ($count - 1) * 100;
 

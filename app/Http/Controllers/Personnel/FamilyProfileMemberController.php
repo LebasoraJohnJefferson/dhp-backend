@@ -119,7 +119,6 @@ class FamilyProfileMemberController extends Controller
 
             $suffix = isset($info['suffix']) ? $info['suffix'] : null;
 
-            error_log(isset($info['suffix']) ? $info['suffix'] : null);
 
             $FP_member_exist = FamilyProfileMemberModel::where('first_name',$info['first_name'])
             ->where('middle_name',$info['middle_name'])
