@@ -61,7 +61,7 @@ class PreschoolController extends Controller
         ->get();
         $data=[];
         foreach($preschoolder as $pres){
-            $birthDate = Carbon::parse($pres->fam_profile_member->birthDay);
+            $birthDate = Carbon::parse($pres->fam_profile_member->birthday);
             $createdAt = Carbon::parse($pres->created_at);
             $age_in_year = $birthDate->diffInYears($createdAt);
             $brgy_id = $pres->fam_profile_member->brgys->id;
