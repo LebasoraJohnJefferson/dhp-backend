@@ -78,7 +78,7 @@ class InfantController extends Controller
 
         $infants = [];
         foreach($infantInfo as $info){
-            $birthDate = Carbon::parse($info->FPM->birthDay);
+            $birthDate = Carbon::parse($info->FPM->birthday);
             $createdAt = Carbon::parse($info->created_at);
             $now = Carbon::now();
             $ageInMonths = $birthDate->diffInMonths($now);
